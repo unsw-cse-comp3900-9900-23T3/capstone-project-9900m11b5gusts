@@ -2,9 +2,12 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from flask import Flask
 from flask_restx import Api, Resource, fields, reqparse
 from models import db, user_register, user_login
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 api = Api(app)
 jwt = JWTManager(app)
 
@@ -30,7 +33,7 @@ register_model = api.model('register_data', {
 
 @api.route('/login')
 class Login(Resource):
-    @api.doc(description="Get all books")
+    @api.doc(description="login name and password\n")
     @api.expect(login_model)
     def post(self):
         args = api.payload
@@ -45,12 +48,14 @@ class Login(Resource):
 
 @api.route('/register')
 class Register(Resource):
+    @api.doc(description="Please check two password are the same before fetch\n")
     @api.expect(register_model)
     def post(self):
         args = api.payload
         register_result = user_register(**args)
         if register_result['result']:
-            return register_result['info'], 200
+            access_token = create_access_token(identity=args['register_email'])
+            return {'token': access_token}, 200
         else:
             return register_result['info'], 400
 
