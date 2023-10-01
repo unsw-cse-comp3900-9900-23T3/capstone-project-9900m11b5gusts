@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import Flask, flash
 
 db = SQLAlchemy()
 '''
@@ -14,6 +16,18 @@ class User(db.Model):
     password = db.Column(db.String(30))
     identity = db.Column(db.String(10), default='user')
 
+    def get_token(self,expires_sec=300):
+        serial = Serializer('secret-key',expires_in=expires_sec)
+        return serial.dumps({'user_id':self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_token(token):
+        serial=Serializer('secret-key')
+        try:
+            user_id = serial.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
 
 def user_register(**kwargs):
     input_register_email = kwargs['register_email']
@@ -27,6 +41,7 @@ def user_register(**kwargs):
         event = User(email=input_register_email, username=input_username, password=input_password,
                      identity=input_identity)
         db.session.add(event)
+
         db.session.commit()
         print(f'LOG: {input_register_email} register success!')
         return {'result': True,
@@ -57,3 +72,19 @@ def user_login(**kwargs):
         print(f'LOG: {input_user_email} login failed(do not have this account)!')
         return {'result': False,
                 'info': 'Don\'t have this account, please register!'}
+
+def user_query_by_email(**kwargs):
+    reset_user_email = kwargs['user_email']
+    user = User.query.filter_by(email=reset_user_email).first()
+    if user:
+        return {'result': user,
+                'info': 'Don\'t have this account, please register!'}
+    else:
+        return {'result': False,
+                'info': 'Don\'t have this account, please register!'}
+
+def password_update(user,**kwargs):
+    password = kwargs['password']
+    user.password=password
+    db.session.commit()
+    flash('Password changed! Please login!','success')
