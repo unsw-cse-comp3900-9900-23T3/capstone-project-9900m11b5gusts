@@ -1,11 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import Flask, flash
-
-db = SQLAlchemy()
-'''
-    定义表结构
-'''
+from .extensions import db
+import datetime
 
 
 class User(db.Model):
@@ -15,19 +9,23 @@ class User(db.Model):
     username = db.Column(db.String(30), unique=False, index=True)
     password = db.Column(db.String(30))
     identity = db.Column(db.String(10), default='user')
+    city = db.Column(db.String(30), default='city')
+    suburb = db.Column(db.String(30), default='suburb')
 
-    def get_token(self,expires_sec=300):
-        serial = Serializer('secret-key',expires_in=expires_sec)
-        return serial.dumps({'user_id':self.id}).decode('utf-8')
 
-    @staticmethod
-    def verify_token(token):
-        serial=Serializer('secret-key')
-        try:
-            user_id = serial.loads(token)['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
+class Item(db.Model):
+    __tablename__ = 'tb_item'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), unique=True, index=True)
+    username = db.Column(db.String(30), unique=False, index=True)
+    item_name = db.Column(db.String(30))
+    city = db.Column(db.String(30))
+    suburb = db.Column(db.String(30))
+    category1 = db.Column(db.String(30))
+    category2 = db.Column(db.String(30))
+    category3 = db.Column(db.String(30))
+    time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
+
 
 def user_register(**kwargs):
     input_register_email = kwargs['register_email']
@@ -73,18 +71,22 @@ def user_login(**kwargs):
         return {'result': False,
                 'info': 'Don\'t have this account, please register!'}
 
-def user_query_by_email(**kwargs):
-    reset_user_email = kwargs['user_email']
-    user = User.query.filter_by(email=reset_user_email).first()
-    if user:
-        return {'result': user,
-                'info': 'Don\'t have this account, please register!'}
-    else:
-        return {'result': False,
-                'info': 'Don\'t have this account, please register!'}
 
-def password_update(user,**kwargs):
-    password = kwargs['password']
-    user.password=password
-    db.session.commit()
-    flash('Password changed! Please login!','success')
+def userprofile_update(email, **kwargs):
+    # user profile update
+    input_username = kwargs['username']
+    input_city = kwargs['city']
+    input_suburb = kwargs['suburb']
+    try:
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.username = input_username
+            user.city = input_city
+            user.suburb = input_suburb
+        else:
+            print(f'LOG: User with email {email} not found')
+            return {'result': False, 'info': f'User with email {email} not found'}
+
+    except Exception as e:
+        print(f'LOG: Failed to update city for user with email {email}')
+        return {'result': False, 'info': f'Failed to update city for user with email {email}'}
