@@ -17,7 +17,7 @@ I will start with what I can do. I will realize the sign-up and sign-in function
 
 Week3 2023/10/01
 
-We finished the proposal. I made half of the user interface diagram, and modified the 'novelty' part. 
+We finished writing the proposal. I drew half of the user interface diagram, and modified the 'novelty' part. 
 
 We have set up both basic backend and frontend. Users can register new accounts now. I made the frontend interface.
 
