@@ -1,7 +1,7 @@
 Week2: 09/24
 
 I discussed with our team choosing a project that we were interested in and allocating tasks. I am responsible for the frontend part.
-Understood the project requirements.
+Understood the project requirements and planned the work flow.
 
 
 Week3: 10/01
