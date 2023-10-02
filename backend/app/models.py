@@ -9,6 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(30), unique=False, index=True)
     password = db.Column(db.String(30))
     identity = db.Column(db.String(10), default='user')
+    gender = db.Column(db.String(10), default='male')
     city = db.Column(db.String(30), default='city')
     suburb = db.Column(db.String(30), default='suburb')
 
@@ -72,17 +73,32 @@ def user_login(**kwargs):
                 'info': 'Don\'t have this account, please register!'}
 
 
-def userprofile_update(email, **kwargs):
+def get_profile(email):
+    user = User.query.filter_by(email=email).first()
+    return {'email': user.email,
+            'username': user.username,
+            'identity': user.identity,
+            'gender': user.gender,
+            'city': user.city,
+            'suburb': user.suburb,
+            }
+
+
+def update_profile(email, **kwargs):
     # user profile update
     input_username = kwargs['username']
     input_city = kwargs['city']
     input_suburb = kwargs['suburb']
+    input_gender = kwargs['gender']
     try:
         user = User.query.filter_by(email=email).first()
         if user:
             user.username = input_username
             user.city = input_city
             user.suburb = input_suburb
+            user.gender = input_gender
+            db.session.commit()
+            return {'result': True, 'info': 'update profile success'}
         else:
             print(f'LOG: User with email {email} not found')
             return {'result': False, 'info': f'User with email {email} not found'}

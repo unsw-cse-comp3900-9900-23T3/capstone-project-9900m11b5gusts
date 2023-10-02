@@ -9,3 +9,8 @@ Build up a FontEnd(have signIn and signUp function) using react
 a BackEnd(have login and register API function) and fix the cors technology issue  that can connected with fontEnd fetch response. 
 Friday - Saturday：
 Remake the backend's structure and fix the circular reference bug on Vlab, so that backend can run on Vlab.
+### week4
+monday:
+finished Authorization,when use API need token the backend provided.
+API(/Authors/profile get):user can get profile information (email,username,identity,gender,city,suburb)
+API(/Authors/profile post):user can update profile information(name, gender, city, suburb)
