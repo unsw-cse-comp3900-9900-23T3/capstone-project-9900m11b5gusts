@@ -7,7 +7,7 @@ function SignIn ({ onSuccess }) {
   const [password, setPassword] = React.useState('');
   async function login () {
     console.log(email, password)
-    const response = await fetch('http://localhost:5000/login',
+    const response = await fetch('http://localhost:5000/Authors/login',
       {
         method: 'POST',
         headers: {
@@ -19,13 +19,13 @@ function SignIn ({ onSuccess }) {
           })
       })
     const data = await response.json();
-    console.log('this is data: ', data)
+    // console.log('this is data: ', data)
     if (data.error) {
       alert(data.error)
     } else {
 			console.log(data)
       onSuccess(data.token);
-      window.location.href = '/Homepage/'
+      window.location.href = '/homepage/'
       
     }
   }

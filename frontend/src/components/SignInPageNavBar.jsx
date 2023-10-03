@@ -5,6 +5,9 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuItem from '@mui/material/MenuItem';
+
 
 import {
   // BrowserRouter,
@@ -27,7 +30,10 @@ function SignNav() {
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { setCurrentURL('/') }}>
               <Link to='/' style={{ color: 'white', textDecoration: 'none' }}>
-                Platform Name
+                <MenuItem style={{width:'200px'}}>
+                  <HomeIcon fontSize='medium'/>
+                  Platform Name
+                </MenuItem>
               </Link>
             </Typography>
 

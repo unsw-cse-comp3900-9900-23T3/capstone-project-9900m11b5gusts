@@ -18,7 +18,7 @@ function SignUp ({ onSuccess }) {
 
   async function register () {
     console.log(email, password, name, identity)
-    const response = await fetch('http://localhost:5000/register',
+    const response = await fetch('http://localhost:5000/Authors/register',
       {
         method: 'POST',
         headers: {
@@ -37,7 +37,7 @@ function SignUp ({ onSuccess }) {
     } else {
       console.log(data)
       onSuccess(data.token);
-      window.location.href = '/Homepage/'
+      window.location.href = '/homepage/'
     }
   }
 
