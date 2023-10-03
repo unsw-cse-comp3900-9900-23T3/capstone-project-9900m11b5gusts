@@ -25,6 +25,12 @@ function App() {
 		localStorage.setItem('token', token.toString());
 	}
 
+	React.useEffect(() => {
+		if (localStorage.getItem('token')) {
+			setToken(localStorage.getItem('token'));
+		}
+	},[])
+
 
 	return (
 

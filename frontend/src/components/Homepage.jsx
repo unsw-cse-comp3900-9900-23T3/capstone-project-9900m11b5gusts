@@ -7,7 +7,8 @@ import SegmentIcon from '@mui/icons-material/Segment';
 import SearchIcon from '@mui/icons-material/Search';
 
 export default function Homepage ({ token }) {
-    
+  
+  console.log(token)
   return(
 		<>
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>

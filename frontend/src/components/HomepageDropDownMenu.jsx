@@ -67,6 +67,8 @@ export default function CustomizedMenus({manageTokenSet}) {
   const handleLogout = () => {
     setAnchorEl('null');
     manageTokenSet('null');
+    localStorage.clear();
+    window.location.href = '/'
   };
 
   return (
