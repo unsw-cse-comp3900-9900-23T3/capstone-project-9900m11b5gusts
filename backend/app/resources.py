@@ -1,6 +1,6 @@
 from flask_restx import Resource, Namespace
-from .api_models import login_model, register_model, changeProfile_model
-from .models import user_register, user_login, get_profile, update_profile
+from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model
+from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -72,11 +72,31 @@ class Profile(Resource):
 Item = Namespace('Items')
 
 
-@Item.route('/Items')
-class Items(Resource):
-    @Item.expect()
-    def post(self):
-        args = Items.payload
-        return 'post'
+@Item.route('/uploadPersonalItem')
+class UploadPersonalItem(Resource):
 
+    @Item.doc(description='New user can upload items they have (default is not change)')
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    @Item.expect(insertItem_model)
+    def post(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        insert_item_result = insert_item(email, **args)
+        if insert_item_result['result']:
+            return {'success': insert_item_result['info']}, 200
+        else:
+            return {'error': 'wrong'}, 400
+
+
+@Item.route('/checkPersonalItem')
+class CheckPersonalItem(Resource):
+
+    @Item.doc(description='See user personal items that he have')
+    @Item.expect(get_personal_item_model)
+    def post(self):
+        args = Item.payload
+        email = args['user_email']
+        get_personal_item_result = get_personal_item(email)
+        return {'success': get_personal_item_result['info']}, 200
 

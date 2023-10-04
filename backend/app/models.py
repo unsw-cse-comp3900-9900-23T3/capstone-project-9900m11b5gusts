@@ -17,14 +17,15 @@ class User(db.Model):
 class Item(db.Model):
     __tablename__ = 'tb_item'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), unique=True, index=True)
-    username = db.Column(db.String(30), unique=False, index=True)
+    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
     item_name = db.Column(db.String(30))
-    city = db.Column(db.String(30))
-    suburb = db.Column(db.String(30))
-    category1 = db.Column(db.String(30))
-    category2 = db.Column(db.String(30))
-    category3 = db.Column(db.String(30))
+    item_desc = db.Column(db.String(1000))
+    item_price = db.Column(db.Float)
+    item_num = db.Column(db.Integer)
+    class1 = db.Column(db.String(30))
+    class2 = db.Column(db.String(30))
+    class3 = db.Column(db.String(30))
+    change = db.Column(db.Integer, default=0)
     time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
@@ -106,3 +107,46 @@ def update_profile(email, **kwargs):
     except Exception as e:
         print(f'LOG: Failed to update city for user with email {email}')
         return {'result': False, 'info': f'Failed to update city for user with email {email}'}
+
+
+def insert_item(email, **kwargs):
+    input_email = email
+    input_item_name = kwargs['item_name']
+    input_item_desc = kwargs['description']
+    input_item_price = float(kwargs['price'])
+    input_item_num = int(kwargs['num'])
+    input_class1 = kwargs['class1']
+    input_class2 = kwargs['class2']
+    input_class3 = kwargs['class3']
+    try:
+        event = Item(email=input_email, item_name=input_item_name, item_desc=input_item_desc,
+                     item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
+                     class3=input_class3)
+        db.session.add(event)
+        db.session.commit()
+        return {'result': True, 'info': 'insert item success'}
+    except Exception as e:
+        print(e)
+        return {'result': False, 'info': e}
+
+
+def get_personal_item(email):
+    personal_items = Item.query.filter_by(email=email).all()
+    if personal_items:
+        temp_dict = {}
+        for item in personal_items:
+            temp_dict[item.id] = {
+                'item_name': item.item_name,
+                'item_price': str(item.item_price),
+                'item_num': str(item.item_num),
+                'item_desc': item.item_desc,
+                'change': str(item.change),
+                'class1': item.class1,
+                'class2': item.class2,
+                'class3': item.class3,
+                'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+            }
+        return {'result': True, 'info': temp_dict}
+    else:
+        return {'result': True, 'info': 'no item'}
+

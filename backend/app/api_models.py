@@ -19,6 +19,19 @@ changeProfile_model = api.model('changeProfile_data', {
         'gender': fields.String(example='a new gender'),
         'city': fields.String(example='a new city'),
         'suburb': fields.String(example='a new suburb')
+})
 
+insertItem_model = api.model('insertItem_data', {
+        'item_name': fields.String(example='pen'),
+        'description': fields.String(example='some description about this item'),
+        'price': fields.String(example='66.66'),
+        'num': fields.String(example='1'),
+        'class1': fields.String(example='coles'),
+        'class2': fields.String(example='study'),
+        'class3': fields.String(example='stationery')
+})
+
+get_personal_item_model = api.model('get_personal_item_data', {
+        'user_email': fields.String(example='root@qq.com')
 })
 
