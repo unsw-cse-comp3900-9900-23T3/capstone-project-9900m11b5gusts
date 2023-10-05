@@ -6,12 +6,15 @@ import Stack from '@mui/material/Stack';
 import SegmentIcon from '@mui/icons-material/Segment';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function Homepage ({ token }) {
+export default function MyProfile ({ token }) {
   
   // console.log(token)
   return(
 		<>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+
+			My profile page
+
+      {/* <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
         <Stack direction="row" spacing={2} style={{marginTop: '30px'}}>
           <Button variant="outlined" style={{width: '120px'}}><SegmentIcon/>Category</Button>
           <Box sx={{ width: 600, maxWidth: '100%' }}>
@@ -19,7 +22,7 @@ export default function Homepage ({ token }) {
           </Box>
           <Button variant="outlined" style={{width: '120px'}}><SearchIcon/>Search</Button>
         </Stack>
-      </div>
+      </div> */}
 
     </>
   )

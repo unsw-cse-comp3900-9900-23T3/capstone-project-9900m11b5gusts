@@ -71,6 +71,10 @@ export default function CustomizedMenus({manageTokenSet}) {
     window.location.href = '/'
   };
 
+  const handleMyProfile = () => {
+    window.location.href = '/myprofile/'
+  };
+
   return (
     <div>
       <Button
@@ -95,7 +99,7 @@ export default function CustomizedMenus({manageTokenSet}) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} >
+        <MenuItem onClick={handleMyProfile} >
           <PermContactCalendarIcon />
           My Profile
         </MenuItem>

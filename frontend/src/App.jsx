@@ -14,6 +14,8 @@ import SignUp from './components/SignUp'
 import IntroductionPage from './components/IntroductionPage';
 import Homepage from './components/Homepage';
 import HomeNav from './components/HomepageNavBar';
+import MyProfile from './components/MyProfilePage';
+
 
 
 
@@ -47,6 +49,7 @@ function App() {
 				<Route path="/login" element={<SignIn onSuccess={manageTokenSet} />} />
 				<Route path="/register" element={<SignUp onSuccess={manageTokenSet} />} />
 				<Route path="/homepage" element={<Homepage token={token} />} />
+				<Route path="/myprofile" element={<MyProfile token={token} />} />
 			</Routes>
 		</BrowserRouter>
 	);
