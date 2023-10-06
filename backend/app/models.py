@@ -150,3 +150,36 @@ def get_personal_item(email):
     else:
         return {'result': True, 'info': 'no item'}
 
+
+def update_personal_item(email, **kwargs):
+    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id'])).first()
+    if personal_item:
+        try:
+            if kwargs['item_name']:
+                personal_item.item_name = kwargs['item_name']
+            if kwargs['description']:
+                personal_item.desc = kwargs['description']
+            if kwargs['price']:
+                personal_item.price = float(kwargs['price'])
+            if kwargs['num']:
+                personal_item.item_num = int(kwargs['num'])
+            if kwargs['class1']:
+                personal_item.class1 = kwargs['class1']
+            if kwargs['class2']:
+                personal_item.class2 = kwargs['class2']
+            if kwargs['class3']:
+                personal_item.class3 = kwargs['class3']
+            if kwargs['change']:
+                personal_item.change = int(kwargs['change'])
+            personal_item.time_stamp = datetime.datetime.now()
+            db.session.commit()
+
+            return {'result': True, 'info': 'update personal item success'}
+        except Exception as e:
+            return {'result': False, 'info': f'the input is not correct{e}'}
+
+    else:
+        return {'result': False, 'info': 'no this item'}
+
+
+
