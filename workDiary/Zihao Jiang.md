@@ -17,3 +17,7 @@ API(/Authors/profile post):user can update profile information(name, gender, cit
 wednesday:
 user can upload item(including item details)
 user can see the item they uploaded.
+Thursday：
+overwrite all font end codes, using JOY UI to complete login register logout sidebar introduction page
+Friday:
+add token jwt access expired 1 hour and refresh 30 days
