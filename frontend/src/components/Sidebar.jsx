@@ -22,17 +22,21 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
-import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import HistoryIcon from '@mui/icons-material/History';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 import ColorSchemeToggle from './blocks/ColorSchemeToggle';
 import { CssVarsProvider } from '@mui/joy/styles';
 // import { closeSidebar } from '../utils';
+
 
 
 const closeSidebar = () => {
@@ -41,6 +45,7 @@ const closeSidebar = () => {
     document.body.style.removeProperty('overflow');
   }
 };
+
 
 function Toggler({
   defaultExpanded = false,
@@ -67,7 +72,18 @@ function Toggler({
   );
 }
 
-export default function Sidebar({ logout }) {
+export default function Sidebar({ logout, profileData }) {
+  const [showADFlag, setShowADFlag] = React.useState(true)
+
+  const handleCloseAD = () => {
+    setShowADFlag(false)
+  }
+
+  const handleMyProfileButton = () => {
+    
+  }
+
+
     return(
         <Sheet
       className="Sidebar"
@@ -127,10 +143,10 @@ export default function Sidebar({ logout }) {
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
         </IconButton>
-        <Typography level="title-lg">Acme Co.</Typography>
+        <Typography level="title-lg">App Name</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      {/* <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" /> */}
       <Box
         sx={{
           minHeight: 0,
@@ -153,34 +169,24 @@ export default function Sidebar({ logout }) {
         >
           <ListItem>
             <ListItemButton>
-              <HomeRoundedIcon />
+              <ShoppingCartIcon />
               <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
+                <Typography level="title-sm">Market</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
 
-          <ListItem>
+          {/* <ListItem>
             <ListItemButton>
               <DashboardRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Dashboard</Typography>
               </ListItemContent>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem>
-            <ListItemButton
-              role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/order-dashboard/"
-            >
-              <ShoppingCartRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
+
+
 
           <ListItem nested>
             <Toggler
@@ -188,7 +194,7 @@ export default function Sidebar({ logout }) {
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <AssignmentRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Tasks</Typography>
+                    <Typography level="title-sm">My Collectibles</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -198,16 +204,13 @@ export default function Sidebar({ logout }) {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>All tasks</ListItemButton>
+                  <ListItemButton>Posted</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Backlog</ListItemButton>
+                  <ListItemButton>Wish List</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>In progress</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Done</ListItemButton>
+                  <ListItemButton>Inventory</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -228,35 +231,34 @@ export default function Sidebar({ logout }) {
               </Chip>
             </ListItemButton>
           </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              defaultExpanded
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <GroupRoundedIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
-              )}
+          
+          <ListItem>
+            <ListItemButton
+              role="menuitem"
+              component="a"
+              href="/joy-ui/getting-started/templates/order-dashboard/"
             >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton selected>My profile</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Create a new user</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
+              <HistoryIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Exchange History</Typography>
+              </ListItemContent>
+            </ListItemButton>
           </ListItem>
+
+          <ListItem>
+            <ListItemButton
+              role="menuitem"
+              component="a"
+              // href="/joy-ui/getting-started/templates/messages/"
+              onClick={handleMyProfileButton}
+            >
+              <AccountBoxIcon />
+              <ListItemContent>
+                <Typography level="title-sm">My Profile</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+
         </List>
 
         <List
@@ -271,8 +273,8 @@ export default function Sidebar({ logout }) {
         >
           <ListItem>
             <ListItemButton>
-              <SupportRoundedIcon />
-              Support
+              <FeedbackIcon />
+              Feedback
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -282,27 +284,26 @@ export default function Sidebar({ logout }) {
             </ListItemButton>
           </ListItem>
         </List>
-        <Card
-          invertedColors
-          variant="soft"
-          color="warning"
-          size="sm"
-          sx={{ boxShadow: 'none' }}
-        >
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography level="title-sm">Used space</Typography>
-            <IconButton size="sm">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
-          <Button size="sm" variant="solid">
-            Upgrade plan
-          </Button>
-        </Card>
+        
+        {showADFlag && 
+          <Card invertedColors variant="soft" color="warning" size="sm" sx={{ boxShadow: 'none' }} >
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Typography level="title-sm">AD TITLE</Typography>
+              <IconButton size="sm" onClick={handleCloseAD}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </Stack>
+            <Typography level="body-xs">
+              sentances
+            </Typography>
+            <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
+            <Button size="sm" variant="solid">
+              button
+            </Button>
+          </Card>
+        }
+
+
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
@@ -311,9 +312,10 @@ export default function Sidebar({ logout }) {
           size="sm"
           src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
         />
-        <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+        <Box sx={{ minWidth: 0, flex: 1 }} >
+          <Typography level="title-sm">{profileData.username}</Typography>
+          {/* <Typography level="body-xs">{profileData.email}</Typography> */}
+
         </Box>
         <IconButton size="sm" variant="plain" color="neutral">
           <LogoutRoundedIcon onClick={ logout }/>

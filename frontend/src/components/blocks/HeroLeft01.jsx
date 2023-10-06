@@ -6,11 +6,11 @@ import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import TwoSidedLayout from './TwoSidedLayout';
 
-export default function HeroLeft01({handleSignInPage, handleSignUpPage}) {
+export default function HeroLeft01() {
   return (
     <TwoSidedLayout>
       <Typography color="primary" fontSize="lg" fontWeight="lg">
-        Coles & Woolworlths
+        A small title
       </Typography>
       <Typography
         level="h1"
@@ -23,12 +23,17 @@ export default function HeroLeft01({handleSignInPage, handleSignUpPage}) {
         A descriptive secondary text placeholder. Use it to explain your business
         offer better.
       </Typography>
-      <Button size="lg" onClick={handleSignUpPage} endDecorator={<ArrowForward fontSize="xl" />}>
-        Create a new Count
+      <Button component="a" href='login' size="lg" endDecorator={<ArrowForward fontSize="xl" />} 
+        style={{width: '150px'}}
+      >
+          Login
       </Button>
-      <Typography>
-        Already a member? <Link fontWeight="lg" onClick={handleSignInPage}>Sign in</Link>
-      </Typography>
+      <Button component="a" href='register' size="lg" endDecorator={<ArrowForward fontSize="xl" />} 
+        style={{width: '150px'}}
+      >
+        Register
+      </Button>
+
 
       <Typography
         level="body-xs"

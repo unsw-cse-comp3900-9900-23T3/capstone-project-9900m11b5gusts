@@ -9,10 +9,10 @@ export default function RadioButtonsGroup({value, onChange}) {
       <RadioGroup value={value} defaultValue="User" onChange={onChange} name="radio-buttons-group">
         <Radio
           value="User"
-          label="User"
+          label="User (default option)"
           slotProps={{ input: { 'aria-describedby': 'female-helper-text' } }}
         />
-        <Radio value="Manager" label="Manager" />
+        <Radio value="Manager" label="Manager (need authorization code)" />
       </RadioGroup>
     </FormControl>
   );

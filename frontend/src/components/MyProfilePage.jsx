@@ -1,30 +1,66 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import SegmentIcon from '@mui/icons-material/Segment';
-import SearchIcon from '@mui/icons-material/Search';
+import { CssVarsProvider } from '@mui/joy/styles';
+import CssBaseline from '@mui/joy/CssBaseline';
+import Box from '@mui/joy/Box';
+import Sidebar from './Sidebar';
+import Header from './Header';
+import MyProfileContent from './MyProfileContent';
 
-export default function MyProfile ({ token }) {
-  
-  // console.log(token)
-  return(
-		<>
 
-			My profile page
+export default function MainDashboard({ token, logout, setPage }) {
+  const [showProfile, setShowProfile] = React.useState(false)
+  const [profileData, setProfileData] = React.useState('')
 
-      {/* <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-        <Stack direction="row" spacing={2} style={{marginTop: '30px'}}>
-          <Button variant="outlined" style={{width: '120px'}}><SegmentIcon/>Category</Button>
-          <Box sx={{ width: 600, maxWidth: '100%' }}>
-            <TextField fullWidth  id="fullWidth" />
-          </Box>
-          <Button variant="outlined" style={{width: '120px'}}><SearchIcon/>Search</Button>
-        </Stack>
-      </div> */}
+  React.useEffect(()=>{
+    fetch('http://localhost:5000/Authors/profile', {
+      method: 'GET',
+      headers:{
+            'Content-type': 'application/json',
+            'Authorization' : `Bearer ${token}`,
+      }
+    }).then(response => response.json())
+      .then(data=>setProfileData(data));
 
-    </>
-  )
-  
+    console.log('fetch ...');
+  }, [])
+
+  React.useEffect(()=>{
+    if(profileData !== ''){
+      console.log('MainDashboard: ', profileData)
+    }
+  }, [profileData])
+
+  return (
+    <CssVarsProvider disableTransitionOnChange>
+      <CssBaseline />
+      <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
+        <Sidebar logout={logout} profileData={profileData} />
+        <Header />
+        <Box
+          component="main"
+          className="MainContent"
+          sx={{
+            pt: {
+              xs: 'calc(12px + var(--Header-height))',
+              md: 3,
+            },
+            pb: {
+              xs: 2,
+              sm: 2,
+              md: 3,
+            },
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 0,
+            height: '100dvh',
+            gap: 1,
+            overflow: 'auto',
+          }}
+        >
+          <MyProfileContent />
+        </Box>
+      </Box>
+    </CssVarsProvider>
+  );
 }

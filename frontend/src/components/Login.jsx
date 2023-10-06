@@ -79,7 +79,9 @@ export default function Login({ onSuccess }) {
             if (response.status===200){
                   const data = await response.json();
                   onSuccess(data.token)
-                  console.log(data);
+                  // console.log(data);
+                  window.location.href = '/homepage/'
+                  
             }else{
                   setErrorMessage('Wrong email or password,please try again.')
             }
@@ -142,10 +144,10 @@ export default function Login({ onSuccess }) {
                 alignItems: 'center',
               }}
             >
-              <IconButton variant="soft" color="primary" size="sm">
+              {/* <IconButton variant="soft" color="primary" size="sm">
                 <BadgeRoundedIcon />
               </IconButton>
-              <Typography level="title-lg">Company logo</Typography>
+              <Typography level="title-lg">Company logo</Typography> */}
             </Box>
             <ColorSchemeToggle />
           </Box>
@@ -158,7 +160,7 @@ export default function Login({ onSuccess }) {
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              width: 400,
+              width: 300,
               maxWidth: '100%',
               mx: 'auto',
               borderRadius: 'sm',
@@ -174,11 +176,11 @@ export default function Login({ onSuccess }) {
           >
             <Stack gap={4} sx={{ mb: 2 }}>
               <Stack gap={1}>
-                <Typography level="h3">Sign in</Typography>
+                <Typography level="h3">Login</Typography>
                 <Typography level="body-sm">
-                  New to company?{' '}
-                  <Link href="#replace-with-a-link" level="title-sm">
-                    Sign up!
+                  Not yet registered?{' '}
+                  <Link href="register" level="title-sm" >
+                    Go to register
                   </Link>
                 </Typography>
               </Stack>
@@ -197,47 +199,8 @@ export default function Login({ onSuccess }) {
             >
 
             </Divider>
-            {/*<Stack gap={4} sx={{ mt: 2 }}>*/}
-            {/*  <form*/}
-            {/*    onSubmit={(event) => {*/}
-            {/*      event.preventDefault();*/}
-            {/*      const formElements = event.currentTarget.elements;*/}
-            {/*      const data = {*/}
-            {/*        email: formElements.email.value,*/}
-            {/*        password: formElements.password.value,*/}
-            {/*        persistent: formElements.persistent.checked,*/}
-            {/*      };*/}
-            {/*      alert(JSON.stringify(data, null, 2));*/}
-            {/*    }}*/}
-            {/*  >*/}
-            {/*    <FormControl required>*/}
-            {/*      <FormLabel>Email</FormLabel>*/}
-            {/*      <Input type="email" name="email" />*/}
-            {/*    </FormControl>*/}
-            {/*    <FormControl required>*/}
-            {/*      <FormLabel>Password</FormLabel>*/}
-            {/*      <Input type="password" name="password" />*/}
-            {/*    </FormControl>*/}
-            {/*    <Stack gap={4} sx={{ mt: 2 }}>*/}
-            {/*      <Box*/}
-            {/*        sx={{*/}
-            {/*          display: 'flex',*/}
-            {/*          justifyContent: 'space-between',*/}
-            {/*          alignItems: 'center',*/}
-            {/*        }}*/}
-            {/*      >*/}
-            {/*        <Checkbox size="sm" label="Remember me" name="persistent" />*/}
-            {/*        <Link level="title-sm" href="#replace-with-a-link">*/}
-            {/*          Forgot your password?*/}
-            {/*        </Link>*/}
-            {/*      </Box>*/}
-            {/*      <Button type="submit" fullWidth>*/}
-            {/*        Sign in*/}
-            {/*      </Button>*/}
-            {/*    </Stack>*/}
-            {/*  </form>*/}
-            {/*</Stack>*/}
               <Stack gap={4} sx={{ mt: 2 }}>
+
   <form
     onSubmit={(event) => {
       event.preventDefault();
@@ -261,7 +224,7 @@ export default function Login({ onSuccess }) {
         }}
       >
         <Checkbox size="sm" label="Remember me" name="persistent" />
-        <Link level="title-sm" href="#replace-with-a-link">
+        <Link level="title-sm" href="forgetpasswordpage">
           Forgot your password?
         </Link>
       </Box>
