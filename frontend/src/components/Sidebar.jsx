@@ -75,12 +75,12 @@ function Toggler({
 export default function Sidebar({ logout, profileData }) {
   const [showADFlag, setShowADFlag] = React.useState(true)
 
+  const url = window.location.href.split('/')
+  const [currentURL, setCurrentURL] = React.useState(url[url.length - 1])
+
+
   const handleCloseAD = () => {
     setShowADFlag(false)
-  }
-
-  const handleMyProfileButton = () => {
-    
   }
 
 
@@ -168,24 +168,19 @@ export default function Sidebar({ logout, profileData }) {
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton
+              selected={currentURL === 'market'}
+              role="menuitem"
+              component={currentURL === 'market' ? undefined : 'a'}
+              href='/market'
+              onClick={()=>{setCurrentURL('market')}}
+            >
               <ShoppingCartIcon />
               <ListItemContent>
                 <Typography level="title-sm">Market</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
-
-          {/* <ListItem>
-            <ListItemButton>
-              <DashboardRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem> */}
-
-
 
 
           <ListItem nested>
@@ -217,10 +212,12 @@ export default function Sidebar({ logout, profileData }) {
           </ListItem>
 
           <ListItem>
-            <ListItemButton
+          <ListItemButton
+              selected={currentURL === 'message'}
               role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/messages/"
+              component={currentURL === 'message' ? undefined : 'a'}
+              href='/message'
+              onClick={()=>{setCurrentURL('message')}}
             >
               <QuestionAnswerRoundedIcon />
               <ListItemContent>
@@ -234,9 +231,11 @@ export default function Sidebar({ logout, profileData }) {
           
           <ListItem>
             <ListItemButton
+              selected={currentURL === 'exchangehistory'}
               role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/order-dashboard/"
+              component={currentURL === 'exchangehistory' ? undefined : 'a'}
+              href='/exchangehistory'
+              onClick={()=>{setCurrentURL('exchangehistory')}}
             >
               <HistoryIcon />
               <ListItemContent>
@@ -247,10 +246,12 @@ export default function Sidebar({ logout, profileData }) {
 
           <ListItem>
             <ListItemButton
+              selected={currentURL === 'myprofile'}
               role="menuitem"
-              component="a"
-              // href="/joy-ui/getting-started/templates/messages/"
-              onClick={handleMyProfileButton}
+              component={currentURL === 'myprofile' ? undefined : 'a'}
+              href='/myprofile'
+              onClick={()=>{setCurrentURL('myprofile')}}
+              
             >
               <AccountBoxIcon />
               <ListItemContent>
