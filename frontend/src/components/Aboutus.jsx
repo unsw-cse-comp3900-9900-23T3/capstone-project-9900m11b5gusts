@@ -49,10 +49,10 @@ function ColorSchemeToggle() {
   );
 }
 
-export default function AboutUs({ handleSignInPage, handleSignUpPage}) {
+export default function AboutUs() {
   return (
 
-        <CssVarsProvider disableTransitionOnChange >
+    <CssVarsProvider disableTransitionOnChange >
       <CssBaseline />
       <ColorSchemeToggle />
       <Box
@@ -65,7 +65,7 @@ export default function AboutUs({ handleSignInPage, handleSignUpPage}) {
           },
         }}
       >
-        <HeroLeft01 handleSignInPage={handleSignInPage} handleSignUpPage={handleSignUpPage}/>
+        <HeroLeft01 />
       </Box>
     </CssVarsProvider>
   );

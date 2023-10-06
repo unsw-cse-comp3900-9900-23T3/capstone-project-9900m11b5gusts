@@ -7,32 +7,34 @@ import Header from './Header';
 // import MyProfile from './components/MyProfile';
 
 
-export default function MainDashboard({ token, logout }) {
-    const [showProfile, setShowProfile] = React.useState(false)
-      const [profileData, setProfileData] = React.useState('')
-      React.useEffect(()=>{
-            fetch('http://localhost:5000/Authors/profile', {
-            method: 'GET',
-            headers:{
-                  'Content-type': 'application/json',
-                  'Authorization' : `Bearer ${token}`,
-            }
-      }).then(response => response.json())
-          .then(data=>setProfileData(data));
-            console.log('fetch ...');
-      }, [token])
+export default function MainDashboard({ token, logout, setPage }) {
+  const [showProfile, setShowProfile] = React.useState(false)
+  const [profileData, setProfileData] = React.useState('')
 
-    React.useEffect(()=>{
-         if(profileData !== ''){
-        console.log(profileData)
-        }
-    }, [profileData])
+  React.useEffect(()=>{
+    fetch('http://localhost:5000/Authors/profile', {
+      method: 'GET',
+      headers:{
+            'Content-type': 'application/json',
+            'Authorization' : `Bearer ${token}`,
+      }
+    }).then(response => response.json())
+      .then(data=>setProfileData(data));
+
+    console.log('fetch ...');
+  }, [])
+
+  React.useEffect(()=>{
+    if(profileData !== ''){
+      console.log('MainDashboard: ', profileData)
+    }
+  }, [profileData])
 
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
       <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
-        <Sidebar logout={logout}/>
+        <Sidebar logout={logout} profileData={profileData} />
         <Header />
         <Box
           component="main"

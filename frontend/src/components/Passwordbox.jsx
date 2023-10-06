@@ -26,31 +26,37 @@ export default function PasswordMeterInput({onChange}) {
         '--hue': Math.min(value.length * 10, 120),
       }}
     >
-      <Input
+      <Input 
         type="password"
-        placeholder="Type in here…"
+        // placeholder="Type in here…"
         startDecorator={<Key />}
         value={value}
         onChange={handleValue}
       />
-      <LinearProgress
-        determinate
-        size="sm"
-        value={Math.min((value.length * 100) / minLength, 100)}
-        sx={{
-          bgcolor: 'background.level3',
-          color: 'hsl(var(--hue) 80% 40%)',
-        }}
-      />
-      <Typography
-        level="body-xs"
-        sx={{ alignSelf: 'flex-end', color: 'hsl(var(--hue) 80% 30%)' }}
-      >
-        {value.length < 3 && 'Very weak'}
-        {value.length >= 3 && value.length < 6 && 'Weak'}
-        {value.length >= 6 && value.length < 10 && 'Strong'}
-        {value.length >= 10 && 'Very strong'}
-      </Typography>
+      {value.length >0 &&
+        <>
+          <LinearProgress
+            determinate
+            size="sm"
+            value={Math.min((value.length * 100) / minLength, 100)}
+            sx={{
+              bgcolor: 'background.level3',
+              color: 'hsl(var(--hue) 80% 40%)',
+            }}
+          />
+          <Typography
+            level="body-xs"
+            sx={{ alignSelf: 'flex-end', color: 'hsl(var(--hue) 80% 30%)' }}
+            >
+            {value.length < 3 && value.length>0 && 'Very weak'}
+            {value.length >= 3 && value.length < 6 && 'Weak'}
+            {value.length >= 6 && value.length < 10 && 'Strong'}
+            {value.length >= 10 && 'Very strong'}
+          </Typography>
+        </>
+      }
+
+
     </Stack>
           </div>
   );

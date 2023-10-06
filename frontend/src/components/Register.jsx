@@ -58,7 +58,7 @@ export default function Register({ onSuccess }) {
     const [password, setPassword] = React.useState('');
     const [identity, setIdentity] = React.useState('User');
     const [errorMessage, setErrorMessage] = React.useState('');
-      function handleRadioChange(e){
+      function handleIdentity(e){
             setIdentity(e.target.value);
       }
       function handleEmail(e){
@@ -88,7 +88,8 @@ export default function Register({ onSuccess }) {
             if(response.status === 200){
                 const data = await response.json();
                 onSuccess(data.token);
-                console.log(data);
+                // console.log(data);
+                window.location.href = '/homepage/'
             }else{
                 const data = await response.json();
                 setErrorMessage(data.error);
@@ -151,10 +152,10 @@ export default function Register({ onSuccess }) {
                 alignItems: 'center',
               }}
             >
-              <IconButton variant="soft" color="primary" size="sm">
+              {/* <IconButton variant="soft" color="primary" size="sm">
                 <BadgeRoundedIcon />
               </IconButton>
-              <Typography level="title-lg">Company logo</Typography>
+              <Typography level="title-lg">Company logo</Typography> */}
             </Box>
             <ColorSchemeToggle />
           </Box>
@@ -167,7 +168,7 @@ export default function Register({ onSuccess }) {
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              width: 400,
+              width: 300,
               maxWidth: '100%',
               mx: 'auto',
               borderRadius: 'sm',
@@ -183,16 +184,15 @@ export default function Register({ onSuccess }) {
           >
             <Stack gap={4} sx={{ mb: 2 }}>
               <Stack gap={1}>
-                <Typography level="h3">Sign up</Typography>
+                <Typography level="h3">Register</Typography>
                 <Typography level="body-sm">
-                  Have a Count?{' '}
-                  <Link href="#replace-with-a-link" level="title-sm">
-                    Sign In!
+                  Have an account?{' '}
+                  <Link href="login" level="title-sm" >
+                    Go to login.
                   </Link>
 
                 </Typography>
               </Stack>
-
             </Stack>
             <Divider
               sx={(theme) => ({
@@ -205,49 +205,8 @@ export default function Register({ onSuccess }) {
                 },
               })}
             >
-
             </Divider>
-            {/*<Stack gap={4} sx={{ mt: 2 }}>*/}
-            {/*  <form*/}
-            {/*    onSubmit={(event) => {*/}
-            {/*      event.preventDefault();*/}
-            {/*      const formElements = event.currentTarget.elements;*/}
-            {/*      const data = {*/}
-            {/*        email: formElements.email.value,*/}
-            {/*        password: formElements.password.value,*/}
-            {/*        persistent: formElements.persistent.checked,*/}
-            {/*      };*/}
-            {/*      alert(JSON.stringify(data, null, 2));*/}
-            {/*    }}*/}
-            {/*  >*/}
-            {/*    <FormControl required>*/}
-            {/*      <FormLabel>Email</FormLabel>*/}
-            {/*      <Input type="email" name="email" />*/}
-            {/*    </FormControl>*/}
-            {/*    <FormControl required>*/}
-            {/*      <FormLabel>Password</FormLabel>*/}
-            {/*      <Input type="password" name="password" />*/}
-            {/*    </FormControl>*/}
-            {/*    <Stack gap={4} sx={{ mt: 2 }}>*/}
-            {/*      <Box*/}
-            {/*        sx={{*/}
-            {/*          display: 'flex',*/}
-            {/*          justifyContent: 'space-between',*/}
-            {/*          alignItems: 'center',*/}
-            {/*        }}*/}
-            {/*      >*/}
-            {/*        <Checkbox size="sm" label="Remember me" name="persistent" />*/}
-            {/*        <Link level="title-sm" href="#replace-with-a-link">*/}
-            {/*          Forgot your password?*/}
-            {/*        </Link>*/}
-            {/*      </Box>*/}
-            {/*      <Button type="submit" fullWidth>*/}
-            {/*        Sign in*/}
-            {/*      </Button>*/}
-            {/*    </Stack>*/}
-            {/*  </form>*/}
-            {/*</Stack>*/}
-              <Stack gap={4} sx={{ mt: 2 }}>
+            <Stack gap={4} sx={{ mt: 2 }}>
   <form
     onSubmit={(event) => {
       event.preventDefault();
@@ -256,20 +215,42 @@ export default function Register({ onSuccess }) {
   >
     <FormControl required>
       <FormLabel>Email</FormLabel>
-      <Input style={{width:'400px'}} type="email" name="email" onChange={handleEmail} />
+      <Input style={{width:'300px'}} type="email" name="email" onChange={handleEmail} />
     </FormControl>
       <FormControl required>
       <FormLabel>Name</FormLabel>
-      <Input style={{width:'400px'}} type="name" name="name" onChange={handleName} />
+      <Input style={{width:'300px'}} type="name" name="name" onChange={handleName} />
     </FormControl>
     <FormControl required>
       <FormLabel>Password</FormLabel>
-        <PasswordMeterInput style={{width:'400px !important'}} value={password} onChange={handlePassword}/><br />
+        <PasswordMeterInput value={password} onChange={handlePassword}/><br />
+
+      <Divider
+        sx={(theme) => ({
+          [theme.getColorSchemeSelector('light')]: {
+            color: { xs: '#FFF', md: 'text.tertiary' },
+            '--Divider-lineColor': {
+              xs: '#FFF',
+              md: 'var(--joy-palette-divider)',
+            },
+          },
+        })}
+      >
+      </Divider>
     </FormControl>
       <FormControl required>
       <FormLabel>Identity</FormLabel>
-      <RadioButtonsGroup value={identity} onChange={handleRadioChange}/><br />
+      <RadioButtonsGroup value={identity} onChange={handleIdentity}/><br />
     </FormControl>
+    {identity !== 'User' && 
+      <FormControl required>
+        <FormLabel>Authorization Code
+        </FormLabel>
+        <Input style={{width:'300px'}}  name="email" onChange={handleIdentity} />
+      </FormControl>
+    }
+
+    
     <Stack gap={4} sx={{ mt: 2 }}>
       <Box
         sx={{
@@ -278,7 +259,7 @@ export default function Register({ onSuccess }) {
           alignItems: 'center',
         }}
       >
-        <Checkbox size="sm" label="Remember me" name="persistent" />
+      {/* <Checkbox size="sm" label="Remember me" name="persistent" /> */}
 
       </Box>
       <Button type="submit" fullWidth>
