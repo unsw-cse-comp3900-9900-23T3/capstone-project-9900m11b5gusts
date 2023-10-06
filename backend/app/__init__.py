@@ -17,6 +17,9 @@ def create_app():
 
     api.add_namespace(Author)
     api.add_namespace(Item)
+    
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)  # 1 hour expired
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
     jwt.init_app(app)
     with app.app_context():
         # db.drop_all()
