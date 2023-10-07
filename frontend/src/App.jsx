@@ -77,8 +77,11 @@ export default function App() {
 
 	if (token===null) {
 		return(
+			
 			<>
+			
 				<LoginPageHeader />
+				
 				<BrowserRouter>
 
 					
@@ -91,7 +94,9 @@ export default function App() {
 
 					</Routes>
 				</BrowserRouter>
+			
 			</>
+			
 
 		)
 	} else {

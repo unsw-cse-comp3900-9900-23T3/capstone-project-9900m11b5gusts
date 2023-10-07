@@ -17,7 +17,7 @@ register_model = api.model('register_data', {
 changeProfile_model = api.model('changeProfile_data', {
         'username': fields.String(example='a new name'),
         'gender': fields.String(example='a new gender'),
-        'city': fields.String(example='a new city'),
+        'state': fields.String(example='a new state'),
         'suburb': fields.String(example='a new suburb')
 })
 

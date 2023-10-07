@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(30))
     identity = db.Column(db.String(10), default='user')
     gender = db.Column(db.String(10), default='male')
-    city = db.Column(db.String(30), default='city')
+    state = db.Column(db.String(30), default='state')
     suburb = db.Column(db.String(30), default='suburb')
 
 
@@ -80,7 +80,7 @@ def get_profile(email):
             'username': user.username,
             'identity': user.identity,
             'gender': user.gender,
-            'city': user.city,
+            'state': user.state,
             'suburb': user.suburb,
             }
 
@@ -88,14 +88,14 @@ def get_profile(email):
 def update_profile(email, **kwargs):
     # user profile update
     input_username = kwargs['username']
-    input_city = kwargs['city']
+    input_state = kwargs['state']
     input_suburb = kwargs['suburb']
     input_gender = kwargs['gender']
     try:
         user = User.query.filter_by(email=email).first()
         if user:
             user.username = input_username
-            user.city = input_city
+            user.state = input_state
             user.suburb = input_suburb
             user.gender = input_gender
             db.session.commit()
