@@ -1,6 +1,8 @@
 from flask_restx import Resource, Namespace
-from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model
-from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item
+from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
+    update_personal_item_model
+from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
+    update_personal_item
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -75,7 +77,8 @@ Item = Namespace('Items')
 @Item.route('/uploadPersonalItem')
 class UploadPersonalItem(Resource):
 
-    @Item.doc(description='New user can upload items they have (default is not change)')
+    @Item.doc(description='New user can upload items they have (default is not change item, \
+    item change column is 0), if change change column is 1.')
     @Item.doc(security='jsonWebToken')
     @jwt_required()
     @Item.expect(insertItem_model)
@@ -92,11 +95,30 @@ class UploadPersonalItem(Resource):
 @Item.route('/checkPersonalItem')
 class CheckPersonalItem(Resource):
 
-    @Item.doc(description='See user personal items that he have')
+    @Item.doc(description='See user all personal items that he have')
     @Item.expect(get_personal_item_model)
     def post(self):
         args = Item.payload
         email = args['user_email']
         get_personal_item_result = get_personal_item(email)
         return {'success': get_personal_item_result['info']}, 200
+
+
+@Item.route('/editPersonalItem')
+class EditPersonalItem(Resource):
+
+    @Item.doc(description='edit the personal item, input empty string means do not changed(change column)')
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    @Item.expect(update_personal_item_model)
+    def post(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        update_personal_item_result = update_personal_item(email, **args)
+        if update_personal_item_result['result']:
+            return {'success': update_personal_item_result['info']}, 200
+        else:
+            return {'error': update_personal_item_result['info']}, 400
+
+
 

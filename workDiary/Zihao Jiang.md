@@ -21,3 +21,5 @@ Thursday：
 overwrite all font end codes, using JOY UI to complete login register logout sidebar introduction page
 Friday:
 add token jwt access expired 1 hour and refresh 30 days
+Saturday：
+users can edit their item(can change column change 0 to 1 which means want to change, item name, item description.....), '' empty str means keep the original info

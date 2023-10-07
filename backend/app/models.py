@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(30))
     identity = db.Column(db.String(10), default='user')
     gender = db.Column(db.String(10), default='male')
-    city = db.Column(db.String(30), default='city')
+    state = db.Column(db.String(30), default='state')
     suburb = db.Column(db.String(30), default='suburb')
 
 
@@ -80,7 +80,7 @@ def get_profile(email):
             'username': user.username,
             'identity': user.identity,
             'gender': user.gender,
-            'city': user.city,
+            'state': user.state,
             'suburb': user.suburb,
             }
 
@@ -88,14 +88,14 @@ def get_profile(email):
 def update_profile(email, **kwargs):
     # user profile update
     input_username = kwargs['username']
-    input_city = kwargs['city']
+    input_state = kwargs['state']
     input_suburb = kwargs['suburb']
     input_gender = kwargs['gender']
     try:
         user = User.query.filter_by(email=email).first()
         if user:
             user.username = input_username
-            user.city = input_city
+            user.state = input_state
             user.suburb = input_suburb
             user.gender = input_gender
             db.session.commit()
@@ -149,4 +149,37 @@ def get_personal_item(email):
         return {'result': True, 'info': temp_dict}
     else:
         return {'result': True, 'info': 'no item'}
+
+
+def update_personal_item(email, **kwargs):
+    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id'])).first()
+    if personal_item:
+        try:
+            if kwargs['item_name']:
+                personal_item.item_name = kwargs['item_name']
+            if kwargs['description']:
+                personal_item.desc = kwargs['description']
+            if kwargs['price']:
+                personal_item.price = float(kwargs['price'])
+            if kwargs['num']:
+                personal_item.item_num = int(kwargs['num'])
+            if kwargs['class1']:
+                personal_item.class1 = kwargs['class1']
+            if kwargs['class2']:
+                personal_item.class2 = kwargs['class2']
+            if kwargs['class3']:
+                personal_item.class3 = kwargs['class3']
+            if kwargs['change']:
+                personal_item.change = int(kwargs['change'])
+            personal_item.time_stamp = datetime.datetime.now()
+            db.session.commit()
+
+            return {'result': True, 'info': 'update personal item success'}
+        except Exception as e:
+            return {'result': False, 'info': f'the input is not correct{e}'}
+
+    else:
+        return {'result': False, 'info': 'no this item'}
+
+
 
