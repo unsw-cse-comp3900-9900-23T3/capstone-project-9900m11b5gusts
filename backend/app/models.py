@@ -1,5 +1,6 @@
 from .extensions import db
 import datetime
+from sqlalchemy import or_
 
 
 class User(db.Model):
@@ -160,7 +161,7 @@ def update_personal_item(email, **kwargs):
             if kwargs['description']:
                 personal_item.desc = kwargs['description']
             if kwargs['price']:
-                personal_item.price = float(kwargs['price'])
+                personal_item.item_price = float(kwargs['price'])
             if kwargs['num']:
                 personal_item.item_num = int(kwargs['num'])
             if kwargs['class1']:
@@ -180,6 +181,61 @@ def update_personal_item(email, **kwargs):
 
     else:
         return {'result': False, 'info': 'no this item'}
+
+
+def search_item(**kwargs):
+    keyword = kwargs['keyword']
+    price_sorted = kwargs['price_sorted']  # '0' default, '1' ASC, '2' DESC
+    changed = kwargs['changed']
+    p_dict = {
+        '0': None,
+        '1': Item.item_price.asc(),
+        '2': Item.item_price.desc()
+    }
+
+    try:
+        query = Item.query.filter(
+            or_(
+                Item.item_name.ilike(f'%{keyword}%'),  # ilike means upper and lower is the same
+                Item.item_desc.ilike(f'%{keyword}%'),
+                Item.class1.ilike(f'%{keyword}%'),
+                Item.class2.ilike(f'%{keyword}%'),
+                Item.class3.ilike(f'%{keyword}%')
+            )
+        )
+        sort_condition = p_dict[price_sorted]
+        query = query.order_by(sort_condition)
+
+        if changed == '1':
+            query = query.filter(Item.change == 1)
+        else:
+            query = query.filter(Item.change == 0)
+        s_items = query.all()
+
+        if s_items:
+            item_dict = {}
+            for item in s_items:
+                item_dict[item.id] = {
+                    'item_name': item.item_name,
+                    'item_price': str(item.item_price),
+                    'item_num': str(item.item_num),
+                    'item_desc': item.item_desc,
+                    'change': str(item.change),
+                    'class1': item.class1,
+                    'class2': item.class2,
+                    'class3': item.class3,
+                    'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+                }
+            return {'result': True, 'info': item_dict}
+        else:
+
+            return {'result': True, 'info': {}}
+
+    except Exception as e:
+        return {'result': False, 'info': f'invalid input{e}'}
+
+
+
 
 
 
