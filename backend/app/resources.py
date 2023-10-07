@@ -1,8 +1,8 @@
 from flask_restx import Resource, Namespace
 from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
-    update_personal_item_model
+    update_personal_item_model, search_items_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
-    update_personal_item
+    update_personal_item, search_item
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -107,7 +107,7 @@ class CheckPersonalItem(Resource):
 @Item.route('/editPersonalItem')
 class EditPersonalItem(Resource):
 
-    @Item.doc(description='edit the personal item, input empty string means do not changed(change column)')
+    @Item.doc(description='Edit the personal item, input empty string means do not changed(change column)')
     @Item.doc(security='jsonWebToken')
     @jwt_required()
     @Item.expect(update_personal_item_model)
@@ -120,5 +120,18 @@ class EditPersonalItem(Resource):
         else:
             return {'error': update_personal_item_result['info']}, 400
 
+
+@Item.route('/searchItem')
+class SearchItem(Resource):
+    @Item.doc(description='Can search by keyword and sort the price(0 mean default, 1 means ASC, 2 means DESC) \
+    and filter the item is changed(1) or not changed(0)')
+    @Item.expect(search_items_model)
+    def post(self):
+        args = Item.payload
+        result = search_item(**args)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
 
 
