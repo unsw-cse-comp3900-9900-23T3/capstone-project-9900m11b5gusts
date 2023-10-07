@@ -50,7 +50,7 @@ def user_register(**kwargs):
     except Exception as e:
         print(f'LOG: {input_register_email} register failed(user is already exists)!')
         return {'result': False,
-                'info': f'Register failed: user is already exists!'}
+                'info': f'Register failed:Email has been registered!'}
 
 
 def user_login(**kwargs):
