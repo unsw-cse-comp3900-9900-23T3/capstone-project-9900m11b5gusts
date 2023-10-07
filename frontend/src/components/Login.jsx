@@ -80,7 +80,7 @@ export default function Login({ onSuccess }) {
                   const data = await response.json();
                   onSuccess(data.token)
                   // console.log(data);
-                  window.location.href = '/homepage/'
+                  window.location.href = '/market'
                   
             }else{
                   setErrorMessage('Wrong email or password,please try again.')

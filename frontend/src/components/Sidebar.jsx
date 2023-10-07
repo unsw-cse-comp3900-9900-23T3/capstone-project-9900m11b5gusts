@@ -52,7 +52,7 @@ function Toggler({
   renderToggle,
   children,
 }) {
-  const [open, setOpen] = React.useState(defaultExpanded);
+  const [open, setOpen] = React.useState(true);
   return (
     <React.Fragment>
       {renderToggle({ open, setOpen })}
@@ -199,7 +199,12 @@ export default function Sidebar({ logout, profileData }) {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>Posted</ListItemButton>
+                  <ListItemButton 
+                    selected={currentURL === 'myposts' || 'postnewitem'}
+                    onClick={()=>{setCurrentURL('myposts')}}
+                    component='a' href='/myposts'>
+                      My Posts
+                  </ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton>Wish List</ListItemButton>
@@ -247,10 +252,10 @@ export default function Sidebar({ logout, profileData }) {
           <ListItem>
             <ListItemButton
               selected={currentURL === 'myprofile'}
+              onClick={()=>{setCurrentURL('myprofile')}}
               role="menuitem"
               component={currentURL === 'myprofile' ? undefined : 'a'}
               href='/myprofile'
-              onClick={()=>{setCurrentURL('myprofile')}}
               
             >
               <AccountBoxIcon />

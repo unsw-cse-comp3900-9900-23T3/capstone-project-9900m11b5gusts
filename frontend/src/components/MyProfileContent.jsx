@@ -32,63 +32,20 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded"
 
 import DropZone from "./DropZone"
 import FileUpload from "./FileUpload"
-import CountrySelector from "./CountrySelector"
+// import CountrySelector from "./CountrySelector"
 import EditorToolbar from "./EditorToolbar"
 
-export default function MyProfileContent() {
+export default function MyProfileContent({ token, profileData }) {
+  React.useEffect(()=>{
+		console.log("profileData on profile:", profileData)
+    console.log( profileData.identity)
+  }, [profileData])
+
   return (
-    <Box
-      sx={{
-        flex: 1,
-        width: "100%"
-      }}
-    >
-      <Box
-        sx={{
-          position: "sticky",
-          top: {
-            sm: -100,
-            md: -110
-          },
-          bgcolor: "background.body",
-          zIndex: 9995
-        }}
-      >
-        <Box
-          sx={{
-            px: {
-              xs: 2,
-              md: 6
-            }
-          }}
-        >
-          <Breadcrumbs
-            size="sm"
-            aria-label="breadcrumbs"
-            separator={<ChevronRightRoundedIcon fontSize="sm" />}
-            sx={{ pl: 0 }}
-          >
-            <Link
-              underline="none"
-              color="neutral"
-              href="#some-link"
-              aria-label="Home"
-            >
-              <HomeRoundedIcon />
-            </Link>
-            <Link
-              underline="hover"
-              color="neutral"
-              href="#some-link"
-              fontSize={12}
-              fontWeight={500}
-            >
-              Users
-            </Link>
-            <Typography color="primary" fontWeight={500} fontSize={12}>
-              My profile
-            </Typography>
-          </Breadcrumbs>
+    <Box sx={{ flex: 1, width: "100%", minWidth: '600px' }} >
+      <Box sx={{ position: "sticky", top: { sm: -100, md: -110 }, bgcolor: "background.body", zIndex: 9995 }} >
+        
+        <Box sx={{ px: { xs: 2, md: 6 } }} >
           <Typography
             level="h2"
             sx={{
@@ -99,66 +56,10 @@ export default function MyProfileContent() {
             My profile
           </Typography>
         </Box>
-        <Tabs
-          defaultValue={0}
-          sx={{
-            bgcolor: "transparent"
-          }}
-        >
-          <TabList
-            tabFlex={1}
-            size="sm"
-            sx={{
-              pl: {
-                xs: 0,
-                md: 4
-              },
-              justifyContent: "left",
-              [`&& .${tabClasses.root}`]: {
-                flex: "initial",
-                bgcolor: "transparent",
-                [`&.${tabClasses.selected}`]: {
-                  fontWeight: "600",
-                  "&::after": {
-                    height: "2px",
-                    bgcolor: "primary.500"
-                  }
-                }
-              }
-            }}
-          >
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
-              Settings
-            </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={1}>
-              Team
-            </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={2}>
-              Plan
-            </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={3}>
-              Billing
-            </Tab>
-          </TabList>
-        </Tabs>
+
       </Box>
 
-      <Stack
-        spacing={4}
-        sx={{
-          display: "flex",
-          maxWidth: "800px",
-          mx: "auto",
-          px: {
-            xs: 2,
-            md: 6
-          },
-          py: {
-            xs: 2,
-            md: 3
-          }
-        }}
-      >
+      <Stack spacing={4} sx={{ display: "flex", maxWidth: "700px", mx: "auto", px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 } }} >
         <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Personal info</Typography>
@@ -167,118 +68,19 @@ export default function MyProfileContent() {
             </Typography>
           </Box>
           <Divider />
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
-          >
-            <Stack direction="column" spacing={1}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
-                sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                  loading="lazy"
-                  alt=""
-                />
-              </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                sx={{
-                  bgcolor: "background.body",
-                  position: "absolute",
-                  zIndex: 2,
-                  borderRadius: "50%",
-                  left: 100,
-                  top: 170,
-                  boxShadow: "sm"
-                }}
-              >
-                <EditRoundedIcon />
-              </IconButton>
-            </Stack>
-            <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: {
-                      sm: "flex-column",
-                      md: "flex-row"
-                    },
-                    gap: 2
-                  }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input
-                    size="sm"
-                    placeholder="Last name"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="email"
-                    defaultValue="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <div>
-                <CountrySelector />
-              </div>
-              <div>
-                <FormControl sx={{ display: { sm: "contents" } }}>
-                  <FormLabel>Timezone</FormLabel>
-                  <Select
-                    size="sm"
-                    startDecorator={<AccessTimeFilledRoundedIcon />}
-                    defaultValue="1"
-                  >
-                    <Option value="1">
-                      Indochina Time (Bangkok){" "}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                    <Option value="2">
-                      Indochina Time (Ho Chi Minh City){" "}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                  </Select>
-                </FormControl>
-              </div>
-            </Stack>
-          </Stack>
+
+
           <Stack
             direction="column"
             spacing={2}
-            sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
+            sx={{ my: 1 }}
           >
             <Stack direction="row" spacing={2}>
               <Stack direction="column" spacing={1}>
                 <AspectRatio
                   ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
+                  maxHeight={130}
+                  sx={{ flex: 1, minWidth: 130, borderRadius: "100%" }}
                 >
                   <img
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -305,65 +107,49 @@ export default function MyProfileContent() {
                   <EditRoundedIcon />
                 </IconButton>
               </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: {
-                      sm: "flex-column",
-                      md: "flex-row"
-                    },
-                    gap: 2
-                  }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
-                </FormControl>
+
+              <Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
+
+                <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
+
+                  
+                  <FormControl >
+                  <FormLabel>Name</FormLabel>
+                    <Input style={{width: '250px'}} size="sm" placeholder={profileData.username} />
+                  </FormControl>
+                  
+                  <FormControl>
+                    <FormLabel>Identity</FormLabel>
+                    <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
+                  </FormControl>
+
+                </Stack>
+                <FormControl sx={{ flexGrow: 1 }}>
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                      style={{width: '379px'}} 
+                      disabled
+                      size="sm"
+                      type="email"
+                      startDecorator={<EmailRoundedIcon />}
+                      value={profileData.email}
+                      sx={{ flexGrow: 1 }}
+                    />
+                  </FormControl>
               </Stack>
+
+
             </Stack>
 
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
-            </FormControl>
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                size="sm"
-                type="email"
-                startDecorator={<EmailRoundedIcon />}
-                placeholder="email"
-                defaultValue="siriwatk@test.com"
-                sx={{ flexGrow: 1 }}
-              />
-            </FormControl>
 
-            <div>
-              <CountrySelector />
-            </div>
-            <div>
-              <FormControl sx={{ display: { sm: "contents" } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
-                  size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
-                >
-                  <Option value="1">
-                    Indochina Time (Bangkok){" "}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){" "}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl>
-            </div>
+
+            <iframe src="AddressSelector.html"
+              width="100%" height="320px"
+              style={{border: '0'}}
+              loading="lazy">
+            </iframe>
+
+
           </Stack>
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
@@ -376,7 +162,9 @@ export default function MyProfileContent() {
             </CardActions>
           </CardOverflow>
         </Card>
-        <Card>
+
+
+        {/* <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Bio</Typography>
             <Typography level="body-sm">
@@ -441,7 +229,7 @@ export default function MyProfileContent() {
               </Button>
             </CardActions>
           </CardOverflow>
-        </Card>
+        </Card> */}
       </Stack>
     </Box>
   )
