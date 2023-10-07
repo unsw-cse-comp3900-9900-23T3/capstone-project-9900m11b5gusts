@@ -8,11 +8,11 @@ import Home from '@mui/icons-material/Home';
 import AboutUs from './components/Aboutus';
 import Login from './components/Login';
 import Register from './components/Register';
-import MainDashboard from './components/MainDashboard'
+
 import LoginPageHeader from './components/LoginPageHeader';
 import ForgetPasswordPage from './ForgetPasswordPage';
-import MyProfilePage from './components/MyProfilePage';
 import Homepage from './components/Homepage';
+import MyPosts from './components/MyPosts';
 
 import {
   BrowserRouter,
@@ -29,6 +29,7 @@ import CssBaseline from '@mui/joy/CssBaseline';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import MyProfileContent from './components/MyProfileContent';
+import PostNewItemPage from './components/PostNewItemPage';
 
 
 
@@ -38,8 +39,8 @@ export default function App() {
 
 
   React.useEffect(()=>{
-		if (token !== null) {
-			console.log('fetching../');
+		if (!localStorage.getItem('token')) {
+			console.log('getting profile');
 			fetch('http://localhost:5000/Authors/profile', {
 				method: 'GET',
 				headers:{
@@ -49,13 +50,10 @@ export default function App() {
 			}).then(response => response.json())
 				.then(data=>setProfileData(data));
 		}
+		console.log('token: ', token)
   }, [token])
 
-  React.useEffect(()=>{
-    if(profileData !== ''){
-      console.log('MainDashboard: ', profileData)
-    }
-  }, [profileData])
+
 
 
 	function manageTokenSet(token){
@@ -126,8 +124,10 @@ export default function App() {
 						>
 							<BrowserRouter>
 								<Routes>
-									<Route path="/homepage" element={<Homepage token={token} />} />
-									<Route path="/myprofile" element={<MyProfileContent token={token} logout={logout} />} />
+									<Route path="/market" element={<Homepage token={token} />} />
+									<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
+									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} />} />
+									<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} profileData={profileData} />} />
 								</Routes>
 							</BrowserRouter>
 

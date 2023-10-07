@@ -89,7 +89,7 @@ export default function Register({ onSuccess }) {
                 const data = await response.json();
                 onSuccess(data.token);
                 // console.log(data);
-                window.location.href = '/homepage/'
+                window.location.href = '/market'
             }else{
                 const data = await response.json();
                 setErrorMessage(data.error);
