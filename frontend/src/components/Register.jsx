@@ -262,14 +262,15 @@ export default function Register({ onSuccess }) {
       {/* <Checkbox size="sm" label="Remember me" name="persistent" /> */}
 
       </Box>
+      {errorMessage && (
+          <Typography variant="body1" style={{ color: 'red' }}>
+            {errorMessage}
+          </Typography>
+        )}
       <Button type="submit" fullWidth>
         Sign up
       </Button>
-        {errorMessage && (
-  <Typography variant="body1" style={{ color: 'red' }}>
-    {errorMessage}
-  </Typography>
-)}
+
     </Stack>
   </form>
 
