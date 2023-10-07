@@ -38,8 +38,53 @@ import EditorToolbar from "./EditorToolbar"
 export default function MyProfileContent({ token, profileData }) {
   React.useEffect(()=>{
 		console.log("profileData on profile:", profileData)
-    console.log( profileData.identity)
+    setUsername(profileData.username)
+    setGender(profileData.gender)
+    setState(profileData.state)
+    setSuburb(profileData.suburb)
   }, [profileData])
+
+
+  const [username, setUsername] = React.useState(null)
+  const [gender, setGender] = React.useState(null)
+  const [state, setState] = React.useState(null)
+  const [suburb, setSuburb] = React.useState(null)
+
+
+  const handleNameChange = (event)=>{
+    setUsername(event.target.value)
+  }
+
+  const handleCancel = (event)=>{
+    setUsername(profileData.username)
+    setGender(profileData.gender)
+    setState(profileData.state)
+    setSuburb(profileData.suburb)
+  }
+
+  async function updateProfile(){
+
+    const response = await fetch('http://127.0.0.1:5000/Authors/profile', {
+      method:'POST',
+      headers:{
+        'Content-type': 'application/json',
+        'Authorization' : `Bearer ${token}`,
+      },
+      body:JSON.stringify({
+        "username": username,
+        "gender": gender,
+        "state": state,
+        "suburb": suburb
+      })
+    });
+    if (response.status===200){
+      const data = await response.json();
+      console.log(data);
+    }else{
+      const data = await response.json();
+      console.log(data);
+    }
+  }
 
   return (
     <Box sx={{ flex: 1, width: "100%", minWidth: '600px' }} >
@@ -115,7 +160,7 @@ export default function MyProfileContent({ token, profileData }) {
                   
                   <FormControl >
                   <FormLabel>Name</FormLabel>
-                    <Input style={{width: '250px'}} size="sm" placeholder={profileData.username} />
+                    <Input style={{width: '250px'}} size="sm" value={username} onChange={handleNameChange}/>
                   </FormControl>
                   
                   <FormControl>
@@ -153,10 +198,10 @@ export default function MyProfileContent({ token, profileData }) {
           </Stack>
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
+              <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button size="sm" variant="solid">
+              <Button size="sm" variant="solid" onClick={updateProfile}>
                 Save
               </Button>
             </CardActions>
