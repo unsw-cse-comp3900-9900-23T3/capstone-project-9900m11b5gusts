@@ -200,7 +200,7 @@ export default function Sidebar({ logout, profileData }) {
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton 
-                    selected={currentURL === 'myposts' || 'postnewitem'}
+                    selected={currentURL === 'myposts' || currentURL ==='postnewitem'}
                     onClick={()=>{setCurrentURL('myposts')}}
                     component='a' href='/myposts'>
                       My Posts

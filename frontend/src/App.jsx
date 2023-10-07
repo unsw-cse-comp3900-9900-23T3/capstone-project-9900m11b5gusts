@@ -39,7 +39,7 @@ export default function App() {
 
 
   React.useEffect(()=>{
-		// if (token === null) {
+		if (token !== null && profileData==='') {
 			console.log('getting profile');
 			fetch('http://localhost:5000/Authors/profile', {
 				method: 'GET',
@@ -49,9 +49,9 @@ export default function App() {
 				}
 			}).then(response => response.json())
 				.then(data=>setProfileData(data));
-		// }
+		}
 		console.log('token: ', token)
-  }, [])
+  }, [token])
 
 
 
