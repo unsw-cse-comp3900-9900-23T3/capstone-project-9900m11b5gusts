@@ -18,6 +18,10 @@ import ActivityMainPag from './components/compaigns/MainPage';
 import Comments from './components/comments'
 import MyEcharts from './components/echart'
 
+import ShowImg from './components/admin/showImage'
+import Admin from './components/admin'
+import UserMgr from './components/admin/User'
+
 import {
   BrowserRouter,
   Routes,
@@ -97,6 +101,10 @@ export default function App() {
 						<Route path="/compaign" element={<ActivityMainPag />} token={token}/>
 						<Route path="/comments" element={<Comments />} />
 						<Route path="/echarts" element={<MyEcharts />} />
+
+						<Route path="/showImg" element={<ShowImg />} />
+						<Route path="/admin" element={<Admin />} />
+						<Route path="/user" element={<UserMgr />} />
 
 					</Routes>
 				</BrowserRouter>
