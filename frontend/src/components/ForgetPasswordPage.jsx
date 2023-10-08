@@ -54,7 +54,7 @@ function ColorSchemeToggle({ onClick, ...props }) {
 }
 
 
-export default function ForgetPasswordPage({ onSuccess }) {
+export default function ForgetPasswordPage() {
     const [email, setEmail] = React.useState('')
 		const [password, setPassword] = React.useState('')
 		const [code, setCode] = React.useState('')
@@ -93,12 +93,13 @@ export default function ForgetPasswordPage({ onSuccess }) {
             if (response.status===200){
 							setState(1)
             }else{
-                  setErrorMessage('Wrong email or password,please try again.')
+                  setErrorMessage('Email has not been registered.')
+                  setConfirmPressed(false)
             }
       }
 
       async function sendCode(){
-				const response = await fetch('http://127.0.0.1:5000/Authors/forgetPassword', {
+				const response = await fetch('http://127.0.0.1:5000/Authors/resetPassword', {
 							method:'POST',
 							headers:{
 										'content-type':'application/json',
@@ -114,7 +115,7 @@ export default function ForgetPasswordPage({ onSuccess }) {
 					alert('Success')
 					window.location.href = '/login'
 				}else{
-							setErrorMessage('Wrong email or password,please try again.')
+							setErrorMessage('Wrong code. ')
 				}
 			}
 
@@ -242,16 +243,17 @@ export default function ForgetPasswordPage({ onSuccess }) {
 				<FormControl required>
 					<FormLabel>Email</FormLabel>
 					<Input type="email" name="email" onChange={handleEmail} />
-					We will send a verification code to your email.
+          We will send a verification code to your email.
 				</FormControl>
 				<Stack gap={4} sx={{ mt: 2 }}>
 
-					<Button type="submit" fullWidth display={confirmPressed ? true : false} onClick={()=>{setConfirmPressed(true)}}>
+					<Button type="submit" fullWidth style={{ display: confirmPressed ? 'none' : 'block' }} onClick={()=>{setConfirmPressed(true)}}>
 						Confirm
 					</Button>
+          {confirmPressed && <>The system is working on it. Please wait ...</>}
 						{errorMessage && (
 						<Typography variant="body1" style={{ color: 'red' }}>
-								{errorMessage}
+								{errorMessage} 
 						</Typography>
 						)}
 				</Stack>
