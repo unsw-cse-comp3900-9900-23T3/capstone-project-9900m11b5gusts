@@ -14,5 +14,4 @@ Writing the proposal. I compared the modes of existing relevant software, evalua
 week4: 10/08
 
 Campaign Monitoring page (frontend): Administrators can monitor and moderate the campaign process.
-
 User Management page (frontend): Administrators can manage user and manager accounts. Administrators can also give managers access to publish new campaigns.
