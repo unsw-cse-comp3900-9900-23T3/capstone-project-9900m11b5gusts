@@ -23,6 +23,7 @@ function ColorSchemeToggle({ onClick, ...props }) {
     const {mode, setMode} = useColorScheme();
     const [mounted, setMounted] = useState(false);
 
+
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -55,34 +56,68 @@ function ColorSchemeToggle({ onClick, ...props }) {
 
 export default function ForgetPasswordPage({ onSuccess }) {
     const [email, setEmail] = React.useState('')
-    const [state, setState] = React.useState(1)
+		const [password, setPassword] = React.useState('')
+		const [code, setCode] = React.useState('')
+    const [state, setState] = React.useState(0)
     const [errorMessage, setErrorMessage] = React.useState('')
-      function handleEmail(e){
-            setEmail(e.target.value);
-            setErrorMessage('');
-      }
+		const [confirmPressed, setConfirmPressed] = React.useState(false)
 
-      async function login(){
-            const response = await fetch('http://127.0.0.1:5000/Authors/login', {
+
+		const handlePasswordChange = (event) => {
+			setPassword(event.target.value)
+		}
+
+		const handleCodeChange = (event) => {
+			setCode(event.target.value)
+		}
+
+
+
+
+
+		function handleEmail(e){
+					setEmail(e.target.value);
+					setErrorMessage('');
+		}
+
+      async function sendEmail(){
+            const response = await fetch('http://127.0.0.1:5000/Authors/forgetPassword', {
                   method:'POST',
                   headers:{
                         'content-type':'application/json',
                   },
                   body:JSON.stringify({
-                        'user_email': email,
+                        'email': email,
                   })
             });
             if (response.status===200){
-                  const data = await response.json();
-                  onSuccess(data.token)
-                  // console.log(data);
-                  window.location.href = '/market'
-                  
+							setState(1)
             }else{
                   setErrorMessage('Wrong email or password,please try again.')
             }
-
       }
+
+      async function sendCode(){
+				const response = await fetch('http://127.0.0.1:5000/Authors/forgetPassword', {
+							method:'POST',
+							headers:{
+										'content-type':'application/json',
+							},
+							body:JSON.stringify({
+								"email": email,
+								"code": code,
+								"new_password": password
+							})
+				});
+				if (response.status===200){
+					setState(2)
+					alert('Success')
+					window.location.href = '/login'
+				}else{
+							setErrorMessage('Wrong email or password,please try again.')
+				}
+			}
+
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -194,25 +229,70 @@ export default function ForgetPasswordPage({ onSuccess }) {
   <form
     onSubmit={(event) => {
       event.preventDefault();
-      login(); // 在表单提交时触发登录函数
+      if (state === 0) {
+				sendEmail(); // 在表单提交时触发登录函数
+			} else if (state === 1) {
+				sendCode();
+			}
+			
     }}
   >
-    <FormControl required>
-      <FormLabel>Email</FormLabel>
-      <Input type="email" name="email" onChange={handleEmail} />
-    </FormControl>
-    We will send a verification code to your email.
-    <Stack gap={4} sx={{ mt: 2 }}>
+		{state===0 && 
+			<>
+				<FormControl required>
+					<FormLabel>Email</FormLabel>
+					<Input type="email" name="email" onChange={handleEmail} />
+					We will send a verification code to your email.
+				</FormControl>
+				<Stack gap={4} sx={{ mt: 2 }}>
 
-      <Button type="submit" fullWidth>
-        Confirm
-      </Button>
-        {errorMessage && (
-				<Typography variant="body1" style={{ color: 'red' }}>
-						{errorMessage}
-				</Typography>
-				)}
-    </Stack>
+					<Button type="submit" fullWidth display={confirmPressed ? true : false} onClick={()=>{setConfirmPressed(true)}}>
+						Confirm
+					</Button>
+						{errorMessage && (
+						<Typography variant="body1" style={{ color: 'red' }}>
+								{errorMessage}
+						</Typography>
+						)}
+				</Stack>
+
+			</>
+
+		}
+
+		{state===1 && 
+			<>
+				<FormControl required>
+					<FormLabel>New Password</FormLabel>
+					<Input name="password" value={password} onChange={handlePasswordChange} />
+				</FormControl>
+
+				<FormControl required>
+					<FormLabel>Verification Code</FormLabel>
+					<Input name="code" value={code} onChange={handleCodeChange} />
+					Email has been sent.
+				</FormControl>
+
+				<Stack gap={4} sx={{ mt: 2 }}>
+
+					<Button type="submit" fullWidth>
+						Confirm
+					</Button>
+						{errorMessage && (
+						<Typography variant="body1" style={{ color: 'red' }}>
+								{errorMessage}
+						</Typography>
+						)}
+				</Stack>
+			</>
+
+		}
+
+			
+
+
+
+
   </form>
 
 </Stack>
