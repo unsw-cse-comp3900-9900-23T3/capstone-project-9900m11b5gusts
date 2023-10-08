@@ -1,0 +1,71 @@
+.myCard{
+    display: flex;
+    width: 100%;
+    min-height: 100%;
+    overflow-y: scroll;
+}
+.cardItem{
+    flex: 1;
+    background-color: aliceblue;
+    margin:0.5rem;
+    border-radius: 24px;
+    padding-top: 2rem;
+}
+
+/* SearchItem */
+.searchItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.searchItem .searchIcon {
+    padding-right: 5px;
+    margin: 0 auto; 
+}
+
+/* other */
+.searchBox {
+    display: flex;
+    justify-content: center;
+}
+
+.btnBox {
+    display: flex;
+    justify-content: end;
+    padding-top: 5px;
+    padding-right: 10%;
+}
+.MediaCardBox{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem 1rem;
+}
+.mediaCard{
+    margin: 10px;
+}
+.paginationBox{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
+    align-items: center;
+}
+.buttonRight{
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+.select{
+    height: 32px;
+    line-height: 32px;
+    margin-left: 1rem;
+}
+.dialogBody{
+   
+    padding: 2rem;
+
+}
+
+.textFieldDialog{
+    padding: 1rem;
+}

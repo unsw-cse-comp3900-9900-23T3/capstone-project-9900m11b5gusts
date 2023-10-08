@@ -1,0 +1,25 @@
+
+.uploadBox{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.uploadWrapBox{
+    position: relative;
+}
+
+.iconStyle {
+    font-size: 12rem !important;
+    color: #4b9cee;
+    cursor: pointer;
+
+}
+
+.uploadDelIcon {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    font-size: 2rem;
+    color: red;
+}

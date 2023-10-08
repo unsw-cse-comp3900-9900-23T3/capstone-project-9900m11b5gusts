@@ -10,9 +10,17 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 import LoginPageHeader from './components/LoginPageHeader';
-import ForgetPasswordPage from './ForgetPasswordPage';
 import Homepage from './components/Homepage';
 import MyPosts from './components/MyPosts';
+import ForgetPasswordPage from './components/ForgetPasswordPage';
+
+import ActivityMainPag from './components/compaigns/MainPage';
+import Comments from './components/comments'
+import MyEcharts from './components/echart'
+
+import ShowImg from './components/admin/showImage'
+import Admin from './components/admin'
+import UserMgr from './components/admin/User'
 
 import {
   BrowserRouter,
@@ -89,6 +97,14 @@ export default function App() {
 						<Route path="/login" element={<Login onSuccess={manageTokenSet} />} />
 						<Route path="/register" element={<Register onSuccess={manageTokenSet} />} />
 						<Route path="/forgetpasswordpage" element={<ForgetPasswordPage />} />
+
+						<Route path="/compaign" element={<ActivityMainPag />} token={token}/>
+						<Route path="/comments" element={<Comments />} />
+						<Route path="/echarts" element={<MyEcharts />} />
+
+						<Route path="/showImg" element={<ShowImg />} />
+						<Route path="/admin" element={<Admin />} />
+						<Route path="/user" element={<UserMgr />} />
 
 					</Routes>
 				</BrowserRouter>
