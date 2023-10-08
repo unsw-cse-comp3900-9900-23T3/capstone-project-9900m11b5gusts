@@ -14,8 +14,14 @@ register_model = api.model('register_data', {
         'identity': fields.String(example='manager')
 })
 
+forget_password_model = api.model('forget_password_data', {
+        'email': fields.String(example='root@qq.com')
+}
+
+)
 changeProfile_model = api.model('changeProfile_data', {
         'username': fields.String(example='a new name'),
+        'image': fields.String(example='a new image'),
         'gender': fields.String(example='a new gender'),
         'state': fields.String(example='a new state'),
         'suburb': fields.String(example='a new suburb')
@@ -23,6 +29,7 @@ changeProfile_model = api.model('changeProfile_data', {
 
 insertItem_model = api.model('insertItem_data', {
         'item_name': fields.String(example='pen'),
+        'image': fields.String(example='a image of item'),
         'description': fields.String(example='some description about this item'),
         'price': fields.String(example='66.66'),
         'num': fields.String(example='2'),
@@ -38,6 +45,7 @@ get_personal_item_model = api.model('get_personal_item_data', {
 update_personal_item_model = api.model('update_personal_item_data', {
         'item_id': fields.String(example='2'),
         'item_name': fields.String('pencil'),
+        'image': fields.String('a new image of item'),
         'description': fields.String('a new description'),
         'price': fields.String(example='55.55'),
         'num': fields.String(example='1'),

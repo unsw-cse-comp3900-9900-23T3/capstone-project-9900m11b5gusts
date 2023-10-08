@@ -1,8 +1,8 @@
 from flask_restx import Resource, Namespace
 from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
-    update_personal_item_model, search_items_model
+    update_personal_item_model, search_items_model, forget_password_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
-    update_personal_item, search_item
+    update_personal_item, search_item, forget_pass
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -44,6 +44,20 @@ class Register(Resource):
             return {'token': access_token}, 200
         else:
             return {'error': register_result['info']}, 400
+
+
+@Author.route('/forgetPassword')
+class ForgetPassword(Resource):
+    @Author.doc(descroption='Forget password, user input the email')
+    @Author.expect(forget_password_model)
+    def post(self):
+        args = Author.payload
+        email = args['email']
+        result = forget_pass(email)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
 
 
 @Author.route('/profile')

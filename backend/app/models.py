@@ -1,12 +1,16 @@
-from .extensions import db
+from .extensions import db, mail
 import datetime
 from sqlalchemy import or_
+import secrets
+from flask import url_for, current_app
+from flask_mail import Message
 
 
 class User(db.Model):
     __tablename__ = 'tb_user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(30), unique=True, index=True)
+    image = db.Column(db.String(1000), default='image of user')
     username = db.Column(db.String(30), unique=False, index=True)
     password = db.Column(db.String(30))
     identity = db.Column(db.String(10), default='user')
@@ -15,10 +19,19 @@ class User(db.Model):
     suburb = db.Column(db.String(30), default='suburb')
 
 
+class PasswordReset(db.Model):
+    __tablename__ = 'tb_passReset'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
+    token = db.Column(db.String(100))
+    create_at = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
 class Item(db.Model):
     __tablename__ = 'tb_item'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    image = db.Column(db.String(1000), default='image of Item')
     item_name = db.Column(db.String(30))
     item_desc = db.Column(db.String(1000))
     item_price = db.Column(db.Float)
@@ -28,6 +41,13 @@ class Item(db.Model):
     class3 = db.Column(db.String(30))
     change = db.Column(db.Integer, default=0)
     time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+def send_email(email, content, token):
+
+    msg = Message('Password Reset Request', sender='jiangzerek1999@gmail.com', recipients=[email])
+    msg.body = '5Gusts Technology company:\n' + content + f'\n{url_for("reset_password", token=token, _external=True)}'
+    mail.send(msg)
 
 
 def user_register(**kwargs):
@@ -50,7 +70,7 @@ def user_register(**kwargs):
     except Exception as e:
         print(f'LOG: {input_register_email} register failed(user is already exists)!')
         return {'result': False,
-                'info': f'Register failed:Email has been registered!'}
+                'info': f'Register failed: user is already exists!'}
 
 
 def user_login(**kwargs):
@@ -75,10 +95,28 @@ def user_login(**kwargs):
                 'info': 'Don\'t have this account, please register!'}
 
 
+def forget_pass(email):
+    user = User.query.filter_by(email=email).first()
+    if user:
+        try:
+            token = secrets.token_urlsafe(24)
+            reset_token = PasswordReset(email=email, token=token)
+            db.session.add(reset_token)
+            db.session.commit()
+            with current_app.app_context():
+                send_email(email, 'In order to reset your email, please click the following link:', token)
+            return {'result': True, 'info': 'A password reset email has been sent to your email.'}
+        except Exception as e:
+            return {'result': False, 'info': f'{e}'}
+    else:
+        return {'result': True, 'info': 'Do not have this email in our account!'}
+
+
 def get_profile(email):
     user = User.query.filter_by(email=email).first()
     return {'email': user.email,
             'username': user.username,
+            'image': user.image,
             'identity': user.identity,
             'gender': user.gender,
             'state': user.state,
@@ -92,6 +130,7 @@ def update_profile(email, **kwargs):
     input_state = kwargs['state']
     input_suburb = kwargs['suburb']
     input_gender = kwargs['gender']
+    input_image = kwargs['image']
     try:
         user = User.query.filter_by(email=email).first()
         if user:
@@ -99,6 +138,7 @@ def update_profile(email, **kwargs):
             user.state = input_state
             user.suburb = input_suburb
             user.gender = input_gender
+            user.image = input_image
             db.session.commit()
             return {'result': True, 'info': 'update profile success'}
         else:
@@ -112,6 +152,7 @@ def update_profile(email, **kwargs):
 
 def insert_item(email, **kwargs):
     input_email = email
+    input_item_image = kwargs['image']
     input_item_name = kwargs['item_name']
     input_item_desc = kwargs['description']
     input_item_price = float(kwargs['price'])
@@ -120,7 +161,7 @@ def insert_item(email, **kwargs):
     input_class2 = kwargs['class2']
     input_class3 = kwargs['class3']
     try:
-        event = Item(email=input_email, item_name=input_item_name, item_desc=input_item_desc,
+        event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
                      class3=input_class3)
         db.session.add(event)
@@ -138,6 +179,7 @@ def get_personal_item(email):
         for item in personal_items:
             temp_dict[item.id] = {
                 'item_name': item.item_name,
+                'image': item.image,
                 'item_price': str(item.item_price),
                 'item_num': str(item.item_num),
                 'item_desc': item.item_desc,
@@ -172,6 +214,8 @@ def update_personal_item(email, **kwargs):
                 personal_item.class3 = kwargs['class3']
             if kwargs['change']:
                 personal_item.change = int(kwargs['change'])
+            if kwargs['image']:
+                personal_item.image = kwargs['image']
             personal_item.time_stamp = datetime.datetime.now()
             db.session.commit()
 
@@ -217,6 +261,7 @@ def search_item(**kwargs):
             for item in s_items:
                 item_dict[item.id] = {
                     'item_name': item.item_name,
+                    'image': item.image,
                     'item_price': str(item.item_price),
                     'item_num': str(item.item_num),
                     'item_desc': item.item_desc,
