@@ -111,7 +111,7 @@ def forget_pass(email):
         except Exception as e:
             return {'result': False, 'info': f'{e}'}
     else:
-        return {'result': True, 'info': 'Do not have this email in our account!'}
+        return {'result': False, 'info': 'Do not have this email in our account!'}
 
 
 def reset_password(**kwargs):
