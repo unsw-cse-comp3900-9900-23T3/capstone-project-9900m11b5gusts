@@ -10,9 +10,9 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 import LoginPageHeader from './components/LoginPageHeader';
-import ForgetPasswordPage from './ForgetPasswordPage';
 import Homepage from './components/Homepage';
 import MyPosts from './components/MyPosts';
+import ForgetPasswordPage from './components/ForgetPasswordPage';
 
 import {
   BrowserRouter,
