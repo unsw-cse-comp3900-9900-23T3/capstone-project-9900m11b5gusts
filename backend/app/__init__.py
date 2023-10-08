@@ -15,11 +15,12 @@ def create_app():
     db_uri = 'sqlite:///sqlite3.db'
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USERNAME'] = 'jiangzerek1999@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'fivegusts'
-    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_SERVER'] = 'smtp.qq.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USE_SSL'] = True
+    app.config['MAIL_USE_TLS'] = False
+    app.config['MAIL_USERNAME'] = '923519550@qq.com'
+    app.config['MAIL_PASSWORD'] = 'gxoytwwtloombegh'
 
     api.init_app(app)
     db.init_app(app)

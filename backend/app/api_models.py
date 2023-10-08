@@ -16,9 +16,15 @@ register_model = api.model('register_data', {
 
 forget_password_model = api.model('forget_password_data', {
         'email': fields.String(example='root@qq.com')
-}
+})
 
-)
+reset_password_model = api.model('reset_password_model', {
+        'email': fields.String(example='root@qq.com'),
+        'code': fields.String(example='123456'),
+        'new_password': fields.String(example='a new password')
+})
+
+
 changeProfile_model = api.model('changeProfile_data', {
         'username': fields.String(example='a new name'),
         'image': fields.String(example='a new image'),

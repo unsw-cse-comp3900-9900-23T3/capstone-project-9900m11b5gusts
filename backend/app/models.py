@@ -4,6 +4,7 @@ from sqlalchemy import or_
 import secrets
 from flask import url_for, current_app
 from flask_mail import Message
+import random
 
 
 class User(db.Model):
@@ -23,7 +24,7 @@ class PasswordReset(db.Model):
     __tablename__ = 'tb_passReset'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
-    token = db.Column(db.String(100))
+    code = db.Column(db.String(100))
     create_at = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
@@ -43,11 +44,12 @@ class Item(db.Model):
     time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
-def send_email(email, content, token):
-
-    msg = Message('Password Reset Request', sender='jiangzerek1999@gmail.com', recipients=[email])
-    msg.body = '5Gusts Technology company:\n' + content + f'\n{url_for("reset_password", token=token, _external=True)}'
-    mail.send(msg)
+def send_email(email, content, code):
+    with current_app.app_context():
+        mail.connect()
+        msg = Message('Password Reset Request', sender='923519550@qq.com', recipients=[email])
+        msg.body = '5Gusts Technology company:\n' + content + f'{code}'
+        mail.send(msg)
 
 
 def user_register(**kwargs):
@@ -99,17 +101,42 @@ def forget_pass(email):
     user = User.query.filter_by(email=email).first()
     if user:
         try:
-            token = secrets.token_urlsafe(24)
-            reset_token = PasswordReset(email=email, token=token)
-            db.session.add(reset_token)
+            code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+            reset_code = PasswordReset(email=email, code=code)
+            db.session.add(reset_code)
             db.session.commit()
             with current_app.app_context():
-                send_email(email, 'In order to reset your email, please click the following link:', token)
+                send_email(email, 'In order to reset your password,please fill your code:', code)
             return {'result': True, 'info': 'A password reset email has been sent to your email.'}
         except Exception as e:
             return {'result': False, 'info': f'{e}'}
     else:
         return {'result': True, 'info': 'Do not have this email in our account!'}
+
+
+def reset_password(**kwargs):
+    email = kwargs['email']
+    code = kwargs['code']
+    new_password = kwargs['new_password']
+    user_ = PasswordReset.query.filter_by(email=email).first()
+    if user_:
+        try:
+            if user_.code == code:
+                # 修改密码
+                user = User.query.filter_by(email=email).first()
+                user.password = new_password
+                db.session.commit()
+                # delete PasswordReset email
+                return {'result': True, 'info': 'Change password success'}
+            else:
+                return {'result': False, 'info': 'wrong code'}
+        except Exception as e:
+            return {'result': False, 'info': f'wrong: {e}'}
+        finally:
+            db.session.delete(user_)
+            db.session.commit()
+    else:
+        return {'result': False, 'info': 'This email do not reset email.'}
 
 
 def get_profile(email):
