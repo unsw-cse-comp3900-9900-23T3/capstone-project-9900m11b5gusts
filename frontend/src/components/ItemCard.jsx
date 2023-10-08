@@ -24,7 +24,7 @@ export default function ItemCard({
   location = 'Default location',
   amount = '0',
   price = '0',
-  finished = true,
+  finished = false,
   liked = false,
   image = 'https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg'
 }) {
