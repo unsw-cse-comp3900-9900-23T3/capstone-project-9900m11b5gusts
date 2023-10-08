@@ -24,3 +24,5 @@ add token jwt access expired 1 hour and refresh 30 days
 Saturday：
 users can edit their item(can change column change 0 to 1 which means want to change, item name, item description.....), '' empty str means keep the original info.
 all users can research item by keywords, order by price, and chose item want changed or not
+Sunday：
+Users can change the password by our service security code(we send code to email)
