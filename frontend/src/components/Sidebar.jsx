@@ -202,7 +202,8 @@ export default function Sidebar({ logout, profileData }) {
                   <ListItemButton 
                     selected={currentURL === 'myposts' || currentURL ==='postnewitem'}
                     onClick={()=>{setCurrentURL('myposts')}}
-                    component='a' href='/myposts'>
+                    component={currentURL === 'myposts' ? undefined : 'a'}
+                    href='/myposts'>
                       My Posts
                   </ListItemButton>
                 </ListItem>

@@ -11,7 +11,56 @@ import ItemCard from "./ItemCard";
 import Pagination from "./Pagination";
 
 
-export default function MyPosts() {
+export default function MyPosts({ token, profileData }) {
+  const [email, setEmail] = React.useState(null)
+  const [posts, setPosts] = React.useState([])
+
+  React.useEffect(() => {
+    if (profileData) {
+      setEmail(profileData.email)
+    }
+  }, [profileData])
+
+  React.useEffect(() => {
+    if (email !== null){
+      checkPersonalItem()
+    }
+  },[email])
+
+  React.useEffect(() => {
+    console.log('this is posts: ', posts)
+  },[posts])
+
+
+  async function checkPersonalItem(){
+    console.log('email: ', email)
+    console.log('token: ', token)
+    const response = await fetch('http://127.0.0.1:5000/Items/checkPersonalItem', {
+        method:'POST',
+        headers:{
+          'Content-type': 'application/json',
+          'Authorization' : `Bearer ${token}`,
+        },
+        body:JSON.stringify({
+          'user_email': email
+        })
+      });
+      if (response.status===200){
+        const data = await response.json();
+        console.log('posts: ', data.success)
+        Object.entries(data.success).map((item) => {
+          setPosts(prev => [...prev, item[1]])
+        })
+
+      }else{
+        const data = await response.json();
+        alert(data)
+      }
+  }
+
+
+
+
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -56,18 +105,35 @@ export default function MyPosts() {
 
         <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
           <Stack spacing={2} sx={{ overflow: "auto" }}>
-            <ItemCard
+            {/* <ItemCard
               title="A Stylish Apt, 5 min walk to Queen Victoria Market"
               category="Entire apartment rental in Collingwood"
               rareFind
               image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
-            />
+            /> */}
             <ItemCard
               title="Designer NY style loft"
               category="Entire loft in central business district"
               liked
               image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
             />
+            {posts.map((item, index) => {
+              return(
+                <ItemCard key={index} 
+                  category1={item.class1} 
+                  category2={item.class2} 
+                  category3={item.class3} 
+                  title={item.item_name} 
+                  // location="Default location" 
+                  amount={item.item_num} 
+                  price={item.item_price} 
+
+
+                />
+                )  
+              })
+            }
+            
            
           </Stack>
         </Stack>

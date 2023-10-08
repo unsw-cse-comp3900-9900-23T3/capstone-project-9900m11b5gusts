@@ -37,23 +37,89 @@ import FileUpload from "./FileUpload"
 // import CountrySelector from "./CountrySelector"
 import EditorToolbar from "./EditorToolbar"
 
+
+
+
+
+
+
 export default function PostNewItemPage({ token, profileData }) {
+
+  const [itemName, setItemName] = React.useState('')
+  const [amount, setAmount] = React.useState('')
+  const [price, setPrice] = React.useState('')
+  const [description, setDescription] = React.useState('')
+
+
+  const handleItemNameChange = (event) => {
+    setItemName(event.target.value)
+  }
+
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value)
+  }
+
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value)
+  }
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value)
+  }
+
+
   React.useEffect(()=>{
-		console.log("profileData on profile:", profileData)
-    console.log( profileData.identity)
+		console.log("profileData on postNewItemPage: ", profileData)
+    console.log("token on postNewItemPage: ", token)
   }, [profileData])
+
+
+
+  async function postNewItem(){
+
+    if (!(itemName && amount && price && description)) {
+      alert('Please provide all information.')
+    } else {
+      const response = await fetch('http://127.0.0.1:5000/Items/uploadPersonalItem', {
+        method:'POST',
+        headers:{
+          'Content-type': 'application/json',
+          'Authorization' : `Bearer ${token}`,
+        },
+        body:JSON.stringify({
+          "item_name": itemName,
+          "description": description,
+          "price": parseFloat(price),
+          "num": parseInt(amount),
+          "class1": "coles",
+          "class2": "study",
+          "class3": "stationery"
+        })
+      });
+      if (response.status===200){
+        // const data = await response.json();
+        // console.log(data);
+        alert('Success')
+        window.location.href='/myposts'
+      }else{
+        const data = await response.json();
+        alert(data)
+      }
+    }
+  }
+
+
+
 
   return (
     
-    <Box sx={{ flex: 1, width: "100%", minWidth: '600px' }} >
+    <Box sx={{ flex: 1, width: "100%", minWidth: '500px' }} >
 								<Stack sx={{ mb: 2 }}>
 						<Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
 							<Button style={{margin:'15px', width:'100px'}} startDecorator={<ArrowBackIosIcon/>} component="a" href="/myposts" variant="soft" size="sm" >
 								Back
 							</Button>
-							<Button style={{margin:'15px', width:'100px'}} startDecorator={<CheckIcon/>} component="a" href="/myposts/postnewitem" variant="soft" size="sm" >
-								Confirm
-							</Button>
+
 							
 						</Stack>
 					</Stack>
@@ -93,8 +159,8 @@ export default function PostNewItemPage({ token, profileData }) {
               <Stack direction="column" spacing={1}>
                 <AspectRatio
                   ratio="1"
-                  maxHeight={500}
-                  sx={{ flex: 1, minWidth: 500, borderRadius: "3%" }}
+                  maxHeight={400}
+                  sx={{ flex: 1, minWidth: 400, borderRadius: "3%" }}
                 >
                   <img
                     src="https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg"
@@ -131,37 +197,47 @@ export default function PostNewItemPage({ token, profileData }) {
 
                   
 <FormControl >
-<FormLabel>Title</FormLabel>
-	<Input style={{width: '100%'}} size="sm" />
+<FormLabel>Name of the item</FormLabel>
+	<Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
 </FormControl>
 
 <FormControl>
-	<FormLabel>Identity</FormLabel>
-	<Input style={{width: '100%'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
+	<FormLabel>Amount of the item</FormLabel>
+	<Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
 </FormControl>
 
 <FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Email</FormLabel>
+	<FormLabel>Price / want to exchange for</FormLabel>
 	<Input
 		style={{width: '100%'}} 
-		disabled
 		size="sm"
-		type="email"
-		startDecorator={<EmailRoundedIcon />}
-		value={profileData.email}
 		sx={{ flexGrow: 1 }}
+    value={price}
+    onChange={handlePriceChange}
 	/>
 </FormControl>
+
+<FormControl sx={{ flexGrow: 1 }}>
+	<FormLabel>Description</FormLabel>
+	<Textarea
+    minRows={3}
+		style={{width: '100%'}} 
+		size="sm"
+		sx={{ flexGrow: 1 }}
+    value={description}
+    onChange={handleDescriptionChange}
+	/>
+</FormControl>
+
 </Stack>
           </Stack>
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
+            <Button style={{margin:'15px', width:'100px'}} startDecorator={<CheckIcon/>} variant="soft" size="sm" 
+              onClick={postNewItem}
+            >
+								Confirm
+							</Button>
             </CardActions>
           </CardOverflow>
         </Card>

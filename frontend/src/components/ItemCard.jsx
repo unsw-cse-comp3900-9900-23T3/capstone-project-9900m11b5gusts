@@ -14,13 +14,19 @@ import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
 import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
 import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
 import Star from "@mui/icons-material/Star"
+import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
 
 export default function ItemCard({
-  category,
-  title,
-  rareFind = false,
+  category1 = '',
+  category2 = '',
+  category3 = '',
+  title = 'Default title',
+  location = 'Default location',
+  amount = '0',
+  price = '0',
+  finished = true,
   liked = false,
-  image
+  image = 'https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg'
 }) {
   const [isLiked, setIsLiked] = React.useState(liked)
   return (
@@ -63,14 +69,14 @@ export default function ItemCard({
             direction="row"
             sx={{ position: "absolute", top: 0, width: "100%", p: 1 }}
           >
-            {rareFind && (
+            {finished && (
               <Chip
                 variant="soft"
                 color="success"
-                startDecorator={<WorkspacePremiumRoundedIcon />}
+                startDecorator={<VerifiedIcon />}
                 size="md"
               >
-                Rare find
+                Finished
               </Chip>
             )}
             <IconButton
@@ -98,7 +104,7 @@ export default function ItemCard({
           alignItems="flex-start"
         >
           <div>
-            <Typography level="body-sm">{category}</Typography>
+            <Typography level="body-sm">Category: {category1} 》{category2}》{category3}</Typography>
             <Typography level="title-md">
               <Link
                 overlay
@@ -132,33 +138,25 @@ export default function ItemCard({
           sx={{ my: 0.25 }}
         >
           <Typography level="body-xs" startDecorator={<FmdGoodRoundedIcon />}>
-            Collingwood VIC
+            {location}
           </Typography>
-          <Typography level="body-xs" startDecorator={<KingBedRoundedIcon />}>
+          {/* <Typography level="body-xs" startDecorator={<KingBedRoundedIcon />}>
             1 bed
           </Typography>
           <Typography level="body-xs" startDecorator={<WifiRoundedIcon />}>
             Wi-Fi
-          </Typography>
+          </Typography> */}
         </Stack>
         <Stack direction="row" sx={{ mt: "auto" }}>
           <Typography
             level="title-sm"
-            startDecorator={
-              <React.Fragment>
-                <Star sx={{ color: "warning.400" }} />
-                <Star sx={{ color: "warning.400" }} />
-                <Star sx={{ color: "warning.400" }} />
-                <Star sx={{ color: "warning.400" }} />
-                <Star sx={{ color: "warning.200" }} />
-              </React.Fragment>
-            }
+            // startDecorator
             sx={{ display: "flex", gap: 1 }}
           >
-            4.0
+            Amount: {amount}
           </Typography>
           <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
-            <strong>$540</strong> <Typography level="body-md">total</Typography>
+            <strong>${price}</strong> <Typography level="body-md">total</Typography>
           </Typography>
         </Stack>
       </CardContent>

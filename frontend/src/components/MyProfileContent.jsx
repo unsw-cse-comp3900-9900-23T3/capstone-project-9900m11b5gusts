@@ -37,25 +37,27 @@ import EditorToolbar from "./EditorToolbar"
 
 export default function MyProfileContent({ token, profileData }) {
   React.useEffect(()=>{
-		console.log("profileData on profile:", profileData)
-    setUsername(profileData.username)
-    setGender(profileData.gender)
-    setState(profileData.state)
-    setSuburb(profileData.suburb)
+    if(profileData) {
+      console.log("profileData on profile:", profileData)
+      setUsername(profileData.username)
+      setGender(profileData.gender)
+      setState(profileData.state)
+      setSuburb(profileData.suburb)
+    }
   }, [profileData])
 
 
-  const [username, setUsername] = React.useState(null)
-  const [gender, setGender] = React.useState(null)
-  const [state, setState] = React.useState(null)
-  const [suburb, setSuburb] = React.useState(null)
+  const [username, setUsername] = React.useState('')
+  const [gender, setGender] = React.useState('')
+  const [state, setState] = React.useState('')
+  const [suburb, setSuburb] = React.useState('')
 
 
   const handleNameChange = (event)=>{
     setUsername(event.target.value)
   }
 
-  const handleCancel = (event)=>{
+  const handleCancel = ()=>{
     setUsername(profileData.username)
     setGender(profileData.gender)
     setState(profileData.state)
