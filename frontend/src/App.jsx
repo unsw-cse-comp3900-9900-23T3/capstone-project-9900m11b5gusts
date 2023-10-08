@@ -14,6 +14,10 @@ import Homepage from './components/Homepage';
 import MyPosts from './components/MyPosts';
 import ForgetPasswordPage from './components/ForgetPasswordPage';
 
+import ActivityMainPag from './components/compaigns/MainPage';
+import Comments from './components/comments'
+import MyEcharts from './components/echart'
+
 import {
   BrowserRouter,
   Routes,
@@ -89,6 +93,10 @@ export default function App() {
 						<Route path="/login" element={<Login onSuccess={manageTokenSet} />} />
 						<Route path="/register" element={<Register onSuccess={manageTokenSet} />} />
 						<Route path="/forgetpasswordpage" element={<ForgetPasswordPage />} />
+
+						<Route path="/compaign" element={<ActivityMainPag />} token={token}/>
+						<Route path="/comments" element={<Comments />} />
+						<Route path="/echarts" element={<MyEcharts />} />
 
 					</Routes>
 				</BrowserRouter>

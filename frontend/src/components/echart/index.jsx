@@ -1,0 +1,62 @@
+import * as React from 'react';
+import * as echarts from 'echarts';
+import { useState, useEffect, useRef } from 'react';
+import styles from './index.module.css';
+
+
+export default function Comments() {
+    const myDom1 = useRef()
+    const myDom2 = useRef()
+    useEffect(() => {
+        echartFun(myDom1)
+        echartFun(myDom2)
+    }, [])
+    const echartFun = (dom) => {
+        var myChart = echarts.init(dom.current);
+        var option;
+        option = {
+            title: {
+                text: 'Referer of a Website',
+                subtext: 'Fake Data',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 1048, name: 'Search Engine' },
+                        { value: 735, name: 'Direct' },
+                        { value: 580, name: 'Email' },
+                        { value: 484, name: 'Union Ads' },
+                        { value: 300, name: 'Video Ads' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+    }
+
+    return <div className={styles.pieBox}>
+        <div ref={myDom1} className={styles.pieItem}></div>
+        <div ref={myDom2} className={styles.pieItem}></div>
+    </div>
+
+}
