@@ -48,10 +48,11 @@ export default function MyPosts({ token, profileData }) {
       if (response.status===200){
         const data = await response.json();
         console.log('posts: ', data.success)
-        Object.entries(data.success).map((item) => {
-          setPosts(prev => [...prev, item[1]])
-        })
-
+        if (data.success !== 'no item'){
+            Object.entries(data.success).map((item) => {
+            setPosts(prev => [...prev, item[1]])
+          })
+        }
       }else{
         const data = await response.json();
         alert(data)
@@ -111,12 +112,7 @@ export default function MyPosts({ token, profileData }) {
               rareFind
               image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
             /> */}
-            <ItemCard
-              title="Designer NY style loft"
-              category="Entire loft in central business district"
-              liked
-              image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
-            />
+
             {posts.map((item, index) => {
               return(
                 <ItemCard key={index} 
@@ -126,13 +122,20 @@ export default function MyPosts({ token, profileData }) {
                   title={item.item_name} 
                   // location="Default location" 
                   amount={item.item_num} 
-                  price={item.item_price} 
-
-
+                  price={item.item_price}
+                  image={item.image}
                 />
                 )  
               })
             }
+
+            <ItemCard
+              title="Designer NY style loft"
+              category="Entire loft in central business district"
+              liked 
+              finished = {true}
+              image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
+            />
             
            
           </Stack>
