@@ -11,10 +11,20 @@ I will start with what I can do. I will realize the sign-up and sign-in function
 
 
 
-Week3 2023/10/01
+Week 3 2023/10/01
 
-We finished writing the proposal. I drew half of the user interface diagram, and modified the 'novelty' part. 
+We finished writing the proposal. I drew half of the user interface diagram and modified the 'novelty' part. 
 
-We have set up both basic backend and frontend. Users can register new accounts now. I made the frontend interface.
+We have set up both the basic backend and frontend. Users can register new accounts now. I made the frontend interface.
 
 We have discussed the upcoming missions. For frontend, I will be responsible for the user part, while the others will be responsible for the campaign manager and system administrator part.
+
+
+Week 4
+
+User can :
+Change their name
+Post new items
+Change password with the code sent to their email.
+
+
