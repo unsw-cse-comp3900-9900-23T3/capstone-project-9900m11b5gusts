@@ -26,3 +26,5 @@ users can edit their item(can change column change 0 to 1 which means want to ch
 all users can research item by keywords, order by price, and chose item want changed or not
 Sunday：
 Users can change the password by our service security code(we send code to email)
+### week5
+improve the reset password,user can receive and change by code in 2 minutes,in 2 minutes, any times try is fine in two minutes.Exceed two minute, send email again.

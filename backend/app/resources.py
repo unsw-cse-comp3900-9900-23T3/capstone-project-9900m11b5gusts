@@ -48,7 +48,7 @@ class Register(Resource):
 
 @Author.route('/forgetPassword')
 class ForgetPassword(Resource):
-    @Author.doc(description='Forget password, user input the email')
+    @Author.doc(descroption='Forget password, user input the email')
     @Author.expect(forget_password_model)
     def post(self):
         args = Author.payload

@@ -1,10 +1,9 @@
 from .extensions import db, mail
-import datetime
 from sqlalchemy import or_
-import secrets
 from flask import url_for, current_app
 from flask_mail import Message
 import random
+import datetime
 
 
 class User(db.Model):
@@ -44,10 +43,41 @@ class Item(db.Model):
     time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
+'''----------tools---------'''
+
+
+class MyException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
+def exceed_time(last_time):
+    cur_time = datetime.datetime.now()
+    dif_time = cur_time - last_time
+    if dif_time.total_seconds() / 60 > 2:
+        raise MyException('time exceed 2 minutes.')
+
+
+def time_test(fn):
+    def wrapper(*args, **kwargs):
+        sta_time = datetime.datetime.now()
+        ret = fn(*args, **kwargs)
+        fin_time = datetime.datetime.now()
+        diff_time = fin_time - sta_time
+        print(f'{fn.__name__} spend {diff_time.total_seconds()}s')
+        return ret
+    return wrapper
+
+
+'''------func----'''
+
+
+@time_test
 def send_email(email, content, code):
     with current_app.app_context():
         mail.connect()
-        msg = Message('Password Reset Request', sender='923519550@qq.com', recipients=[email])
+        msg = Message('5Gusts(Password Reset Request)', sender='923519550@qq.com', recipients=[email])
         msg.body = '5Gusts Technology company:\n' + content + f'{code}'
         mail.send(msg)
 
@@ -102,7 +132,7 @@ def forget_pass(email):
     if user:
         try:
             code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-            reset_code = PasswordReset(email=email, code=code)
+            reset_code = PasswordReset(email=email, code=code, create_at=datetime.datetime.now())
             db.session.add(reset_code)
             db.session.commit()
             with current_app.app_context():
@@ -118,9 +148,11 @@ def reset_password(**kwargs):
     email = kwargs['email']
     code = kwargs['code']
     new_password = kwargs['new_password']
-    user_ = PasswordReset.query.filter_by(email=email).first()
+    user_ = PasswordReset.query.filter_by(email=email).order_by(PasswordReset.create_at.desc()).first()
+
     if user_:
         try:
+            exceed_time(user_.create_at)
             if user_.code == code:
                 # 修改密码
                 user = User.query.filter_by(email=email).first()
@@ -132,9 +164,9 @@ def reset_password(**kwargs):
                 return {'result': False, 'info': 'wrong code'}
         except Exception as e:
             return {'result': False, 'info': f'wrong: {e}'}
-        finally:
-            db.session.delete(user_)
-            db.session.commit()
+        except MyException('TimeExceed Exception') as e:
+            return {'result': False, 'info': f'{e}'}
+
     else:
         return {'result': False, 'info': 'This email do not reset email.'}
 
