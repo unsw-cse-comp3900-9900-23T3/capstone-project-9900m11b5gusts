@@ -76,7 +76,8 @@ export default function MyProfileContent({ token, profileData }) {
         "username": username,
         "gender": gender,
         "state": state,
-        "suburb": suburb
+        "suburb": suburb,
+        "image":""
       })
     });
     if (response.status===200){
