@@ -13,7 +13,7 @@ import ItemCard from "./ItemCard";
 import Pagination from "../user_general/Pagination";
 
 
-export default function MyPosts({ token, profileData }) {
+export default function MyPosts({ token, profileData, manageItemID }) {
   const [email, setEmail] = React.useState(null)
   const [posts, setPosts] = React.useState([])
 
@@ -64,15 +64,7 @@ export default function MyPosts({ token, profileData }) {
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
-      <Box
-        component="main"
-        sx={{
-          height: "calc(100vh - 55px)", // 55px is the height of the NavBar
-          display: "grid",
-          gridTemplateColumns: { xs: "auto", md: "60% 40%" },
-          gridTemplateRows: "auto 1fr auto"
-        }}
-      >
+      <Box>
         <Stack
           sx={{
             backgroundColor: "background.surface",
@@ -93,15 +85,6 @@ export default function MyPosts({ token, profileData }) {
 					</Stack>
         </Stack>
 
-        <Box
-          sx={{
-            gridRow: "span 3",
-            display: { xs: "none", md: "flex" },
-            backgroundColor: "background.level1",
-            backgroundSize: "cover",
-            backgroundImage:'url("https://i.pinimg.com/474x/7f/0d/fc/7f0dfc22b1c1f95b812ecedf0cc52b1f.jpg")'
-          }}
-        />
 
         <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
           <Stack spacing={2} sx={{ overflow: "auto" }}>
@@ -109,6 +92,7 @@ export default function MyPosts({ token, profileData }) {
             {posts.map((item, index) => {
               return(
                 <ItemCard key={index} 
+                  index={index}
                   category1={item.class1} 
                   category2={item.class2} 
                   category3={item.class3} 
@@ -117,6 +101,7 @@ export default function MyPosts({ token, profileData }) {
                   amount={item.item_num} 
                   price={item.item_price}
                   image={item.image}
+                  manageItemID={manageItemID}
                 />
                 )  
               })

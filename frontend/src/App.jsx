@@ -39,12 +39,14 @@ import Sidebar from './components/user_general/Sidebar';
 import Header from './components/user_general/Header';
 import MyProfileContent from './components/user_personal/MyProfileContent';
 import PostNewItemPage from './components/user_personal/PostNewItemPage';
+import EditItemPage from './components/user_personal/EditItemPage';
 
 
 
 export default function App() {
 	const [token, setToken] = React.useState(null)
 	const [profileData, setProfileData] = React.useState('')
+	const [itemID, setItemID]= React.useState(-1)
 
 	//Fetch user profile if got a token
   React.useEffect(()=>{
@@ -69,6 +71,11 @@ export default function App() {
 		localStorage.setItem('token', token);
 	}
 
+	function manageItemID(ID){
+		setItemID(ID);
+		localStorage.setItem('itemID', ID);
+	}
+
 	//When logout button is clicked...
 	function logout() {
 		setToken(null);
@@ -79,9 +86,15 @@ export default function App() {
 	//Restore token from localStorage after the page is refreshed
 	React.useEffect(()=>{
 		if (localStorage.getItem('token')){
-		setToken(localStorage.getItem('token'))
+			setToken(localStorage.getItem('token'))
+		}
+
+		if (localStorage.getItem('itemID')){  /////////////////////////remember to remove localstorage
+			setItemID(localStorage.getItem('itemID'))  
 		}
 	}, [token])
+
+
 
 	//Different interface is provided based on if the user has logged in or not
 	//BrowserRouter allows user to visit different pages by URL
@@ -145,8 +158,9 @@ export default function App() {
 								<Routes>
 									<Route path="/market" element={<Homepage token={token} />} />
 									<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
-									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} />} />
-									<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} profileData={profileData} />} />
+									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemID} />} />
+									<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
+									<Route path="/myposts/edititem" element={<EditItemPage token={token} itemID={itemID} profileData={profileData} />} />
 								</Routes>
 							</BrowserRouter>
 

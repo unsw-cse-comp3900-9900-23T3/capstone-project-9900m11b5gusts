@@ -78,11 +78,6 @@ export default function PostNewItemPage({ token, profileData }) {
   }
 
 
-  React.useEffect(()=>{
-		// console.log("profileData on postNewItemPage: ", profileData)
-    // console.log("token on postNewItemPage: ", token)
-  }, [profileData])
-
 
   async function postNewItem(){
     if (!(itemName && amount && price && description)) {
@@ -106,8 +101,6 @@ export default function PostNewItemPage({ token, profileData }) {
         })
       });
       if (response.status===200){
-        // const data = await response.json();
-        // console.log(data);
         alert('Success')
         window.location.href='/myposts'
       }else{
@@ -129,7 +122,6 @@ export default function PostNewItemPage({ token, profileData }) {
 								Back
 							</Button>
 
-							
 						</Stack>
 					</Stack>
       <Box sx={{ position: "sticky", top: { sm: -100, md: -110 }, bgcolor: "background.body", zIndex: 9995 }} >
@@ -145,19 +137,10 @@ export default function PostNewItemPage({ token, profileData }) {
             Post new item
           </Typography>
         </Box>
-
       </Box>
 
       <Stack spacing={4} sx={{ display: "flex", maxWidth: "700px", mx: "auto", px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 } }} >
         <Card>
-          {/* <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Personal info</Typography>
-            <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
-            </Typography>
-          </Box>
-          <Divider /> */}
-
 
           <Stack
             direction="column"
@@ -171,57 +154,24 @@ export default function PostNewItemPage({ token, profileData }) {
                   maxHeight={400}
                   sx={{ flex: 1, minWidth: 400, borderRadius: "3%" }}
                 >
-      
-      <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
-        <CardCover>
-          <img
-            src={picture}
-            loading="lazy"
-            alt="picture"
-          />
-        </CardCover>
-        {/* <CardContent>
-          <Typography
-            level="body-lg"
-            fontWeight="lg"
-            textColor="#fff"
-            mt={{ xs: 12, sm: 18 }}
-          >
-            Image
-          </Typography>
-        </CardContent> */}
-      </Card>
-
+                  <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+                    <CardCover>
+                      {picture && 
+                        <img
+                          src={picture}
+                          loading="lazy"
+                          alt="picture"
+                        />
+                      }
+                    </CardCover>
+                  </Card>
                 </AspectRatio>
-                {/* <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: "background.body",
-                    position: "absolute",
-                    zIndex: 2,
-                    borderRadius: "30%",
-                    left: 40,
-                    top: 40,
-                    boxShadow: "sm"
-                  }}
-                >
-                  <VisuallyHiddenInput type="file" />
-                  <EditRoundedIcon />
-                  
-                </IconButton> */}
               </Stack>
-
-
-
-            {/* </Stack> */}
 
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-<UploadFileButton setPicture={setPicture}/>
+<UploadFileButton setPicture={setPicture} words='Upload a picture'/>
                   
 <FormControl >
 <FormLabel>Name of the item</FormLabel>

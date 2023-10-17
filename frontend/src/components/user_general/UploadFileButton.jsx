@@ -22,7 +22,7 @@ const VisuallyHiddenInput = styled('input')`
   width: 1px;
 `;
 
-export default function UploadFileButton({ setPicture }) {
+export default function UploadFileButton({ setPicture, words='Upload a file' }) {
 
   //Use base64 format to encode the picture into string
   async function handlePicToURL (setPicture) {
@@ -63,7 +63,7 @@ export default function UploadFileButton({ setPicture }) {
         </SvgIcon>
       }
     >
-      Upload a file
+      {words}
       <VisuallyHiddenInput type="file" 
         id="uploadPictureButton"
       />
