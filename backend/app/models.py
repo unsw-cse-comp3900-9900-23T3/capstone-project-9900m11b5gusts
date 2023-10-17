@@ -276,6 +276,9 @@ def update_personal_item(email, **kwargs):
             if kwargs['image']:
                 personal_item.image = kwargs['image']
             personal_item.time_stamp = datetime.datetime.now()
+            # if number = 0 , delete item
+            if personal_item.item_num <= 0:
+                db.session.delete(personal_item)
             db.session.commit()
 
             return {'result': True, 'info': 'update personal item success'}
@@ -284,6 +287,15 @@ def update_personal_item(email, **kwargs):
 
     else:
         return {'result': False, 'info': 'no this item'}
+
+
+def delete_personal_item(email, **kwargs):
+    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id']))
+    if personal_item:
+        db.session.delete(personal_item)
+        return {'result': True, 'info': 'delete success'}
+    else:
+        return {'result': False, 'info': 'do not have this item'}
 
 
 def search_item(**kwargs):
