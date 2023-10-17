@@ -1,3 +1,5 @@
+//MyPosts page will display a listing of all the posts that user has created
+
 import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -8,7 +10,7 @@ import Button from '@mui/joy/Button';
 import AddIcon from '@mui/icons-material/Add';
 
 import ItemCard from "./ItemCard";
-import Pagination from "./Pagination";
+import Pagination from "../user_general/Pagination";
 
 
 export default function MyPosts({ token, profileData }) {
@@ -59,9 +61,6 @@ export default function MyPosts({ token, profileData }) {
       }
   }
 
-
-
-
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -106,12 +105,6 @@ export default function MyPosts({ token, profileData }) {
 
         <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
           <Stack spacing={2} sx={{ overflow: "auto" }}>
-            {/* <ItemCard
-              title="A Stylish Apt, 5 min walk to Queen Victoria Market"
-              category="Entire apartment rental in Collingwood"
-              rareFind
-              image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
-            /> */}
 
             {posts.map((item, index) => {
               return(

@@ -1,115 +1,54 @@
+//This is where user can post a new item
+
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"
 import Box from "@mui/joy/Box"
 import Button from "@mui/joy/Button"
-import Divider from "@mui/joy/Divider"
+// import Divider from "@mui/joy/Divider"
 import FormControl from "@mui/joy/FormControl"
 import FormLabel from "@mui/joy/FormLabel"
-import FormHelperText from "@mui/joy/FormHelperText"
+// import FormHelperText from "@mui/joy/FormHelperText"
 import Input from "@mui/joy/Input"
-import IconButton from "@mui/joy/IconButton"
+// import IconButton from "@mui/joy/IconButton"
 import Textarea from "@mui/joy/Textarea"
 import Stack from "@mui/joy/Stack"
-import Select from "@mui/joy/Select"
-import Option from "@mui/joy/Option"
+// import Select from "@mui/joy/Select"
+// import Option from "@mui/joy/Option"
 import Typography from "@mui/joy/Typography"
-import Tabs from "@mui/joy/Tabs"
-import TabList from "@mui/joy/TabList"
-import Tab, { tabClasses } from "@mui/joy/Tab"
-import Breadcrumbs from "@mui/joy/Breadcrumbs"
-import Link from "@mui/joy/Link"
+// import Tabs from "@mui/joy/Tabs"
+// import TabList from "@mui/joy/TabList"
+// import Tab, { tabClasses } from "@mui/joy/Tab"
+// import Breadcrumbs from "@mui/joy/Breadcrumbs"
+// import Link from "@mui/joy/Link"
 import Card from "@mui/joy/Card"
 import CardActions from "@mui/joy/CardActions"
 import CardOverflow from "@mui/joy/CardOverflow"
 import CardCover from '@mui/joy/CardCover';
-import CardContent from '@mui/joy/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+// import CardContent from '@mui/joy/CardContent';
+// import CardMedia from '@mui/material/CardMedia';
 
 
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded"
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
-import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded"
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded"
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded"
-import EditRoundedIcon from "@mui/icons-material/EditRounded"
+// import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
+// import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded"
+// import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
+// import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded"
+// import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded"
+// import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded"
+// import EditRoundedIcon from "@mui/icons-material/EditRounded"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CheckIcon from '@mui/icons-material/Check';
-import { styled } from '@mui/joy';
-import SvgIcon from '@mui/joy/SvgIcon';
+// import { styled } from '@mui/joy';
+// import SvgIcon from '@mui/joy/SvgIcon';
 
-import DropZone from "./DropZone"
-import FileUpload from "./FileUpload"
+// import DropZone from "../user_general/DropZone"
+// import FileUpload from "../user_general/FileUpload"
 // import CountrySelector from "./CountrySelector"
-import EditorToolbar from "./EditorToolbar"
-// import UploadFileButton from "./UploadFileButton"
+// import EditorToolbar from "./EditorToolbar"
 
-import { fileToDataURL } from './FileToURL.js';
-
-
-const VisuallyHiddenInput = styled('input')`
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  white-space: nowrap;
-  width: 1px;
-`;
-
-function UploadFileButton({ setPicture }) {
-  return (
-    <Button
-      
-      onChange={() => {
-        handlePicToURL(setPicture)
-        // console.log('changing')
-      }}
+// import { fileToDataURL } from '../user_general/FileToURL.js';
 
 
-      component="label"
-      role={undefined}
-      tabIndex={-1}
-      variant="soft"
-      color="primary"
-      startDecorator={
-        <SvgIcon>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-            />
-          </svg>
-        </SvgIcon>
-      }
-    >
-      Upload a file
-      <VisuallyHiddenInput type="file" 
-        id="uploadPictureButton"
-      />
-    </Button>
-  );
-}
-
-
-async function handlePicToURL (setPicture) {
-  // console.log('picToURL')
-  // console.log(document.getElementById('uploadPictureButton'))
-  const fileToDataUrlReturn = fileToDataURL(document.getElementById('uploadPictureButton').files[0]);
-  fileToDataUrlReturn
-    .then((picData) => {
-      setPicture(picData);
-    })
-}
+import UploadFileButton from "../user_general/UploadFileButton.jsx"
 
 
 
@@ -146,7 +85,6 @@ export default function PostNewItemPage({ token, profileData }) {
 
 
   async function postNewItem(){
-
     if (!(itemName && amount && price && description)) {
       alert('Please provide all information.')
     } else {
@@ -178,8 +116,6 @@ export default function PostNewItemPage({ token, profileData }) {
       }
     }
   }
-
-
 
 
   return (

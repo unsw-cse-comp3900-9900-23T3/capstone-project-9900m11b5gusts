@@ -5,14 +5,15 @@ import ListDivider from '@mui/joy/ListDivider';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
 import Home from '@mui/icons-material/Home';
-import AboutUs from './components/Aboutus';
-import Login from './components/Login';
-import Register from './components/Register';
 
-import LoginPageHeader from './components/LoginPageHeader';
-import Homepage from './components/Homepage';
-import MyPosts from './components/MyPosts';
-import ForgetPasswordPage from './components/ForgetPasswordPage';
+import AboutUs from './components/authentication/Aboutus';
+import Login from './components/authentication/Login';
+import Register from './components/authentication/Register';
+
+import LoginPageHeader from './components/authentication/LoginPageHeader';
+import Homepage from './components/user_market/Homepage';
+import MyPosts from './components/user_personal/MyPosts';
+import ForgetPasswordPage from './components/authentication/ForgetPasswordPage';
 
 import ActivityMainPag from './components/compaigns/MainPage';
 import Comments from './components/comments'
@@ -34,10 +35,10 @@ import {
 
 import { CssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import MyProfileContent from './components/MyProfileContent';
-import PostNewItemPage from './components/PostNewItemPage';
+import Sidebar from './components/user_general/Sidebar';
+import Header from './components/user_general/Header';
+import MyProfileContent from './components/user_personal/MyProfileContent';
+import PostNewItemPage from './components/user_personal/PostNewItemPage';
 
 
 
@@ -45,7 +46,7 @@ export default function App() {
 	const [token, setToken] = React.useState(null)
 	const [profileData, setProfileData] = React.useState('')
 
-
+	//Fetch user profile if got a token
   React.useEffect(()=>{
 		if (token !== null && profileData==='') {
 			console.log('getting profile');
@@ -62,35 +63,34 @@ export default function App() {
   }, [token])
 
 
-
-
+	//Use localStorage to help store and reuse token
 	function manageTokenSet(token){
 		setToken(token);
 		localStorage.setItem('token', token);
 	}
 
+	//When logout button is clicked...
 	function logout() {
 		setToken(null);
 		localStorage.removeItem('token')
 		window.location.href = '/'
 	}
 
+	//Restore token from localStorage after the page is refreshed
 	React.useEffect(()=>{
 		if (localStorage.getItem('token')){
 		setToken(localStorage.getItem('token'))
 		}
 	}, [token])
 
+	//Different interface is provided based on if the user has logged in or not
+	//BrowserRouter allows user to visit different pages by URL
 	if (token===null) {
 		return(
-			
 			<>
-			
 				<LoginPageHeader />
 				
 				<BrowserRouter>
-
-					
 
 					<Routes>
 						<Route path="/" element={<AboutUs />} />
@@ -110,8 +110,6 @@ export default function App() {
 				</BrowserRouter>
 			
 			</>
-			
-
 		)
 	} else {
 		return(

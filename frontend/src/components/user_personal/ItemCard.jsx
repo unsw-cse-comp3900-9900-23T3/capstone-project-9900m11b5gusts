@@ -8,12 +8,12 @@ import IconButton from "@mui/joy/IconButton"
 import Link from "@mui/joy/Link"
 import Stack from "@mui/joy/Stack"
 import Typography from "@mui/joy/Typography"
-import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded"
+// import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded"
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded"
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
-import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
-import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
-import Star from "@mui/icons-material/Star"
+// import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
+// import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
+// import Star from "@mui/icons-material/Star"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
 
 export default function ItemCard({
