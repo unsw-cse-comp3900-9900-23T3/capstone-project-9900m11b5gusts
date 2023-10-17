@@ -33,7 +33,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 
-import ColorSchemeToggle from './blocks/ColorSchemeToggle';
+import ColorSchemeToggle from '../blocks/ColorSchemeToggle';
 import { CssVarsProvider } from '@mui/joy/styles';
 // import { closeSidebar } from '../utils';
 

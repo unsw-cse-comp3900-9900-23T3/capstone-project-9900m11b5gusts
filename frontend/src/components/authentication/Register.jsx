@@ -17,7 +17,7 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import PasswordMeterInput from "./Passwordbox";
-import RadioButtonsGroup from "./Radiobutton";
+import RadioButtonsGroup from "../user_general/Radiobutton";
 
 function ColorSchemeToggle({ onClick, ...props }) {
     const {mode, setMode} = useColorScheme();

@@ -5,35 +5,35 @@ import Button from "@mui/joy/Button"
 import Divider from "@mui/joy/Divider"
 import FormControl from "@mui/joy/FormControl"
 import FormLabel from "@mui/joy/FormLabel"
-import FormHelperText from "@mui/joy/FormHelperText"
+// import FormHelperText from "@mui/joy/FormHelperText"
 import Input from "@mui/joy/Input"
 import IconButton from "@mui/joy/IconButton"
-import Textarea from "@mui/joy/Textarea"
+// import Textarea from "@mui/joy/Textarea"
 import Stack from "@mui/joy/Stack"
-import Select from "@mui/joy/Select"
-import Option from "@mui/joy/Option"
+// import Select from "@mui/joy/Select"
+// import Option from "@mui/joy/Option"
 import Typography from "@mui/joy/Typography"
-import Tabs from "@mui/joy/Tabs"
-import TabList from "@mui/joy/TabList"
-import Tab, { tabClasses } from "@mui/joy/Tab"
-import Breadcrumbs from "@mui/joy/Breadcrumbs"
-import Link from "@mui/joy/Link"
+// import Tabs from "@mui/joy/Tabs"
+// import TabList from "@mui/joy/TabList"
+// import Tab, { tabClasses } from "@mui/joy/Tab"
+// import Breadcrumbs from "@mui/joy/Breadcrumbs"
+// import Link from "@mui/joy/Link"
 import Card from "@mui/joy/Card"
 import CardActions from "@mui/joy/CardActions"
 import CardOverflow from "@mui/joy/CardOverflow"
 
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded"
+// import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
+// import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded"
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
-import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded"
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded"
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded"
+// import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded"
+// import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded"
+// import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded"
 import EditRoundedIcon from "@mui/icons-material/EditRounded"
 
-import DropZone from "./DropZone"
-import FileUpload from "./FileUpload"
+// import DropZone from "../user_general/DropZone"
+// import FileUpload from "../user_general/FileUpload"
 // import CountrySelector from "./CountrySelector"
-import EditorToolbar from "./EditorToolbar"
+// import EditorToolbar from "./EditorToolbar"
 
 export default function MyProfileContent({ token, profileData }) {
   React.useEffect(()=>{
@@ -77,7 +77,11 @@ export default function MyProfileContent({ token, profileData }) {
         "gender": gender,
         "state": state,
         "suburb": suburb,
+<<<<<<< HEAD:frontend/src/components/MyProfileContent.jsx
         'image': ''
+=======
+        "image":""
+>>>>>>> 73a76445cd1a2c8e184fff3b708cb562568bd02b:frontend/src/components/user_personal/MyProfileContent.jsx
       })
     });
     if (response.status===200){

@@ -10,7 +10,7 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 
 // import framesxTheme from './blocks/theme';
-import HeroLeft01 from './blocks/HeroLeft01';
+import HeroLeft01 from '../blocks/HeroLeft01';
 
 
 function ColorSchemeToggle() {

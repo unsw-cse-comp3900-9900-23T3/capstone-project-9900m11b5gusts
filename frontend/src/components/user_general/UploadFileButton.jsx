@@ -1,8 +1,15 @@
+//For better looking, the input for file uploading is set to be hidden behind a button
+
 import * as React from 'react';
 import Button from '@mui/joy/Button';
 import SvgIcon from '@mui/joy/SvgIcon';
 import { styled } from '@mui/joy';
 
+import { fileToDataURL } from '../user_general/FileToURL.js';
+
+
+
+//The following tow sections of code make an upload button
 const VisuallyHiddenInput = styled('input')`
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -15,14 +22,29 @@ const VisuallyHiddenInput = styled('input')`
   width: 1px;
 `;
 
-export default function UploadFileButton() {
+export default function UploadFileButton({ setPicture }) {
+
+  //Use base64 format to encode the picture into string
+  async function handlePicToURL (setPicture) {
+    const fileToDataUrlReturn = fileToDataURL(document.getElementById('uploadPictureButton').files[0]);
+    fileToDataUrlReturn
+      .then((picData) => {
+        setPicture(picData);
+      })
+  }
+
   return (
     <Button
+      
+      onChange={() => {
+        handlePicToURL(setPicture)
+      }}
+
       component="label"
       role={undefined}
       tabIndex={-1}
-      variant="outlined"
-      color="neutral"
+      variant="soft"
+      color="primary"
       startDecorator={
         <SvgIcon>
           <svg
@@ -42,7 +64,9 @@ export default function UploadFileButton() {
       }
     >
       Upload a file
-      <VisuallyHiddenInput type="file" />
+      <VisuallyHiddenInput type="file" 
+        id="uploadPictureButton"
+      />
     </Button>
   );
 }
