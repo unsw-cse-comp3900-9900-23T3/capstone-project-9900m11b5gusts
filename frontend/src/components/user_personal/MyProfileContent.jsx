@@ -77,11 +77,7 @@ export default function MyProfileContent({ token, profileData }) {
         "gender": gender,
         "state": state,
         "suburb": suburb,
-<<<<<<< HEAD:frontend/src/components/MyProfileContent.jsx
         'image': ''
-=======
-        "image":""
->>>>>>> 73a76445cd1a2c8e184fff3b708cb562568bd02b:frontend/src/components/user_personal/MyProfileContent.jsx
       })
     });
     if (response.status===200){
