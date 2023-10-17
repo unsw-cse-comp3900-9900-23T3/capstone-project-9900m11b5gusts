@@ -61,6 +61,10 @@ update_personal_item_model = api.model('update_personal_item_data', {
         'change': fields.String(example='1')
 })
 
+delete_personal_item_model = api.model('delete_personal_item_data', {
+        'item_id': fields.String(example='2')
+})
+
 
 search_items_model = api.model('search_items_data', {
         'keyword': fields.String(example='NSW'),

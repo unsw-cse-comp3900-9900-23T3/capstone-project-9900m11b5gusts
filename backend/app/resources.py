@@ -1,8 +1,8 @@
 from flask_restx import Resource, Namespace
 from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
-    update_personal_item_model, search_items_model, forget_password_model, reset_password_model
+    update_personal_item_model, search_items_model, forget_password_model, reset_password_model, delete_personal_item_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
-    update_personal_item, search_item, forget_pass, reset_password
+    update_personal_item, search_item, forget_pass, reset_password, delete_personal_item
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -146,6 +146,22 @@ class EditPersonalItem(Resource):
             return {'success': update_personal_item_result['info']}, 200
         else:
             return {'error': update_personal_item_result['info']}, 400
+
+
+@Item.route('/deleteItem')
+class DeleteItem(Resource):
+    @Item.doc('delete personal item')
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    @Item.expect(delete_personal_item_model)
+    def delete(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        result = delete_personal_item(email, **args)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
 
 
 @Item.route('/searchItem')
