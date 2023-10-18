@@ -9,14 +9,17 @@ import Link from "@mui/joy/Link"
 import Stack from "@mui/joy/Stack"
 import Typography from "@mui/joy/Typography"
 // import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded"
-import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded"
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
 // import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
 // import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
 // import Star from "@mui/icons-material/Star"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export default function ItemCard({
+  index=-1,
   category1 = '',
   category2 = '',
   category3 = '',
@@ -25,10 +28,19 @@ export default function ItemCard({
   amount = '0',
   price = '0',
   finished = false,
-  liked = false,
-  image = 'https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg'
+  image = 'https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg',
+  manageItemID
 }) {
-  const [isLiked, setIsLiked] = React.useState(liked)
+
+
+  const handleEditButton = () => {
+    console.log('clicked')
+    console.log(index)
+    manageItemID(index)
+    window.location.href='/myposts/edititem'
+  }
+
+
   return (
     <Card
       variant="outlined"
@@ -79,20 +91,39 @@ export default function ItemCard({
                 Finished
               </Chip>
             )}
+            <Stack direction="column">
             <IconButton
-              variant="plain"
-              size="sm"
-              color={isLiked ? "danger" : "neutral"}
-              onClick={() => setIsLiked(prev => !prev)}
-              sx={{
-                display: { xs: "flex", sm: "none" },
-                ml: "auto",
-                borderRadius: "50%",
-                zIndex: "20"
-              }}
-            >
-              <FavoriteRoundedIcon />
-            </IconButton>
+                variant="plain"
+                size="sm"
+                color={"neutral"}
+                onClick={handleEditButton}
+                sx={{
+                  display: { xs: "flex", sm: "none" },
+                  ml: "auto",
+                  borderRadius: "50%",
+                  zIndex: "20"
+                }}
+              >
+                <EditNoteIcon />Edit
+              </IconButton>
+              <IconButton
+                variant="plain"
+                size="sm"
+                color={"danger"}
+                // onClick={handleEditButton}
+                sx={{
+                  display: { xs: "flex", sm: "none" },
+                  ml: "auto",
+                  borderRadius: "50%",
+                  zIndex: "20"
+                }}
+              >
+                <DeleteIcon />Delete
+              </IconButton>
+
+            </Stack>
+
+
           </Stack>
         </AspectRatio>
       </CardOverflow>
@@ -116,18 +147,34 @@ export default function ItemCard({
               </Link>
             </Typography>
           </div>
-          <IconButton
-            variant="plain"
-            size="sm"
-            color={isLiked ? "danger" : "neutral"}
-            onClick={() => setIsLiked(prev => !prev)}
-            sx={{
-              display: { xs: "none", sm: "flex" },
-              borderRadius: "50%"
-            }}
-          >
-            <FavoriteRoundedIcon />
-          </IconButton>
+          <Stack direction="column">
+            <IconButton
+              variant="plain"
+              size="sm"
+              color={"neutral"}
+              onClick={handleEditButton}
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                borderRadius: "50%"
+              }}
+            >
+              <EditNoteIcon />Edit
+            </IconButton>
+            <IconButton
+              variant="plain"
+              size="sm"
+              color={"danger"}
+              // onClick={handleEditButton}
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                borderRadius: "50%"
+              }}
+            >
+              <DeleteIcon />Delete
+            </IconButton>
+          </Stack>
+
+          
         </Stack>
 
         <Stack

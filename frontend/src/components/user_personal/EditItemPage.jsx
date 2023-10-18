@@ -52,7 +52,11 @@ import UploadFileButton from "../user_general/UploadFileButton.jsx"
 
 
 
-export default function PostNewItemPage({ token, profileData }) {
+export default function EditItemPage({ token, itemID, profileData }) {
+
+  const [posts, setPosts] = React.useState([])
+  const [email, setEmail] = React.useState(null)
+
 
   const [itemName, setItemName] = React.useState('')
   const [amount, setAmount] = React.useState('')
@@ -78,18 +82,72 @@ export default function PostNewItemPage({ token, profileData }) {
   }
 
 
+  React.useEffect(() => {
+    if (profileData) {
+      setEmail(profileData.email)
+    }
+  }, [profileData])
 
-  async function postNewItem(){
-    if (!(itemName && amount && price && description)) {
-      alert('Please provide all information.')
-    } else {
-      const response = await fetch('http://127.0.0.1:5000/Items/uploadPersonalItem', {
+  React.useEffect(() => {
+    if (email !== null){
+      checkPersonalItem()
+    }
+  },[email])
+
+
+  React.useEffect(()=>{
+    if (posts.length > 0) {
+      console.log('post: ', posts[itemID])
+      setItemName(posts[itemID].item_name)
+      setAmount(posts[itemID].item_num)
+      setPrice(posts[itemID].item_price)
+      setDescription(posts[itemID].item_desc)
+      setPicture(posts[itemID].image)
+    }
+  }, [posts])
+
+  async function checkPersonalItem(){
+    console.log('email: ', email)
+    console.log('token: ', token)
+    const response = await fetch('http://127.0.0.1:5000/Items/checkPersonalItem', {
         method:'POST',
         headers:{
           'Content-type': 'application/json',
           'Authorization' : `Bearer ${token}`,
         },
         body:JSON.stringify({
+          'user_email': email
+        })
+      });
+      if (response.status===200){
+        const data = await response.json();
+        console.log('posts: ', data.success)
+        if (data.success !== 'no item'){
+            Object.entries(data.success).map((item) => {
+            setPosts(prev => [...prev, item[1]])
+          })
+        }
+      }else{
+        const data = await response.json();
+        alert(data)
+      }
+  }
+
+
+
+  async function confirmEdit(){
+    
+    if (!(itemName && amount && price && description)) {
+      alert('Please provide all information.')
+    } else {
+      const response = await fetch('http://127.0.0.1:5000/Items/editPersonalItem', {
+        method:'POST',
+        headers:{
+          'Content-type': 'application/json',
+          'Authorization' : `Bearer ${token}`,
+        },
+        body:JSON.stringify({
+          "item_id": (itemID+1).toString(),
           "item_name": itemName,
           "image":picture,
           "description": description,
@@ -97,7 +155,8 @@ export default function PostNewItemPage({ token, profileData }) {
           "num": parseInt(amount),
           "class1": "coles",
           "class2": "study",
-          "class3": "stationery"
+          "class3": "stationery",
+          "change": ""
         })
       });
       if (response.status===200){
@@ -105,7 +164,7 @@ export default function PostNewItemPage({ token, profileData }) {
         window.location.href='/myposts'
       }else{
         const data = await response.json();
-        alert(data)
+        alert(data.error)
       }
     }
   }
@@ -156,13 +215,11 @@ export default function PostNewItemPage({ token, profileData }) {
                 >
                   <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
                     <CardCover>
-                      {picture && 
-                        <img
-                          src={picture}
-                          loading="lazy"
-                          alt="picture"
-                        />
-                      }
+                      <img
+                        src={picture}
+                        loading="lazy"
+                        alt="picture"
+                      />
                     </CardCover>
                   </Card>
                 </AspectRatio>
@@ -171,7 +228,7 @@ export default function PostNewItemPage({ token, profileData }) {
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-<UploadFileButton setPicture={setPicture} words='Upload a picture'/>
+<UploadFileButton setPicture={setPicture}/>
                   
 <FormControl >
 <FormLabel>Name of the item</FormLabel>
@@ -211,7 +268,7 @@ export default function PostNewItemPage({ token, profileData }) {
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
             <Button style={{margin:'15px', width:'100px'}} startDecorator={<CheckIcon/>} variant="soft" size="sm" 
-              onClick={postNewItem}
+              onClick={confirmEdit}
             >
 								Confirm
 							</Button>
