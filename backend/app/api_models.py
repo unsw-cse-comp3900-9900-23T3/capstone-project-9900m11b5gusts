@@ -77,3 +77,29 @@ search_items_model = api.model('search_items_data', {
         'trading_method': fields.String(example='cash'),
         'change': fields.Boolean(example=True)
 })
+
+search_activity_model = api.model('search_activity_model', {
+        'activity_name': fields.String(example='name'),
+        'category': fields.String(example='category')
+})
+
+create_activity_model = api.model('create_activity', {
+        'activity_name': fields.String(example='name'),
+        'status': fields.String(example='status'),
+        'category': fields.String(example='category'),
+        'overview': fields.String(example='overview'),
+        'detail': fields.String(example='detail')
+})
+
+delete_activity_model = api.model('search_activity_model', {
+        'activity_name': fields.String(example='name'),
+        'category': fields.String(example='category')
+})
+
+update_activity_model = api.model('create_activity', {
+        'activity_name': fields.String(example='name'),
+        'status': fields.String(example='status'),
+        'category': fields.String(example='category'),
+        'overview': fields.String(example='overview'),
+        'detail': fields.String(example='detail')
+})

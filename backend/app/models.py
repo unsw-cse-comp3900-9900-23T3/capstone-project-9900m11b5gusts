@@ -26,6 +26,14 @@ class PasswordReset(db.Model):
     code = db.Column(db.String(100))
     create_at = db.Column(db.DateTime, default=datetime.datetime.now())
 
+class Activity(db.Model):
+    __tablename__ = 'tb_activity'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    activity_name = db.Column(db.String(30), unique=True, default='activity name')
+    status = db.Column(db.String(30), default='status')
+    category = db.Column(db.String(30), default='category')
+    overview = db.Column(db.String(1000), default='overview')
+    detail = db.Column(db.String(1000), default='detail')
 
 class Item(db.Model):
     __tablename__ = 'tb_item'
@@ -361,7 +369,86 @@ def search_item(**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'invalid input{e}'}
 
+def search_activity(**kwargs):
+    activity_name = kwargs['activity_name']
+    category = kwargs['category']
 
+    activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
+
+    if activity:
+        activity_dict = {'activity_name': activity.activity_name,
+                'status': activity.status,
+                'category': activity.category,
+                'overview': activity.overview,
+                'detail': activity.detail
+                }
+        return { 'result': True, 'activity':activity_dict }
+    else:
+        return { 'result': False, 'info': f'The activity does not exist.'}
+
+
+
+
+def create_activity(**kwargs):
+    activity_name = kwargs['activity_name']
+    category = kwargs['category']
+
+    activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
+
+    if activity:
+        return { 'result': False,'info': f'The activity exist.' }
+    else:
+        try:
+            activity_name = kwargs['activity_name']
+            status = kwargs['status']
+            category = kwargs['category']
+            overview = kwargs['overview']
+            detail = kwargs['detail']
+            activity = Activity(activity_name=activity_name, status=status, category=category,
+                         overview=overview,detail=detail)
+            db.session.add(activity)
+            db.session.commit()
+            return { 'result': True,'info':'Create the activity successfully'}
+        except Exception as e:
+            return { 'result': False,'info': f'Failed to create the activity'}
+
+
+def delete_activity(**kwargs):
+    activity_name = kwargs['activity_name']
+    category = kwargs['category']
+
+    activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
+
+    if activity:
+        db.session.delete(activity)
+        return {'result': True, 'info': 'delete success'}
+    else:
+        return {'result': False, 'info': 'do not have this item'}
+
+def get_user_identity(email):
+    user = User.query.filter_by(email=email).first()
+    return user.identity
+
+
+def update_activity(**kwargs):
+    # activity update
+    activity_name = kwargs['activity_name']
+    status = kwargs['status']
+    category = kwargs['category']
+    overview = kwargs['overview']
+    detail = kwargs['detail']
+    try:
+        activity = Activity.query.filter_by(activity_name=activity_name).first()
+        if activity:
+            activity.activity_name = activity_name
+            activity.status = status
+            activity.category = category
+            activity.overview = overview
+            activity.detail = detail
+            db.session.commit()
+            return {'result': True, 'info': f'update activity success'}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to update activity'}
 
 
 
