@@ -1,6 +1,6 @@
 from .extensions import db, mail
 from sqlalchemy import or_
-from flask import url_for, current_app
+from flask import current_app
 from flask_mail import Message
 import random
 import datetime
@@ -39,7 +39,9 @@ class Item(db.Model):
     class1 = db.Column(db.String(30))
     class2 = db.Column(db.String(30))
     class3 = db.Column(db.String(30))
-    change = db.Column(db.Integer, default=0)
+    trading_method = db.Column(db.String(10), default='cash')
+    exchange_item = db.Column(db.String(100), default='')
+    change = db.Column(db.Boolean, default=False)
     time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
@@ -94,7 +96,6 @@ def user_register(**kwargs):
         event = User(email=input_register_email, username=input_username, password=input_password,
                      identity=input_identity)
         db.session.add(event)
-
         db.session.commit()
         print(f'LOG: {input_register_email} register success!')
         return {'result': True,
@@ -219,10 +220,13 @@ def insert_item(email, **kwargs):
     input_class1 = kwargs['class1']
     input_class2 = kwargs['class2']
     input_class3 = kwargs['class3']
+    input_method = kwargs['trading_method']
+    input_change = kwargs['change']
+    input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
     try:
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
-                     class3=input_class3)
+                     class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
         db.session.add(event)
         db.session.commit()
         return {'result': True, 'info': 'insert item success'}
@@ -242,10 +246,12 @@ def get_personal_item(email):
                 'item_price': str(item.item_price),
                 'item_num': str(item.item_num),
                 'item_desc': item.item_desc,
-                'change': str(item.change),
                 'class1': item.class1,
                 'class2': item.class2,
                 'class3': item.class3,
+                'trading_method': item.trading_method,
+                'exchange_item': item.exchange_item,
+                'change': item.change,
                 'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
             }
         return {'result': True, 'info': temp_dict}
@@ -271,8 +277,12 @@ def update_personal_item(email, **kwargs):
                 personal_item.class2 = kwargs['class2']
             if kwargs['class3']:
                 personal_item.class3 = kwargs['class3']
+            if kwargs['trading_method']:
+                personal_item.trading_method = kwargs['trading_method']
+            if kwargs['exchange_item']:
+                personal_item.exchange_item = kwargs['exchange_item']
             if kwargs['change']:
-                personal_item.change = int(kwargs['change'])
+                personal_item.change = kwargs['change']
             if kwargs['image']:
                 personal_item.image = kwargs['image']
             personal_item.time_stamp = datetime.datetime.now()
@@ -290,9 +300,11 @@ def update_personal_item(email, **kwargs):
 
 
 def delete_personal_item(email, **kwargs):
-    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id']))
+    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id'])).first()
+    print(personal_item)
     if personal_item:
         db.session.delete(personal_item)
+        db.session.commit()
         return {'result': True, 'info': 'delete success'}
     else:
         return {'result': False, 'info': 'do not have this item'}
@@ -300,12 +312,13 @@ def delete_personal_item(email, **kwargs):
 
 def search_item(**kwargs):
     keyword = kwargs['keyword']
-    price_sorted = kwargs['price_sorted']  # '0' default, '1' ASC, '2' DESC
-    changed = kwargs['changed']
+    price_sorted = kwargs['price_sorted']
+    trading_method = kwargs['trading_method']
+    change = kwargs['change']
     p_dict = {
-        '0': None,
-        '1': Item.item_price.asc(),
-        '2': Item.item_price.desc()
+        'default': None,
+        'asd': Item.item_price.asc(),
+        'desc': Item.item_price.desc()
     }
 
     try:
@@ -318,13 +331,11 @@ def search_item(**kwargs):
                 Item.class3.ilike(f'%{keyword}%')
             )
         )
+        if trading_method != 'default':
+            query = query.filter(Item.trading_method == trading_method)
         sort_condition = p_dict[price_sorted]
         query = query.order_by(sort_condition)
-
-        if changed == '1':
-            query = query.filter(Item.change == 1)
-        else:
-            query = query.filter(Item.change == 0)
+        query = query.filter(Item.change == change)
         s_items = query.all()
 
         if s_items:

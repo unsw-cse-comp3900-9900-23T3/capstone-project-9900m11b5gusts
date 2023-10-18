@@ -28,3 +28,7 @@ Sunday：
 Users can change the password by our service security code(we send code to email)
 ### week5
 improve the reset password,user can receive and change by code in 2 minutes,in 2 minutes, any times try is fine in two minutes.Exceed two minute, send email again.
+### week6
+change the item database column people can select cash or exchange in trading_method.
+all the item api is changed.
+fix the delete item bug.

@@ -41,7 +41,10 @@ insertItem_model = api.model('insertItem_data', {
         'num': fields.String(example='2'),
         'class1': fields.String(example='coles'),
         'class2': fields.String(example='study'),
-        'class3': fields.String(example='stationery')
+        'class3': fields.String(example='stationery'),
+        'trading_method': fields.String(example='cash'),
+        'exchange_item': fields.String(example=''),
+        'change': fields.Boolean(example=False)
 })
 
 get_personal_item_model = api.model('get_personal_item_data', {
@@ -58,7 +61,9 @@ update_personal_item_model = api.model('update_personal_item_data', {
         'class1': fields.String(example='woolworth'),
         'class2': fields.String(example='working'),
         'class3': fields.String(example='pens'),
-        'change': fields.String(example='1')
+        'trading_method': fields.String(example='exchange'),
+        'exchange_item': fields.String(example='PenBox'),
+        'change': fields.Boolean(example=False)
 })
 
 delete_personal_item_model = api.model('delete_personal_item_data', {
@@ -67,7 +72,8 @@ delete_personal_item_model = api.model('delete_personal_item_data', {
 
 
 search_items_model = api.model('search_items_data', {
-        'keyword': fields.String(example='NSW'),
-        'price_sorted': fields.String(example='0'),
-        'changed': fields.String(example='1')
+        'keyword': fields.String(example='Pen'),
+        'price_sorted': fields.String(example='default'),
+        'trading_method': fields.String(example='cash'),
+        'change': fields.Boolean(example=True)
 })

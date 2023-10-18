@@ -104,8 +104,7 @@ Item = Namespace('Items')
 @Item.route('/uploadPersonalItem')
 class UploadPersonalItem(Resource):
 
-    @Item.doc(description='New user can upload items they have (default is not change item, \
-    item change column is 0), if change change column is 1.')
+    @Item.doc(description='If cash: exchange is empty string')
     @Item.doc(security='jsonWebToken')
     @jwt_required()
     @Item.expect(insertItem_model)
