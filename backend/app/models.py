@@ -310,17 +310,16 @@ def delete_personal_item(email, **kwargs):
         return {'result': False, 'info': 'do not have this item'}
 
 
-def search_item(**kwargs):
+def search_item(page, **kwargs):
     keyword = kwargs['keyword']
     price_sorted = kwargs['price_sorted']
     trading_method = kwargs['trading_method']
     change = kwargs['change']
     p_dict = {
         'default': None,
-        'asd': Item.item_price.asc(),
+        'asc': Item.item_price.asc(),
         'desc': Item.item_price.desc()
     }
-
     try:
         query = Item.query.filter(
             or_(
@@ -335,11 +334,15 @@ def search_item(**kwargs):
             query = query.filter(Item.trading_method == trading_method)
         sort_condition = p_dict[price_sorted]
         query = query.order_by(sort_condition)
+        print(query.all())
         query = query.filter(Item.change == change)
-        s_items = query.all()
+        page_size = 10
+        offset = (page - 1) * page_size
+        total_rows = query.count()
+        s_items = query.offset(offset).limit(page_size).all()
 
         if s_items:
-            item_dict = {}
+            item_dict = {'total_rows': total_rows}
             for item in s_items:
                 item_dict[item.id] = {
                     'item_name': item.item_name,
@@ -347,6 +350,8 @@ def search_item(**kwargs):
                     'item_price': str(item.item_price),
                     'item_num': str(item.item_num),
                     'item_desc': item.item_desc,
+                    'trading_method': item.trading_method,
+                    'exchange_item': item.exchange_item,
                     'change': str(item.change),
                     'class1': item.class1,
                     'class2': item.class2,

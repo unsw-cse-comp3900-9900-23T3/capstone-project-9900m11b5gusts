@@ -72,8 +72,8 @@ delete_personal_item_model = api.model('delete_personal_item_data', {
 
 
 search_items_model = api.model('search_items_data', {
-        'keyword': fields.String(example='Pen'),
+        'keyword': fields.String(example='pen'),
         'price_sorted': fields.String(example='default'),
         'trading_method': fields.String(example='cash'),
-        'change': fields.Boolean(example=True)
+        'change': fields.Boolean(example=False)
 })

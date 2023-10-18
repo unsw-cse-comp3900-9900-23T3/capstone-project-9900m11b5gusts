@@ -163,14 +163,14 @@ class DeleteItem(Resource):
             return {'error': result['info']}, 400
 
 
-@Item.route('/searchItem')
+@Item.route('/searchItem/<int:page>')
 class SearchItem(Resource):
-    @Item.doc(description='Can search by keyword and sort the price(0 mean default, 1 means ASC, 2 means DESC) \
-    and filter the item is changed(1) or not changed(0)')
+    @Item.doc(description='Can search by keyword and sort the price(default,asc,desc) trading_method(cash,exchange), '
+                          'every page has 10 records')
     @Item.expect(search_items_model)
-    def post(self):
+    def post(self, page):
         args = Item.payload
-        result = search_item(**args)
+        result = search_item(page, **args)
         if result['result']:
             return {'success': result['info']}, 200
         else:
