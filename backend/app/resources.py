@@ -1,8 +1,11 @@
 from flask_restx import Resource, Namespace
 from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
-    update_personal_item_model, search_items_model, forget_password_model, reset_password_model, delete_personal_item_model
+    update_personal_item_model, search_items_model, forget_password_model, reset_password_model, \
+    delete_personal_item_model, create_activity_model, search_activity_model, delete_activity_model, \
+    update_activity_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
-    update_personal_item, search_item, forget_pass, reset_password, delete_personal_item
+    update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
+    get_user_identity, create_activity, delete_activity, update_activity
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -177,3 +180,68 @@ class SearchItem(Resource):
             return {'error': result['info']}, 400
 
 
+Activity = Namespace('Activity', authorizations=authorizations)
+
+@Activity.route('/searchActivity')
+class SearchActivity(Resource):
+    @Activity.doc(description='Can search activity by name and category')
+    @Activity.expect(search_activity_model)
+    def post(self):
+        args = Activity.payload
+        result = search_activity(**args)
+        print(result)
+        if result['result']:
+            return {'success': result['activity']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+@Activity.route('/createActivity')
+class CreateActivity(Resource):
+    @Activity.doc(description='Manager can create new activities')
+    @Activity.doc(security='jsonWebToken')
+    @jwt_required()
+    @Activity.expect(create_activity_model)
+    def post(self):
+        args = Activity.payload
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+
+        if identity == "manager":
+            result = create_activity(**args)
+
+            if result['result']:
+                return {'success': result['info']}, 200
+            else:
+                return {'error': result['info']}, 400
+        else:
+            return {'error':f'Only manager can create the activity'},400
+
+@Activity.route('/deleteActivity')
+class DeleteActivity(Resource):
+    @Activity.doc(description='Can delete activity')
+    @Activity.doc(security='jsonWebToken')
+    @jwt_required()
+    @Activity.expect(delete_activity_model)
+    def delete(self):
+        args = Activity.payload
+        result = delete_activity(**args)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+@Activity.route('/editActivity')
+class EditActivity(Resource):
+
+    @Activity.doc(description='Edit the activity information')
+    @Activity.doc(security='jsonWebToken')
+    @jwt_required()
+    @Activity.expect(update_activity_model)
+    def post(self):
+        args = Activity.payload
+        update_activity_result = update_activity(**args)
+        if update_activity_result['result']:
+            return {'success': update_activity_result['info']}, 200
+        else:
+            return {'error': update_activity_result['info']}, 400
