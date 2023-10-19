@@ -6,7 +6,9 @@ import Stack from '@mui/joy/Stack';
 import SegmentIcon from '@mui/icons-material/Segment';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function Homepage ({ token }) {
+import SearchBar from './SearchBar';
+
+export default function MarketHomePage ({ token }) {
   
   console.log('loding homepage')
   return(
@@ -14,10 +16,10 @@ export default function Homepage ({ token }) {
 
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
         <Stack direction="row" spacing={2} style={{marginTop: '30px'}}>
-          <Button variant="outlined" style={{width: '120px'}}><SegmentIcon/>Category</Button>
-            <Input fullWidth  id="fullWidth" />
-          <Button variant="outlined" style={{width: '120px'}}><SearchIcon/>Search</Button>
+          <Button variant="outlined" style={{height: '48px', width: '100px'}}><SegmentIcon/>Category</Button>
+          <SearchBar/>
         </Stack>
+
       </div>
 
     </Box>

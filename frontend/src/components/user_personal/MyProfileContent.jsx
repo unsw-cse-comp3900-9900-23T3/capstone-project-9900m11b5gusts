@@ -35,6 +35,8 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded"
 // import CountrySelector from "./CountrySelector"
 // import EditorToolbar from "./EditorToolbar"
 
+
+
 export default function MyProfileContent({ token, profileData }) {
   React.useEffect(()=>{
     if(profileData) {
@@ -88,6 +90,10 @@ export default function MyProfileContent({ token, profileData }) {
       console.log(data);
     }
   }
+
+
+  loadExternalContent();
+
 
   return (
     <Box sx={{ flex: 1, width: "100%", minWidth: '600px' }} >
@@ -194,8 +200,11 @@ export default function MyProfileContent({ token, profileData }) {
             <iframe src="AddressSelector.html"
               width="100%" height="320px"
               style={{border: '0'}}
-              loading="lazy">
+              // loading="lazy"
+              id="addressiframe"
+              >
             </iframe>
+            {/* <div id="external-content"></div> */}
 
 
           </Stack>
@@ -211,73 +220,6 @@ export default function MyProfileContent({ token, profileData }) {
           </CardOverflow>
         </Card>
 
-
-        {/* <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <EditorToolbar />
-            <Textarea
-              size="sm"
-              minRows={4}
-              sx={{ mt: 1.5 }}
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Portfolio projects</Typography>
-            <Typography level="body-sm">
-              Share a few snippets of your work.
-            </Typography>
-          </Box>
-
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <DropZone />
-            <FileUpload
-              icon={<InsertDriveFileRoundedIcon />}
-              fileName="Tech design requirements.pdf"
-              fileSize="200 kB"
-              progress={100}
-            />
-            <FileUpload
-              icon={<VideocamRoundedIcon />}
-              fileName="Dashboard prototype recording.mp4"
-              fileSize="16 MB"
-              progress={40}
-            />
-          </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card> */}
       </Stack>
     </Box>
   )
