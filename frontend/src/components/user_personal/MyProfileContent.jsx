@@ -29,15 +29,25 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
 // import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded"
 // import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded"
 import EditRoundedIcon from "@mui/icons-material/EditRounded"
+import UploadFileButton from "../user_general/UploadFileButton"
 
 // import DropZone from "../user_general/DropZone"
 // import FileUpload from "../user_general/FileUpload"
 // import CountrySelector from "./CountrySelector"
 // import EditorToolbar from "./EditorToolbar"
 
+// Function to fetch and display the external content
+
+
+// Call the function to load the external content
+
+
+
 
 
 export default function MyProfileContent({ token, profileData }) {
+
+
   React.useEffect(()=>{
     if(profileData) {
       console.log("profileData on profile:", profileData)
@@ -45,6 +55,7 @@ export default function MyProfileContent({ token, profileData }) {
       setGender(profileData.gender)
       setState(profileData.state)
       setSuburb(profileData.suburb)
+      setPicture(profileData.image)
     }
   }, [profileData])
 
@@ -53,6 +64,8 @@ export default function MyProfileContent({ token, profileData }) {
   const [gender, setGender] = React.useState('')
   const [state, setState] = React.useState('')
   const [suburb, setSuburb] = React.useState('')
+  const [picture, setPicture] = React.useState('')
+  const [editSateFlag, setEditStateFlag] =React.useState(false)
 
 
   const handleNameChange = (event)=>{
@@ -60,11 +73,14 @@ export default function MyProfileContent({ token, profileData }) {
   }
 
   const handleCancel = ()=>{
+    setEditStateFlag(false)
     setUsername(profileData.username)
     setGender(profileData.gender)
     setState(profileData.state)
     setSuburb(profileData.suburb)
+    setPicture(profileData.image)
   }
+
 
   async function updateProfile(){
 
@@ -79,20 +95,19 @@ export default function MyProfileContent({ token, profileData }) {
         "gender": gender,
         "state": state,
         "suburb": suburb,
-        'image': ''
+        'image': picture
       })
     });
     if (response.status===200){
       const data = await response.json();
       console.log(data);
+      setEditStateFlag(false)
     }else{
       const data = await response.json();
       console.log(data);
     }
   }
 
-
-  loadExternalContent();
 
 
   return (
@@ -123,62 +138,56 @@ export default function MyProfileContent({ token, profileData }) {
           </Box>
           <Divider />
 
+          {editSateFlag
+          ? 
+          <>    
+            <Stack
+              direction="column"
+              spacing={2}
+              sx={{ my: 1 }}
+            >
+              <Stack direction="row" spacing={2}>
+                <Stack direction="column" spacing={1}>
+                  <AspectRatio
+                    ratio="1"
+                    maxHeight={130}
+                    sx={{ flex: 1, minWidth: 130, borderRadius: "100%" }}
+                  >
+                    {picture ?
+                      <img
+                        src={picture}
+                        alt=""
+                      />
+                      :
+                      <img
+                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                        loading="lazy"
+                        alt=""
+                      />
+                    } 
+                  </AspectRatio>
 
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{ my: 1 }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={130}
-                  sx={{ flex: 1, minWidth: 130, borderRadius: "100%" }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                    loading="lazy"
-                    alt=""
-                  />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: "background.body",
-                    position: "absolute",
-                    zIndex: 2,
-                    borderRadius: "50%",
-                    left: 85,
-                    top: 180,
-                    boxShadow: "sm"
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
-              </Stack>
-
-              <Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
-
-                <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
-
-                  
-                  <FormControl >
-                  <FormLabel>Name</FormLabel>
-                    <Input style={{width: '250px'}} size="sm" value={username} onChange={handleNameChange}/>
-                  </FormControl>
-                  
-                  <FormControl>
-                    <FormLabel>Identity</FormLabel>
-                    <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
-                  </FormControl>
-
+                  <UploadFileButton setPicture={setPicture} words="New Icon"/>
                 </Stack>
-                <FormControl sx={{ flexGrow: 1 }}>
+
+                <Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
+
+                  <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
+
+                    
+                    <FormControl >
+                    <FormLabel>Name</FormLabel>
+                      <Input style={{width: '250px'}} size="sm" value={username} onChange={handleNameChange}/>
+                    </FormControl>
+                    
+                    <FormControl>
+                      <FormLabel>Identity</FormLabel>
+                      <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
+                    </FormControl>
+
+                  </Stack>
+                  <FormControl sx={{ flexGrow: 1 }}>
                     <FormLabel>Email</FormLabel>
                     <Input
                       style={{width: '379px'}} 
@@ -190,34 +199,122 @@ export default function MyProfileContent({ token, profileData }) {
                       sx={{ flexGrow: 1 }}
                     />
                   </FormControl>
+                  <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
+                    <FormControl >
+                    <FormLabel>Suburb</FormLabel>
+                      <Input style={{width: '185px'}} size="sm" value={suburb} onChange={(e)=>{setSuburb(e.target.value)}}/>
+                    </FormControl>
+                    
+                    <FormControl>
+                      <FormLabel>State</FormLabel>
+                      <Input style={{width: '185px'}} size="sm" value={state} onChange={(e)=>{setState(e.target.value)}}/>
+                    </FormControl>
+                  </Stack>
+
+                </Stack>
               </Stack>
-
-
             </Stack>
-
-
-
-            <iframe src="AddressSelector.html"
-              width="100%" height="320px"
-              style={{border: '0'}}
-              // loading="lazy"
-              id="addressiframe"
+          </>
+          : 
+            <>
+              <Stack
+                direction="column"
+                spacing={2}
+                sx={{ my: 1 }}
               >
-            </iframe>
-            {/* <div id="external-content"></div> */}
+                <Stack direction="row" spacing={2}>
+                  <Stack direction="column" spacing={1}>
+                    <AspectRatio
+                      ratio="1"
+                      maxHeight={130}
+                      sx={{ flex: 1, minWidth: 130, borderRadius: "100%" }}
+                    >
+                      {picture ?
+                        <img
+                          src={picture}
+                          alt=""
+                        />
+                        :
+                        <img
+                          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                          srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                          loading="lazy"
+                          alt=""
+                        />
+                      } 
+                    </AspectRatio>
 
+                  </Stack>
 
-          </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid" onClick={updateProfile}>
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
+                  <Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
+
+                    <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
+                      <FormControl >
+                      <FormLabel>Name</FormLabel>
+                        <Input style={{width: '250px'}} size="sm" value={username} disabled/>
+                      </FormControl>
+                      
+                      <FormControl>
+                        <FormLabel>Identity</FormLabel>
+                        <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
+                      </FormControl>
+                    </Stack>
+
+                    <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>Email</FormLabel>
+                      <Input
+                        style={{width: '379px'}} 
+                        disabled
+                        size="sm"
+                        type="email"
+                        startDecorator={<EmailRoundedIcon />}
+                        value={profileData.email}
+                        sx={{ flexGrow: 1 }}
+                      />
+                    </FormControl>
+
+                    <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
+                      <FormControl >
+                      <FormLabel>Suburb</FormLabel>
+                        <Input style={{width: '185px'}} size="sm" value={suburb} disabled/>
+                      </FormControl>
+                      
+                      <FormControl>
+                        <FormLabel>State</FormLabel>
+                        <Input style={{width: '185px'}} disabled size="sm" value={state} />
+                      </FormControl>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </Stack>
+            
+
+            </>
+          }
+
+          {editSateFlag
+            ?
+            <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
+              <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
+                <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button size="sm" variant="solid" onClick={updateProfile}>
+                  Save
+                </Button>
+              </CardActions>
+            </CardOverflow>
+            :
+            <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
+              <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
+                <Button size="sm" variant="outlined" color="neutral" onClick={()=>{setEditStateFlag(true)}}>
+                  Edit
+                </Button>
+              </CardActions>
+            </CardOverflow>
+          }
+
+          
         </Card>
 
       </Stack>
