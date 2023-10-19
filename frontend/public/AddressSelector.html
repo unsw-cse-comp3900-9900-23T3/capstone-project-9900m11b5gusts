@@ -36,7 +36,7 @@
 
       .card-container {
         display: flex;
-        height: 320px;
+        height: 120px;
         width: 100%;
       }
 
@@ -149,14 +149,14 @@
     <div class="card-container">
       <div class="panel">
 
-        <input type="text" placeholder="Address" id="location-input"/>
-        <input type="text" placeholder="Apt, Suite, etc (optional)"/>
-        <input type="text" placeholder="City" id="locality-input"/>
+        <input type="text" placeholder="Type here to find your address" id="location-input"/>
+        <input type="text" placeholder="Apt, Suite, etc (optional)" style="display: none"/>
         <div class="half-input-container">
+          <input type="text" class="half-input" placeholder="City" id="locality-input" />
           <input type="text" class="half-input" placeholder="State/Province" id="administrative_area_level_1-input"/>
-          <input type="text" class="half-input" placeholder="Zip/Postal code" id="postal_code-input"/>
+          <input type="text" class="half-input" placeholder="Zip/Postal code" id="postal_code-input" style="display: none"/>
         </div>
-        <input type="text" placeholder="Country" id="country-input"/>
+        <input type="text" placeholder="Country" id="country-input" style="display: none"/>
       </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwoAqsZ2hSOmeHKPud9rxiS2VRv6iIDM4&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cA" async defer></script>
