@@ -11,7 +11,6 @@ import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 
 import LoginPageHeader from './components/authentication/LoginPageHeader';
-import Homepage from './components/user_market/Homepage';
 import MyPosts from './components/user_personal/MyPosts';
 import ForgetPasswordPage from './components/authentication/ForgetPasswordPage';
 
@@ -40,6 +39,7 @@ import Header from './components/user_general/Header';
 import MyProfileContent from './components/user_personal/MyProfileContent';
 import PostNewItemPage from './components/user_personal/PostNewItemPage';
 import EditItemPage from './components/user_personal/EditItemPage';
+import MarketHomePage from './components/user_market/MarketHomePage';
 
 
 
@@ -156,7 +156,7 @@ export default function App() {
 						>
 							<BrowserRouter>
 								<Routes>
-									<Route path="/market" element={<Homepage token={token} />} />
+									<Route path="/market" element={<MarketHomePage token={token} />} />
 									<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
 									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemID} />} />
 									<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
