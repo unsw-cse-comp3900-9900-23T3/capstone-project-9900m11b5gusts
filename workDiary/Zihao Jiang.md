@@ -33,3 +33,4 @@ change the item database column people can select cash or exchange in trading_me
 all the item api is changed.
 fix the delete item bug.
 add page to the search items, each page has 10 records, this api also give the total records,font end should calculate how many pages should have
+add item category API

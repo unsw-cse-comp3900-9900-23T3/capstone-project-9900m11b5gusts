@@ -103,6 +103,31 @@ class Profile(Resource):
 
 Item = Namespace('Items')
 
+@Item.route('/getCategory')
+class GetItemCategory(Resource):
+    @Item.doc(description='get all item category')
+    def get(self):
+        item_category = {}
+        coles = {
+            'Disney cards': {'Wonder Woman': '', 'Batgirl': '', 'Robin': '', 'Cyclone': '', 'Reverse flash': '', 'The riddler': ''},
+            'Superhero cards': {'Captain America': '', 'Iron Man': '', 'Thor': '', 'Hulk': '', 'Black Widow': '', 'Hawkeye': ''},
+            'Fresh Rainbow Stikeez': {'Apple': '', 'Banana': '', 'Orange': '', 'Grape': '', 'Strawberry': '', 'Blueberry': '', 'Pear': '', 'Peach': ''},
+            'Memorabilia': {'Signed photographs': '', 'Signed basketballs': '', 'team flags': ''},
+            'Electronic Device Accessories': {'USB': '', 'Portable charger': '', 'VGA': '', 'Vga converter': ''},
+            'Other': ''
+        }
+        woolworth = {
+            'Brick': {'Animal set': '', 'Quad bike': '', 'Farm truck': '', 'Farm Tractor': '', 'Farm shed': ''},
+            'Garage kit': {'Pokemon anime': '', 'Monster hunter': '', 'Demon slayer kokushibo': '', 'Hunter killua zoldyck': '', 'Anime figuur Hatsune miku ghost': ''},
+            'Mini collectibles': {'Bread': '', 'Eggs': '', 'Canned goods': '', 'Fresh vegetables': '', 'Fruits': '', 'Laundry detergent': '', 'Dish soap': ''},
+            'Home goods': {'Pillows': '', 'Blankets': '', 'Wall decals': '', 'Bed': ''}
+        }
+        others = ''
+        item_category['Coles'] = coles
+        item_category['Woolworth'] = woolworth
+        item_category['Others'] = others
+        return item_category, 200
+
 
 @Item.route('/uploadPersonalItem')
 class UploadPersonalItem(Resource):
