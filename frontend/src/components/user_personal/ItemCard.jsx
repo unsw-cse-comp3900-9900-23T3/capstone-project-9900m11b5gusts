@@ -18,7 +18,9 @@ import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
+
 export default function ItemCard({
+  token=null,
   index=-1,
   category1 = '',
   category2 = '',
@@ -27,17 +29,47 @@ export default function ItemCard({
   location = 'Default location',
   amount = '0',
   price = '0',
+  exchangeMethod = 'cash',
+  exchangeItem = '',
   finished = false,
   image = 'https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg',
   manageItemID
 }) {
 
-
   const handleEditButton = () => {
-    console.log('clicked')
-    console.log(index)
+    // console.log('clicked')
+    // console.log(index)
     manageItemID(index)
     window.location.href='/myposts/edititem'
+  }
+
+  const handleDeleteButton = () => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
+
+    if (isConfirmed) {
+      confirmDelete()
+    }
+  }
+
+  async function confirmDelete(){
+    const response = await fetch('http://127.0.0.1:5000/Items/deleteItem', {
+      method:'DELETE',
+      headers:{
+        'Content-type': 'application/json',
+        'Authorization' : `Bearer ${token}`,
+      },
+      body:JSON.stringify({
+        "item_id": index
+      })
+    });
+    if (response.status===200){
+      alert('Success')
+      window.location.href='/myposts'
+    }else{
+      const data = await response.json();
+      console.log(data)
+      alert('error: ', data.error)
+    }
   }
 
 
@@ -75,7 +107,7 @@ export default function ItemCard({
             "--AspectRatio-maxHeight": { xs: "160px", sm: "9999px" }
           }}
         >
-          <img alt="" src={image} />
+          {image && <img alt="" src={image} />}
           <Stack
             alignItems="center"
             direction="row"
@@ -169,6 +201,7 @@ export default function ItemCard({
                 display: { xs: "none", sm: "flex" },
                 borderRadius: "50%"
               }}
+              onClick={handleDeleteButton}
             >
               <DeleteIcon />Delete
             </IconButton>
@@ -202,9 +235,18 @@ export default function ItemCard({
           >
             Amount: {amount}
           </Typography>
-          <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
-            <strong>${price}</strong> <Typography level="body-md">total</Typography>
-          </Typography>
+          {exchangeMethod === 'cash' 
+          ?
+            <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
+              <strong>${price}</strong> <Typography level="body-md">total</Typography>
+            </Typography>
+          :
+            <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
+              <Typography level="body-md">Exchange: {exchangeItem.length > 20 ? exchangeItem.slice(0, 20) + '...' : exchangeItem}</Typography>
+            </Typography>
+          }
+
+
         </Stack>
       </CardContent>
     </Card>

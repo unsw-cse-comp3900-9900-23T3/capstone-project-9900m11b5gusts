@@ -317,7 +317,7 @@ export default function Sidebar({ logout, profileData }) {
         <Avatar
           variant="outlined"
           size="sm"
-          src={ profileData.image ? profileData.image : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"}
+          src={ profileData.image }
         />
         <Box sx={{ minWidth: 0, flex: 1 }} >
           <Typography level="title-sm">{profileData.username}</Typography>

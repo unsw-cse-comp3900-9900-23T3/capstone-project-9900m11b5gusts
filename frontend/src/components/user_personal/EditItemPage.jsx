@@ -37,6 +37,8 @@ import CardCover from '@mui/joy/CardCover';
 // import EditRoundedIcon from "@mui/icons-material/EditRounded"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CheckIcon from '@mui/icons-material/Check';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
 // import { styled } from '@mui/joy';
 // import SvgIcon from '@mui/joy/SvgIcon';
 
@@ -53,6 +55,7 @@ import UploadFileButton from "../user_general/UploadFileButton.jsx"
 
 
 export default function EditItemPage({ token, itemID, profileData }) {
+  console.log('itemID: ', itemID)
 
   const [posts, setPosts] = React.useState([])
   const [email, setEmail] = React.useState(null)
@@ -63,6 +66,7 @@ export default function EditItemPage({ token, itemID, profileData }) {
   const [price, setPrice] = React.useState('')
   const [description, setDescription] = React.useState('')
   const [picture, setPicture] = React.useState('')
+  const [tradeMethod, setTradeMedod] = React.useState('')
 
 
   const handleItemNameChange = (event) => {
@@ -137,7 +141,7 @@ export default function EditItemPage({ token, itemID, profileData }) {
 
   async function confirmEdit(){
     
-    if (!(itemName && amount && price && description)) {
+    if (!(itemName && amount && tradeMethod && price && description)) {
       alert('Please provide all information.')
     } else {
       const response = await fetch('http://127.0.0.1:5000/Items/editPersonalItem', {
@@ -147,16 +151,18 @@ export default function EditItemPage({ token, itemID, profileData }) {
           'Authorization' : `Bearer ${token}`,
         },
         body:JSON.stringify({
-          "item_id": (itemID+1).toString(),
+          "item_id": itemID,
           "item_name": itemName,
           "image":picture,
           "description": description,
-          "price": parseFloat(price),
+          "price": isNaN(price) ? "0" : price,
           "num": parseInt(amount),
           "class1": "coles",
           "class2": "study",
           "class3": "stationery",
-          "change": ""
+          "trading_method": "",
+          "exchange_item": price,
+          "change": true
         })
       });
       if (response.status===200){
@@ -171,7 +177,6 @@ export default function EditItemPage({ token, itemID, profileData }) {
 
 
   return (
-    
     <Box sx={{ flex: 1, width: "100%", minWidth: '500px' }} >
 
       
@@ -215,11 +220,13 @@ export default function EditItemPage({ token, itemID, profileData }) {
                 >
                   <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
                     <CardCover>
-                      <img
-                        src={picture}
-                        loading="lazy"
-                        alt="picture"
-                      />
+                      {picture && 
+                        <img
+                          src={picture}
+                          loading="lazy"
+                          alt="picture"
+                        />
+                      }
                     </CardCover>
                   </Card>
                 </AspectRatio>
@@ -228,7 +235,7 @@ export default function EditItemPage({ token, itemID, profileData }) {
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-<UploadFileButton setPicture={setPicture}/>
+<UploadFileButton setPicture={setPicture} words='Upload a picture'/>
                   
 <FormControl >
 <FormLabel>Name of the item</FormLabel>
@@ -241,17 +248,6 @@ export default function EditItemPage({ token, itemID, profileData }) {
 </FormControl>
 
 <FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Price / want to exchange for</FormLabel>
-	<Input
-		style={{width: '100%'}} 
-		size="sm"
-		sx={{ flexGrow: 1 }}
-    value={price}
-    onChange={handlePriceChange}
-	/>
-</FormControl>
-
-<FormControl sx={{ flexGrow: 1 }}>
 	<FormLabel>Description</FormLabel>
 	<Textarea
     minRows={3}
@@ -260,6 +256,27 @@ export default function EditItemPage({ token, itemID, profileData }) {
 		sx={{ flexGrow: 1 }}
     value={description}
     onChange={handleDescriptionChange}
+    placeholder="Describe your item here..."
+	/>
+</FormControl>
+
+<br />
+<FormControl sx={{ flexGrow: 1 }}>
+	<FormLabel>Exchange for cash or goods?</FormLabel>
+    <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
+      <Option value='cash'>cash</Option>
+      <Option value='goods'>goods</Option>
+    </Select>
+</FormControl>
+
+<FormControl sx={{ flexGrow: 1 }}>
+	<FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
+	<Input
+		style={{width: '100%'}} 
+		size="sm"
+		sx={{ flexGrow: 1 }}
+    value={price}
+    onChange={handlePriceChange}
 	/>
 </FormControl>
 
