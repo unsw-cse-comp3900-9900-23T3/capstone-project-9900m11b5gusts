@@ -54,8 +54,8 @@ import UploadFileButton from "../user_general/UploadFileButton.jsx"
 
 
 
-export default function EditItemPage({ token, itemID, profileData }) {
-  console.log('itemID: ', itemID)
+export default function EditItemPage({ token, index, profileData }) {
+  console.log('itemID: ', index)
 
   const [posts, setPosts] = React.useState([])
   const [email, setEmail] = React.useState(null)
@@ -67,6 +67,7 @@ export default function EditItemPage({ token, itemID, profileData }) {
   const [description, setDescription] = React.useState('')
   const [picture, setPicture] = React.useState('')
   const [tradeMethod, setTradeMedod] = React.useState('')
+  const [itemID, setItemID] = React.useState(0)
 
 
   const handleItemNameChange = (event) => {
@@ -101,12 +102,16 @@ export default function EditItemPage({ token, itemID, profileData }) {
 
   React.useEffect(()=>{
     if (posts.length > 0) {
-      console.log('post: ', posts[itemID])
-      setItemName(posts[itemID].item_name)
-      setAmount(posts[itemID].item_num)
-      setPrice(posts[itemID].item_price)
-      setDescription(posts[itemID].item_desc)
-      setPicture(posts[itemID].image)
+      console.log('post: ', posts)
+      console.log('index: ', index)
+      console.log('post: ', posts[index])
+      setItemName(posts[index].item_name)
+      setAmount(posts[index].item_num)
+      setPrice(posts[index].item_price)
+      setDescription(posts[index].item_desc)
+      setPicture(posts[index].image)
+      setTradeMedod(posts[index].trading_method)
+      setItemID(posts[index].item_id)
     }
   }, [posts])
 

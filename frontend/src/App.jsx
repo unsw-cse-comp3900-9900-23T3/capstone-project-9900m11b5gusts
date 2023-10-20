@@ -46,7 +46,7 @@ import MarketHomePage from './components/user_market/MarketHomePage';
 export default function App() {
 	const [token, setToken] = React.useState(null)
 	const [profileData, setProfileData] = React.useState('')
-	const [itemID, setItemID]= React.useState(-1)
+	const [itemIndex, setItemIndex]= React.useState(-1)
 
 	//Fetch user profile if got a token
   React.useEffect(()=>{
@@ -71,8 +71,8 @@ export default function App() {
 		localStorage.setItem('token', token);
 	}
 
-	function manageItemID(ID){
-		setItemID(ID);
+	function manageItemIndex(ID){
+		setItemIndex(ID);
 		localStorage.setItem('itemID', ID);
 	}
 
@@ -90,7 +90,7 @@ export default function App() {
 		}
 
 		if (localStorage.getItem('itemID')){  /////////////////////////remember to remove localstorage
-			setItemID(localStorage.getItem('itemID'))  
+			setItemIndex(localStorage.getItem('itemID'))  
 		}
 	}, [token])
 
@@ -158,9 +158,9 @@ export default function App() {
 								<Routes>
 									<Route path="/market" element={<MarketHomePage token={token} />} />
 									<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
-									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemID} />} />
+									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
 									<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
-									<Route path="/myposts/edititem" element={<EditItemPage token={token} itemID={itemID} profileData={profileData} />} />
+									<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
 								</Routes>
 							</BrowserRouter>
 

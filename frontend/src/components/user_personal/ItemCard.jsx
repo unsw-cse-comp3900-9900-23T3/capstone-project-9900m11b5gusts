@@ -26,6 +26,7 @@ export default function ItemCard({
   category2 = '',
   category3 = '',
   title = 'Default title',
+  item_id=-1,
   location = 'Default location',
   amount = '0',
   price = '0',
@@ -59,7 +60,7 @@ export default function ItemCard({
         'Authorization' : `Bearer ${token}`,
       },
       body:JSON.stringify({
-        "item_id": index
+        "item_id": item_id
       })
     });
     if (response.status===200){

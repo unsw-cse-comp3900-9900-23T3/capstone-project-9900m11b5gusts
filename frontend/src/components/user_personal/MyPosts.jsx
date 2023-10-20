@@ -107,7 +107,7 @@ export default function MyPosts({ token, profileData, manageItemID }) {
                   category2={item.class2} 
                   category3={item.class3} 
                   title={item.item_name} 
-                  // location="Default location" 
+                  item_id={item.item_id}
                   amount={item.item_num} 
                   price={item.item_price}
                   exchangeMethod={item.trading_method}

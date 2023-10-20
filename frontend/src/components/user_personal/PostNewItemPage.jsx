@@ -101,7 +101,7 @@ export default function PostNewItemPage({ token, profileData }) {
           "class1": "coles",
           "class2": "study",
           "class3": "stationery",
-          "trading_method": "",
+          "trading_method": tradeMethod,
           "exchange_item": price,
           "change": true
         })
