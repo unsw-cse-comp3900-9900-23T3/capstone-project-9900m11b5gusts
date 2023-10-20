@@ -249,6 +249,7 @@ def get_personal_item(email):
         temp_dict = {}
         for item in personal_items:
             temp_dict[item.id] = {
+                'item_id': item.id,
                 'item_name': item.item_name,
                 'image': item.image,
                 'item_price': str(item.item_price),
@@ -353,6 +354,7 @@ def search_item(page, **kwargs):
             item_dict = {'total_rows': total_rows}
             for item in s_items:
                 item_dict[item.id] = {
+                    'item_id': item.id,
                     'item_name': item.item_name,
                     'image': item.image,
                     'item_price': str(item.item_price),
