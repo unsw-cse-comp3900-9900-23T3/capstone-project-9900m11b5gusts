@@ -16,15 +16,14 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Divider from '@mui/joy/Divider';
 import ListDivider from '@mui/joy/ListDivider';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
-
-export default function SelectCategoryButton({ token, classes, setClasses, handleClearCategory }) {
+export default function SelectCategoryButton({ token, classes, setClasses, handleClearCategory, setApplyClassesFlag }) {
 
 
   const [layout, setLayout] = React.useState(undefined);
   const [category, setCategory] = React.useState(null)
-  // const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
 
 
   const handleButtonClick = () => {
@@ -90,7 +89,6 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
           {Object.entries(obj).map(([key, value]) => (
           <>
 
-            
             <ListItemButton onClick={()=>{setClasses((p) => ({...p, c1: key}))}} key={key} selected={classes.c1===key}>
               {key}
               {classes.c1===key && <KeyboardArrowRight/>}
@@ -108,17 +106,50 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
 
   function renderClassesRight(obj) {
     if (classes.c2) {
-      return Object.keys(obj[classes.c1][classes.c2]).map((key) => (
-        <ListItemButton key={key}>{key}</ListItemButton>
-      ));
-    } else if (classes.c1) {
-      return Object.keys(obj[classes.c1]).map((key) => (
+      return (
         <>
-          <ListItemButton key={key}>{key}</ListItemButton>
+          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: ''}))}} >
+            <ArrowBackIosIcon/>
+             Back
+          </ListItemButton>
           <ListDivider />
+          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c3: ''}))}} selected={!classes.c3}>
+            ALL
+          </ListItemButton>
+          <ListDivider />
+          {Object.keys(obj[classes.c1][classes.c2]).map((key) => (
+            <>
+              <ListItemButton key={key}
+                onClick={()=>{setClasses((p) => ({...p, c3: key}))}}
+                selected={classes.c3===key}
+              >{key}</ListItemButton>
+              <ListDivider />
+            </>
+          ))}
         </>
-
-      ));
+      )
+    } else if (classes.c1) {
+      return (
+        <>
+          <ListItemButton onClick={handleClearCategory} >
+            <ArrowBackIosIcon/>
+             Back
+          </ListItemButton>
+          <ListDivider />
+          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: ''}))}} selected={!classes.c2}>
+            ALL
+          </ListItemButton>
+          <ListDivider />
+          {Object.keys(obj[classes.c1]).map((key) => (
+            <>
+              <ListItemButton key={key}
+                onClick={()=>{setClasses((p) => ({...p, c2: key}))}}
+              >{key}</ListItemButton>
+              <ListDivider />
+            </>
+          ))}
+        </>
+      )
     } else {
       return (
         <>
@@ -157,7 +188,8 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
       >
         <ModalDialog layout={layout} style={{height: '80%', width:'55%', minWidth:'400px'}}>
           <ModalClose />
-          <DialogTitle>Choose a category</DialogTitle>
+          <DialogTitle>Category Filter:</DialogTitle>
+          &nbsp;&nbsp;  {classes.c1 && classes.c1 + '》'} {classes.c2 && ( classes.c2 + '》') }  {classes.c3 && ( classes.c3) }
 
           <Stack
             divider={<Divider orientation="vertical" />}
@@ -204,7 +236,11 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
           </Stack>
           <span style={{display:'flex', justifyContent: 'end', position: 'absolute', bottom: '15px', right: '15px'}}>
             <Button style={{margin: '5px'}} variant='outlined' onClick={() => {setLayout(undefined)}}>Cancel</Button>
-            <Button style={{margin: '5px'}}>Confirm</Button>
+            <Button style={{margin: '5px'}} 
+              onClick={() => {setLayout(undefined)
+                        setApplyClassesFlag(true)}} >
+              Confirm
+            </Button>
           </span>
 
         </ModalDialog>

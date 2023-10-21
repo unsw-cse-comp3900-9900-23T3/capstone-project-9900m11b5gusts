@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/joy/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-export default function SearchBar({ token, classes, setClasses, handleClearCategory }) {
+export default function SearchBar({ token, classes, setClasses, handleClearCategory, applyClassesFlag, setApplyClassesFlag }) {
   const [data, setData] = React.useState({
     email: '',
     status: 'initial',
@@ -64,7 +64,7 @@ export default function SearchBar({ token, classes, setClasses, handleClearCateg
             '--FormLabel-color': theme.vars.palette.primary.plainColor,
           })}
         >
-          {classes.c1 &&
+          {applyClassesFlag && classes.c1 && 
             <IconButton
               aria-label="cancel_category_selection"
               size="sm"
@@ -82,10 +82,12 @@ export default function SearchBar({ token, classes, setClasses, handleClearCateg
               onClick={handleClearCategory}
             >
               <CancelOutlinedIcon />
-            </IconButton>
+            </IconButton> 
           }
-
-          {classes.c1 && 'Filter: ' + classes.c1} {classes.c2 && ('》' + classes.c2) }  {classes.c3 && ('》' + classes.c3) } 
+          
+          {applyClassesFlag && classes.c1 && 'Filter: ' + classes.c1}
+          {applyClassesFlag && classes.c2 && (' 》' + classes.c2) }
+          {applyClassesFlag && classes.c3 && (' 》' + classes.c3) } 
         </FormLabel>
       </FormControl>
     </form>

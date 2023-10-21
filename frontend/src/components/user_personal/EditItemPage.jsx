@@ -55,7 +55,6 @@ import UploadFileButton from "../user_general/UploadFileButton.jsx"
 
 
 export default function EditItemPage({ token, index, profileData }) {
-  console.log('itemID: ', index)
 
   const [posts, setPosts] = React.useState([])
   const [email, setEmail] = React.useState(null)
@@ -203,7 +202,7 @@ export default function EditItemPage({ token, index, profileData }) {
               mb: 2
             }}
           >
-            Post new item
+            Edit Post
           </Typography>
         </Box>
       </Box>

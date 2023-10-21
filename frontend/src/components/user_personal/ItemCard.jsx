@@ -27,7 +27,7 @@ export default function ItemCard({
   category3 = '',
   title = 'Default title',
   item_id=-1,
-  location = 'Default location',
+  description = '',
   amount = '0',
   price = '0',
   exchangeMethod = 'cash',
@@ -168,7 +168,12 @@ export default function ItemCard({
           alignItems="flex-start"
         >
           <div>
-            <Typography level="body-sm">Category: {category1} 》{category2}》{category3}</Typography>
+            <Typography level="body-sm">
+            {category1 && category1}
+            {category2 && (' 》' + category2)}
+            {category3 && (' 》' + category3)} 
+            
+            </Typography>
             <Typography level="title-md">
               <Link
                 overlay
@@ -184,7 +189,7 @@ export default function ItemCard({
             <IconButton
               variant="plain"
               size="sm"
-              color={"neutral"}
+              color={"primary"}
               onClick={handleEditButton}
               sx={{
                 display: { xs: "none", sm: "flex" },
@@ -218,15 +223,10 @@ export default function ItemCard({
           flexWrap="wrap"
           sx={{ my: 0.25 }}
         >
-          <Typography level="body-xs" startDecorator={<FmdGoodRoundedIcon />}>
-            {location}
+          <Typography level="body-xs" >
+            {description}
           </Typography>
-          {/* <Typography level="body-xs" startDecorator={<KingBedRoundedIcon />}>
-            1 bed
-          </Typography>
-          <Typography level="body-xs" startDecorator={<WifiRoundedIcon />}>
-            Wi-Fi
-          </Typography> */}
+
         </Stack>
         <Stack direction="row" sx={{ mt: "auto" }}>
           <Typography

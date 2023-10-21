@@ -51,6 +51,7 @@ import Option from '@mui/joy/Option';
 
 
 import UploadFileButton from "../user_general/UploadFileButton.jsx"
+import SelectCategoryButton from "../user_general/SelectCategoryButton.jsx"
 
 
 
@@ -62,6 +63,15 @@ export default function PostNewItemPage({ token, profileData }) {
   const [description, setDescription] = React.useState('')
   const [picture, setPicture] = React.useState('')
   const [tradeMethod, setTradeMedod] = React.useState('')
+
+  const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
+  const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
+  const [classesString, setClassesString] = React.useState('')
+
+  const handleClearCategory = () => {
+    setClasses((p) => ({...p, c1: '', c2: '', c3: ''}))
+    setApplyClassesFlag(false)
+  }
 
 
   const handleItemNameChange = (event) => {
@@ -80,6 +90,21 @@ export default function PostNewItemPage({ token, profileData }) {
     setDescription(event.target.value)
   }
 
+  React.useEffect(() => {
+    setClassesString('')
+    if (applyClassesFlag) {
+      if (classes.c1) {
+        setClassesString(p=>(p+classes.c1+' 》'))
+      }
+      if (classes.c2) {
+        setClassesString(p=>(p+classes.c2+' 》'))
+      }
+      if (classes.c3) {
+        setClassesString(p=>(p+classes.c3))
+      }
+    }
+
+  }, [classes])
 
 
   async function postNewItem(){
@@ -98,9 +123,9 @@ export default function PostNewItemPage({ token, profileData }) {
           "description": description,
           "price": isNaN(price) ? "0" : price,
           "num": parseInt(amount),
-          "class1": "coles",
-          "class2": "study",
-          "class3": "stationery",
+          "class1": classes.c1,
+          "class2": classes.c2,
+          "class3": classes.c3,
           "trading_method": tradeMethod,
           "exchange_item": price,
           "change": true
@@ -180,8 +205,18 @@ export default function PostNewItemPage({ token, profileData }) {
 <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
                   
 <FormControl >
+<FormLabel>Select a category</FormLabel>
+  <Stack direction="row" spacing={1}>
+    <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
+    <Input style={{width: '100%'}} size="sm" value={classesString}/>
+  </Stack>
+</FormControl>
+
+<FormControl >
 <FormLabel>Name of the item</FormLabel>
-	<Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+  <Stack direction="row" spacing={1}>
+    <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+  </Stack>
 </FormControl>
 
 <FormControl>
