@@ -33,6 +33,7 @@ class Activity(db.Model):
     category = db.Column(db.String(30), default='category')
     overview = db.Column(db.String(1000), default='overview')
     detail = db.Column(db.String(1000), default='detail')
+    image = db.Column(db.String(1000), default='image of activity')
 
 class Item(db.Model):
     __tablename__ = 'tb_item'
@@ -428,25 +429,36 @@ def search_item_by_category(page, **kwargs):
     else:
         return {'result': True, 'info': {}}
 
-def search_activity(**kwargs):
+def search_activity(page,**kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
+    status = kwargs['status']
 
-    activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
+    activity_infor = Activity.query.filter(
+        or_(
+            Activity.activity_name.ilike(f'%{activity_name}%'),
+            Activity.category.ilike(f'%{category}%'),
+            Activity.status.ilike(f'%{status}%')
+        )
+    )
 
-    if activity:
-        activity_dict = {'activity_name': activity.activity_name,
+    page_size = 10
+    offset = (page - 1) * page_size
+    total_rows = activity_infor.count()
+    activities = activity_infor.offset(offset).limit(page_size).all()
+    if activities:
+        r = {}
+        for activity in activities:
+            r[activity.id] = {
+                'activity_name': activity.activity_name,
                 'status': activity.status,
                 'category': activity.category,
                 'overview': activity.overview,
                 'detail': activity.detail
-                }
-        return { 'result': True, 'activity':activity_dict }
+            }
+        return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
-        return { 'result': False, 'info': f'The activity does not exist.'}
-
-
-
+        return {'result': True, 'info': {}}
 
 def create_activity(**kwargs):
     activity_name = kwargs['activity_name']
@@ -463,8 +475,9 @@ def create_activity(**kwargs):
             category = kwargs['category']
             overview = kwargs['overview']
             detail = kwargs['detail']
+            image = kwargs['image']
             activity = Activity(activity_name=activity_name, status=status, category=category,
-                         overview=overview,detail=detail)
+                         overview=overview,detail=detail,image=image)
             db.session.add(activity)
             db.session.commit()
             return { 'result': True,'info':'Create the activity successfully'}
@@ -480,9 +493,10 @@ def delete_activity(**kwargs):
 
     if activity:
         db.session.delete(activity)
+        db.session.commit()
         return {'result': True, 'info': 'delete success'}
     else:
-        return {'result': False, 'info': 'do not have this item'}
+        return {'result': False, 'info': 'do not have this activity'}
 
 def get_user_identity(email):
     user = User.query.filter_by(email=email).first()
