@@ -2,10 +2,10 @@ from flask_restx import Resource, Namespace
 from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
     update_personal_item_model, search_items_model, forget_password_model, reset_password_model, \
     delete_personal_item_model, create_activity_model, search_activity_model, delete_activity_model, \
-    update_activity_model
+    update_activity_model, search_items_by_category_model, check_profile_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
-    get_user_identity, create_activity, delete_activity, update_activity
+    get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -51,7 +51,7 @@ class Register(Resource):
 
 @Author.route('/forgetPassword')
 class ForgetPassword(Resource):
-    @Author.doc(descroption='Forget password, user input the email')
+    @Author.doc(description='Forget password, user input the email')
     @Author.expect(forget_password_model)
     def post(self):
         args = Author.payload
@@ -100,6 +100,16 @@ class Profile(Resource):
         else:
             return {'error': update_profile_result['info']}, 400
 
+
+@Author.route('/checkOtherProfile')
+class OtherProfile(Resource):
+    @Author.expect(check_profile_model)
+    def post(self):
+        args = Author.payload
+        email = args['email']
+        result = get_profile(email)
+        return {'success': result['info']}, 200
+        
 
 Item = Namespace('Items')
 
@@ -203,6 +213,15 @@ class SearchItem(Resource):
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
+
+@Item.route('/searchItemByCategory/<int:page>')
+class SearchItemByCategory(Resource):
+    @Item.doc(description='search item by 3 categories, empty string means no filter')
+    @Item.expect(search_items_by_category_model)
+    def post(self, page):
+        args = Item.payload
+        result = search_item_by_category(page, **args)
+        return {'success': result['info']}, 200
 
 
 Activity = Namespace('Activity', authorizations=authorizations)

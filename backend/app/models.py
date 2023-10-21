@@ -18,7 +18,6 @@ class User(db.Model):
     state = db.Column(db.String(30), default='state')
     suburb = db.Column(db.String(30), default='suburb')
 
-
 class PasswordReset(db.Model):
     __tablename__ = 'tb_passReset'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -354,6 +353,7 @@ def search_item(page, **kwargs):
             item_dict = {'total_rows': total_rows}
             for item in s_items:
                 item_dict[item.id] = {
+                    'owner_email': item.email,
                     'item_id': item.id,
                     'item_name': item.item_name,
                     'image': item.image,
@@ -375,6 +375,45 @@ def search_item(page, **kwargs):
 
     except Exception as e:
         return {'result': False, 'info': f'invalid input{e}'}
+
+
+def search_item_by_category(page, **kwargs):
+    cls1 = kwargs['class1']
+    cls2 = kwargs['class2']
+    cls3 = kwargs['class3']
+    items = Item.query
+    if cls1:
+        items = items.filter(Item.class1==cls1)
+    if cls2:
+        items = items.filter(Item.class2==cls2)
+    if cls3:
+        items = items.filter(Item.class3==cls3)
+    page_size = 10
+    total_rows = items.count()
+    offset = (page - 1) * page_size
+    s_items = items.offset(offset).limit(page_size).all()
+    if s_items:
+        r = {}
+        for item in s_items:
+            r[item.id] = {
+                    'owner_email': item.email,
+                    'item_id': item.id,
+                    'item_name': item.item_name,
+                    'image': item.image,
+                    'item_price': str(item.item_price),
+                    'item_num': str(item.item_num),
+                    'item_desc': item.item_desc,
+                    'trading_method': item.trading_method,
+                    'exchange_item': item.exchange_item,
+                    'change': str(item.change),
+                    'class1': item.class1,
+                    'class2': item.class2,
+                    'class3': item.class3,
+                    'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+                }
+        return {'result': True, 'info': {'total_rows': total_rows, 'items': r}}
+    else:
+        return {'result': True, 'info': {}}
 
 def search_activity(**kwargs):
     activity_name = kwargs['activity_name']

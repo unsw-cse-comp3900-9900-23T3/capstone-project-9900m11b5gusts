@@ -24,6 +24,9 @@ reset_password_model = api.model('reset_password_model', {
         'new_password': fields.String(example='a new password')
 })
 
+check_profile_model = api.model('check_profile_data', {
+        'email': fields.String(example='root@qq.com')
+})
 
 changeProfile_model = api.model('changeProfile_data', {
         'username': fields.String(example='a new name'),
@@ -75,10 +78,14 @@ search_items_model = api.model('search_items_data', {
         'keyword': fields.String(example='pen'),
         'price_sorted': fields.String(example='default'),
         'trading_method': fields.String(example='cash'),
-
         'change': fields.Boolean(example=False)
 })
 
+search_items_by_category_model = api.model('search_items_by_category_data',{
+      'class1': fields.String(example='Coles'),
+      'class2': fields.String(example='Disney cards'),
+      'class3': fields.String(example='Wonder Woman')
+})
 
 search_activity_model = api.model('search_activity_model', {
         'activity_name': fields.String(example='name'),
