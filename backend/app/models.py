@@ -181,14 +181,17 @@ def reset_password(**kwargs):
 
 def get_profile(email):
     user = User.query.filter_by(email=email).first()
-    return {'email': user.email,
-            'username': user.username,
-            'image': user.image,
-            'identity': user.identity,
-            'gender': user.gender,
-            'state': user.state,
-            'suburb': user.suburb,
-            }
+    if user:
+        return {'email': user.email,
+                'username': user.username,
+                'image': user.image,
+                'identity': user.identity,
+                'gender': user.gender,
+                'state': user.state,
+                'suburb': user.suburb,
+                }
+    else:
+        return {}
 
 
 def update_profile(email, **kwargs):
@@ -323,19 +326,29 @@ def search_item(page, **kwargs):
     price_sorted = kwargs['price_sorted']
     trading_method = kwargs['trading_method']
     change = kwargs['change']
+    cls1 = kwargs['class1']
+    cls2 = kwargs['class2']
+    cls3 = kwargs['class3']
     p_dict = {
         'default': None,
         'asc': Item.item_price.asc(),
         'desc': Item.item_price.desc()
     }
     try:
-        query = Item.query.filter(
+        items = Item.query
+        if cls1:
+            items = items.filter(Item.class1==cls1)
+        if cls2:
+            items = items.filter(Item.class2==cls2)
+        if cls3:
+            items = items.filter(Item.class3==cls3)
+        query = items.filter(
             or_(
                 Item.item_name.ilike(f'%{keyword}%'),  # ilike means upper and lower is the same
                 Item.item_desc.ilike(f'%{keyword}%'),
-                Item.class1.ilike(f'%{keyword}%'),
-                Item.class2.ilike(f'%{keyword}%'),
-                Item.class3.ilike(f'%{keyword}%')
+                # Item.class1.ilike(f'%{keyword}%'),
+                # Item.class2.ilike(f'%{keyword}%'),
+                # Item.class3.ilike(f'%{keyword}%')
             )
         )
         if trading_method != 'default':

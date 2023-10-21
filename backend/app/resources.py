@@ -107,8 +107,8 @@ class OtherProfile(Resource):
     def post(self):
         args = Author.payload
         email = args['email']
-        result = get_profile(email)
-        return {'success': result['info']}, 200
+        profile = get_profile(email)
+        return {'success': profile}, 200
         
 
 Item = Namespace('Items')
