@@ -153,19 +153,13 @@ export default function MyProfileContent({ token, profileData }) {
                     maxHeight={130}
                     sx={{ flex: 1, minWidth: 130, borderRadius: "100%" }}
                   >
-                    {picture ?
-                      <img
-                        src={picture}
-                        alt=""
-                      />
-                      :
-                      <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                        loading="lazy"
-                        alt=""
-                      />
-                    } 
+
+                    <img
+                      src={picture}
+                      alt=""
+                    />
+
+
                   </AspectRatio>
 
                   <UploadFileButton setPicture={setPicture} words="New Icon"/>
@@ -229,19 +223,12 @@ export default function MyProfileContent({ token, profileData }) {
                       maxHeight={130}
                       sx={{ flex: 1, minWidth: 130, borderRadius: "100%" }}
                     >
-                      {picture ?
-                        <img
-                          src={picture}
-                          alt=""
-                        />
-                        :
-                        <img
-                          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                          srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                          loading="lazy"
-                          alt=""
-                        />
-                      } 
+
+                      <img
+                        src={picture}
+                        alt=""
+                      />
+
                     </AspectRatio>
 
                   </Stack>

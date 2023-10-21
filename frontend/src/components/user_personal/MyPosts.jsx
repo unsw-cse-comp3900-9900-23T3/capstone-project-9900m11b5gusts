@@ -11,11 +11,18 @@ import AddIcon from '@mui/icons-material/Add';
 
 import ItemCard from "./ItemCard";
 import Pagination from "../user_general/Pagination";
+import Alert from '@mui/joy/Alert';
+import PlaylistAddCheckCircleRoundedIcon from '@mui/icons-material/PlaylistAddCheckCircleRounded';
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import IconButton from '@mui/joy/IconButton';
 
 
 export default function MyPosts({ token, profileData, manageItemID }) {
   const [email, setEmail] = React.useState(null)
   const [posts, setPosts] = React.useState([])
+
+
 
   React.useEffect(() => {
     if (profileData) {
@@ -32,6 +39,8 @@ export default function MyPosts({ token, profileData, manageItemID }) {
   React.useEffect(() => {
     console.log('this is posts: ', posts)
   },[posts])
+
+
 
 
   async function checkPersonalItem(){
@@ -92,14 +101,18 @@ export default function MyPosts({ token, profileData, manageItemID }) {
             {posts.map((item, index) => {
               return(
                 <ItemCard key={index} 
+                  token={token}
                   index={index}
                   category1={item.class1} 
                   category2={item.class2} 
                   category3={item.class3} 
                   title={item.item_name} 
-                  // location="Default location" 
+                  item_id={item.item_id}
+                  description={item.item_desc}
                   amount={item.item_num} 
                   price={item.item_price}
+                  exchangeMethod={item.trading_method}
+                  exchangeItem={item.exchange_item}
                   image={item.image}
                   manageItemID={manageItemID}
                 />
@@ -120,6 +133,8 @@ export default function MyPosts({ token, profileData, manageItemID }) {
         </Stack>
 
         <Pagination />
+
+
       </Box>
     </CssVarsProvider>
   );

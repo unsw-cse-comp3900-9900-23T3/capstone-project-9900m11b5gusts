@@ -37,6 +37,8 @@ import CardCover from '@mui/joy/CardCover';
 // import EditRoundedIcon from "@mui/icons-material/EditRounded"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CheckIcon from '@mui/icons-material/Check';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
 // import { styled } from '@mui/joy';
 // import SvgIcon from '@mui/joy/SvgIcon';
 
@@ -49,6 +51,7 @@ import CheckIcon from '@mui/icons-material/Check';
 
 
 import UploadFileButton from "../user_general/UploadFileButton.jsx"
+import SelectCategoryButton from "../user_general/SelectCategoryButton.jsx"
 
 
 
@@ -59,6 +62,16 @@ export default function PostNewItemPage({ token, profileData }) {
   const [price, setPrice] = React.useState('')
   const [description, setDescription] = React.useState('')
   const [picture, setPicture] = React.useState('')
+  const [tradeMethod, setTradeMedod] = React.useState('')
+
+  const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
+  const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
+  const [classesString, setClassesString] = React.useState('')
+
+  const handleClearCategory = () => {
+    setClasses((p) => ({...p, c1: '', c2: '', c3: ''}))
+    setApplyClassesFlag(false)
+  }
 
 
   const handleItemNameChange = (event) => {
@@ -77,10 +90,25 @@ export default function PostNewItemPage({ token, profileData }) {
     setDescription(event.target.value)
   }
 
+  React.useEffect(() => {
+    setClassesString('')
+    if (applyClassesFlag) {
+      if (classes.c1) {
+        setClassesString(p=>(p+classes.c1+' 》'))
+      }
+      if (classes.c2) {
+        setClassesString(p=>(p+classes.c2+' 》'))
+      }
+      if (classes.c3) {
+        setClassesString(p=>(p+classes.c3))
+      }
+    }
+
+  }, [classes])
 
 
   async function postNewItem(){
-    if (!(itemName && amount && price && description)) {
+    if (!(itemName && amount && tradeMethod && price && description)) {
       alert('Please provide all information.')
     } else {
       const response = await fetch('http://127.0.0.1:5000/Items/uploadPersonalItem', {
@@ -93,11 +121,14 @@ export default function PostNewItemPage({ token, profileData }) {
           "item_name": itemName,
           "image":picture,
           "description": description,
-          "price": parseFloat(price),
+          "price": isNaN(price) ? "0" : price,
           "num": parseInt(amount),
-          "class1": "coles",
-          "class2": "study",
-          "class3": "stationery"
+          "class1": classes.c1,
+          "class2": classes.c2,
+          "class3": classes.c3,
+          "trading_method": tradeMethod,
+          "exchange_item": price,
+          "change": true
         })
       });
       if (response.status===200){
@@ -174,24 +205,23 @@ export default function PostNewItemPage({ token, profileData }) {
 <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
                   
 <FormControl >
+<FormLabel>Select a category</FormLabel>
+  <Stack direction="row" spacing={1}>
+    <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
+    <Input style={{width: '100%'}} size="sm" value={classesString}/>
+  </Stack>
+</FormControl>
+
+<FormControl >
 <FormLabel>Name of the item</FormLabel>
-	<Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+  <Stack direction="row" spacing={1}>
+    <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+  </Stack>
 </FormControl>
 
 <FormControl>
 	<FormLabel>Amount of the item</FormLabel>
 	<Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
-</FormControl>
-
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Price / want to exchange for</FormLabel>
-	<Input
-		style={{width: '100%'}} 
-		size="sm"
-		sx={{ flexGrow: 1 }}
-    value={price}
-    onChange={handlePriceChange}
-	/>
 </FormControl>
 
 <FormControl sx={{ flexGrow: 1 }}>
@@ -203,6 +233,27 @@ export default function PostNewItemPage({ token, profileData }) {
 		sx={{ flexGrow: 1 }}
     value={description}
     onChange={handleDescriptionChange}
+    placeholder="Describe your item here..."
+	/>
+</FormControl>
+
+<br />
+<FormControl sx={{ flexGrow: 1 }}>
+	<FormLabel>Exchange for cash or goods?</FormLabel>
+    <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
+      <Option value='cash'>cash</Option>
+      <Option value='goods'>goods</Option>
+    </Select>
+</FormControl>
+
+<FormControl sx={{ flexGrow: 1 }}>
+	<FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
+	<Input
+		style={{width: '100%'}} 
+		size="sm"
+		sx={{ flexGrow: 1 }}
+    value={price}
+    onChange={handlePriceChange}
 	/>
 </FormControl>
 
