@@ -23,7 +23,7 @@ User Participate Campaigns Interface: Users can get all the campaigns, click on 
 
 week6: 10/22
 
-Campaign Monitoring page (frontend): Administrators can monitor and moderate the campaign process. They can click on the campaigns and delete any bad posts and comments.
+Campaign Monitoring page (frontend -- administrator): Administrators can monitor and moderate the campaign process. They can click on the campaigns and delete any bad posts and comments.
 
 week7: 10/29
 
