@@ -8,6 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import SearchBar from './SearchBar';
 import SelectCategoryButton from '../user_general/SelectCategoryButton';
+import Pagination from "../user_general/Pagination";
 
 export default function MarketHomePage ({ token }) {
   const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
@@ -28,6 +29,8 @@ export default function MarketHomePage ({ token }) {
         </Stack>
 
       </div>
+
+      {/* <Pagination/> */}
 
     </Box>
   )

@@ -104,7 +104,7 @@ export default function PostNewItemPage({ token, profileData }) {
       }
     }
 
-  }, [classes])
+  }, [classes, applyClassesFlag])
 
 
   async function postNewItem(){
