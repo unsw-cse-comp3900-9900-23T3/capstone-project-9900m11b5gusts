@@ -92,7 +92,8 @@ search_items_by_category_model = api.model('search_items_by_category_data',{
 
 search_activity_model = api.model('search_activity_model', {
         'activity_name': fields.String(example='name'),
-        'category': fields.String(example='category')
+        'category': fields.String(example='category'),
+        'status': fields.String(example='status')
 })
 
 create_activity_model = api.model('create_activity', {
@@ -100,7 +101,8 @@ create_activity_model = api.model('create_activity', {
         'status': fields.String(example='status'),
         'category': fields.String(example='category'),
         'overview': fields.String(example='overview'),
-        'detail': fields.String(example='detail')
+        'detail': fields.String(example='detail'),
+        'image': fields.String(example='a new image')
 })
 
 delete_activity_model = api.model('search_activity_model', {
@@ -113,6 +115,7 @@ update_activity_model = api.model('create_activity', {
         'status': fields.String(example='status'),
         'category': fields.String(example='category'),
         'overview': fields.String(example='overview'),
-        'detail': fields.String(example='detail')
+        'detail': fields.String(example='detail'),
+        'image': fields.String(example='a new image')
 })
 

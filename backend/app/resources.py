@@ -226,16 +226,15 @@ class SearchItemByCategory(Resource):
 
 Activity = Namespace('Activity', authorizations=authorizations)
 
-@Activity.route('/searchActivity')
+@Activity.route('/searchActivity/<int:page>')
 class SearchActivity(Resource):
-    @Activity.doc(description='Can search activity by name and category')
+    @Activity.doc(description='Can search activity by name and category and status')
     @Activity.expect(search_activity_model)
-    def post(self):
+    def post(self,page):
         args = Activity.payload
-        result = search_activity(**args)
-        print(result)
+        result = search_activity(page,**args)
         if result['result']:
-            return {'success': result['activity']}, 200
+            return {'success': result['info']['activities']}, 200
         else:
             return {'error': result['info']}, 400
 
