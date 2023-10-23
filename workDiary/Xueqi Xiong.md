@@ -11,19 +11,9 @@
 ### Week 2
 
 1. Designed the software architecture of the application
-
-   ![image-20200305120641892](D:\UNSW学习资料\9900\9900project\individual_contribution\XueqiXiong.assets\图片2.png)
-
 2. Draw the workflow of development and deployment
+3. Designed the application architecture 
 
-   ![image-20200305120641892](D:\UNSW学习资料\9900\9900project\individual_contribution\XueqiXiong.assets\图片3.png)
-
-
-
-> Designed the application architecture 
->
-
-![image-20200305120641892](D:\UNSW学习资料\9900\9900project\individual_contribution\XueqiXiong.assets\图片1.png)
 
 ### Week 3
 
@@ -31,8 +21,29 @@
 2. Implement the backend API interface of password reset by email
 3. Assign different front-end development tasks to different developers
 
- 
 
-### 
+### Week 4
+1. API(/Admin/infor/{page}): Administrator can get all the user status(image,name,identity,lock,user_email)
+2. API(/Admin/deleteUser): Administrator can delete the user(user_email)
+3. API(/Admin/modifyPermission): Administrator can modify the permission of the user
+(user_email,identity,lock)
+4. API(/Admin/activityInfor/{page}): Administrator can get all the activities information
+(name,category,overview,detail,image,status)
 
-> 
+### Week 5
+1. API(/Activity/createActivity): manager can create the activity(name,status,category,overview,detail,image)
+2. API(/Activity/searchActivity/{page}): user can search the activity(activity_name,category,status)
+3. API(/Activity/deleteActivity): user can delete the activity by
+(activity_name,category)
+4. API(/Activity/editActivity): user can edit the activity(name,status,category,overview,detail,image)
+
+
+### Week 6
+1. API(/Admin/approveActivity): Administrator can approve the new activity.
+(name,category,status)
+2. Cooperate with the front end and coordinate the activity management interface of the manager
+
+
+### Week 7
+1. Cooperate with the front end and coordinate the admin user interface 
+2. Cooperate with the front end to coordinate the monitoring activity interface
