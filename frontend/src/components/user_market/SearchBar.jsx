@@ -8,15 +8,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/joy/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-export default function SearchBar({ token, classes, setClasses, handleClearCategory, applyClassesFlag, setApplyClassesFlag }) {
-  const [data, setData] = React.useState({
-    email: '',
-    status: 'initial',
-  });
+export default function SearchBar({ 
+  token, 
+  classes, 
+  setClasses, 
+  handleClearCategory, 
+  applyClassesFlag, 
+  setApplyClassesFlag, 
+  search, 
+  searchWords, 
+  setSearchWords }) {
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
 		console.log('submiting...')
+    search()
   };
 
   return (
@@ -25,16 +32,16 @@ export default function SearchBar({ token, classes, setClasses, handleClearCateg
 
         <Input
           sx={{ '--Input-decoratorChildHeight': '45px' }}
-          value={data.email}
+          value={searchWords}
           onChange={(event) =>
-            setData({ email: event.target.value, status: 'initial' })
+            setSearchWords(event.target.value)
           }
-          error={data.status === 'failure'}
+
           endDecorator={
             <Button
               variant="solid"
               color="primary"
-              loading={data.status === 'loading'}
+              // loading={data.status === 'loading'}
               type="submit"
               sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
 							
@@ -44,21 +51,7 @@ export default function SearchBar({ token, classes, setClasses, handleClearCateg
             </Button>
           }
         />
-        {data.status === 'failure' && (
-          <FormHelperText
-            sx={(theme) => ({ color: theme.vars.palette.danger[400] })}
-          >
-            Oops! something went wrong, please try again later.
-          </FormHelperText>
-        )}
-
-        {data.status === 'sent' && (
-          <FormHelperText
-            sx={(theme) => ({ color: theme.vars.palette.primary[400] })}
-          >
-            You are all set!
-          </FormHelperText>
-        )}
+        
 				<FormLabel
           sx={(theme) => ({
             '--FormLabel-color': theme.vars.palette.primary.plainColor,

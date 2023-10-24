@@ -186,7 +186,15 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
           setLayout(undefined);
         }}
       >
-        <ModalDialog layout={layout} style={{height: '80%', width:'55%', minWidth:'400px'}}>
+        <ModalDialog layout={layout}
+          sx={{
+            position: 'absolute',
+            height: { xs: '80%', md: '90%' },
+            width:{ xs: '90%', md: '60%' },
+            left: { xs: '', md: '58%' }
+
+          }}
+        >
           <ModalClose />
           <DialogTitle>Category Filter:</DialogTitle>
           &nbsp;&nbsp;  {classes.c1 && classes.c1 + '》'} {classes.c2 && ( classes.c2 + '》') }  {classes.c3 && ( classes.c3) }
@@ -198,8 +206,9 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
             alignItems="flex-start"
             spacing={2}
             sx={{
-              overflow: 'auto'
+              overflow: 'auto',
             }}
+            
           >
             
             <List

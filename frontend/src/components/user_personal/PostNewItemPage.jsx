@@ -104,7 +104,7 @@ export default function PostNewItemPage({ token, profileData }) {
       }
     }
 
-  }, [classes])
+  }, [classes, applyClassesFlag])
 
 
   async function postNewItem(){
@@ -208,7 +208,7 @@ export default function PostNewItemPage({ token, profileData }) {
 <FormLabel>Select a category</FormLabel>
   <Stack direction="row" spacing={1}>
     <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
-    <Input style={{width: '100%'}} size="sm" value={classesString}/>
+    <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
   </Stack>
 </FormControl>
 

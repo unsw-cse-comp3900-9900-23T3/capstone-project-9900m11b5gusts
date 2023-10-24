@@ -60,6 +60,7 @@ export default function MyPosts({ token, profileData, manageItemID }) {
         const data = await response.json();
         console.log('posts: ', data.success)
         if (data.success !== 'no item'){
+            setPosts([])
             Object.entries(data.success).map((item) => {
             setPosts(prev => [...prev, item[1]])
           })
@@ -132,7 +133,7 @@ export default function MyPosts({ token, profileData, manageItemID }) {
           </Stack>
         </Stack>
 
-        <Pagination />
+        {/* <Pagination /> */}
 
 
       </Box>

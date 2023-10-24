@@ -92,27 +92,52 @@ search_items_by_category_model = api.model('search_items_by_category_data',{
 
 search_activity_model = api.model('search_activity_model', {
         'activity_name': fields.String(example='name'),
-        'category': fields.String(example='category')
+        'category': fields.String(example='category'),
+        'status': fields.String(example='status')
 })
 
 create_activity_model = api.model('create_activity', {
         'activity_name': fields.String(example='name'),
-        'status': fields.String(example='status'),
         'category': fields.String(example='category'),
         'overview': fields.String(example='overview'),
-        'detail': fields.String(example='detail')
+        'detail': fields.String(example='detail'),
+        'image': fields.String(example='a new image')
 })
 
-delete_activity_model = api.model('search_activity_model', {
+delete_activity_model = api.model('delete_activity_model', {
         'activity_name': fields.String(example='name'),
         'category': fields.String(example='category')
 })
 
-update_activity_model = api.model('create_activity', {
+delete_user_model = api.model('delete_user_model', {
+        'user_email': fields.String(example='syukay00789@gmail.com')
+})
+
+update_activity_model = api.model('update_activity', {
         'activity_name': fields.String(example='name'),
         'status': fields.String(example='status'),
         'category': fields.String(example='category'),
         'overview': fields.String(example='overview'),
-        'detail': fields.String(example='detail')
+        'detail': fields.String(example='detail'),
+        'image': fields.String(example='a new image')
 })
+
+update_activity_permission_model = api.model('update_activity_permission_model', {
+        'email': fields.String(example='syukay00789@gmail.com'),
+        'identity': fields.String(example='manager')
+})
+
+approve_activity_permission_model = api.model('approve_activity_permission_model', {
+        'name': fields.String(example='Art exhibition'),
+        'category': fields.String(example='art'),
+        'status': fields.String(example='status')
+})
+
+# search_user_infor_model = api.model('search_user_infor', {
+#         'image': fields.String(example='user image'),
+#         'username': fields.String(example='username name'),
+#         'identity': fields.String(example='1'),
+#         'lock': fields.String(example='1'),
+#         'user_email': fields.String(example='syukay00789@gmail.com')
+# })
 
