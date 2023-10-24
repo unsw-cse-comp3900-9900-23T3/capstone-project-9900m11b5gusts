@@ -1,3 +1,5 @@
+from flask_jwt_extended import get_jwt_identity
+
 from .extensions import db, mail
 from sqlalchemy import or_
 from flask import current_app
@@ -34,6 +36,7 @@ class Activity(db.Model):
     overview = db.Column(db.String(1000), default='overview')
     detail = db.Column(db.String(1000), default='detail')
     image = db.Column(db.String(1000), default='image of activity')
+    email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
 
 class Item(db.Model):
     __tablename__ = 'tb_item'
@@ -433,7 +436,12 @@ def search_activity(page,**kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
     status = kwargs['status']
-
+    if len(activity_name) == 0:
+        activity_name = "*****"
+    if len(category) == 0:
+        category = "*****"
+    if len(status) == 0:
+        status = "*****"
     activity_infor = Activity.query.filter(
         or_(
             Activity.activity_name.ilike(f'%{activity_name}%'),
@@ -460,7 +468,7 @@ def search_activity(page,**kwargs):
     else:
         return {'result': True, 'info': {}}
 
-def create_activity(**kwargs):
+def create_activity(email,**kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
 
@@ -471,13 +479,13 @@ def create_activity(**kwargs):
     else:
         try:
             activity_name = kwargs['activity_name']
-            status = kwargs['status']
+            status = 0
             category = kwargs['category']
             overview = kwargs['overview']
             detail = kwargs['detail']
             image = kwargs['image']
             activity = Activity(activity_name=activity_name, status=status, category=category,
-                         overview=overview,detail=detail,image=image)
+                         overview=overview,detail=detail,image=image,email=email)
             db.session.add(activity)
             db.session.commit()
             return { 'result': True,'info':'Create the activity successfully'}
@@ -485,12 +493,15 @@ def create_activity(**kwargs):
             return { 'result': False,'info': f'Failed to create the activity'}
 
 
-def delete_activity(**kwargs):
+def delete_activity(email,**kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
 
     activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
-
+    email = get_jwt_identity()
+    identity = get_user_identity(email)
+    if activity.email != email and identity != "administrator":
+        return  {'result': False, 'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
     if activity:
         db.session.delete(activity)
         db.session.commit()
@@ -503,7 +514,7 @@ def get_user_identity(email):
     return user.identity
 
 
-def update_activity(**kwargs):
+def update_activity(email,**kwargs):
     # activity update
     activity_name = kwargs['activity_name']
     status = kwargs['status']
@@ -512,7 +523,11 @@ def update_activity(**kwargs):
     detail = kwargs['detail']
     try:
         activity = Activity.query.filter_by(activity_name=activity_name).first()
+        if activity.email != email:
+            return {'result': False, 'info': f'You don\'t have permission to update activities which are not created by you!'}
         if activity:
+            if activity.status == '0' and (status == '1' or status == '2'):
+                return {'result': False, 'info': f'Administrator has not approved the activity, you can not proceed !'}
             activity.activity_name = activity_name
             activity.status = status
             activity.category = category
@@ -523,6 +538,97 @@ def update_activity(**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update activity'}
 
+def show_activities_infor(page):
+    activity_infor = Activity.query.filter()
+    page_size = 10
+    offset = (page - 1) * page_size
+    total_rows = activity_infor.count()
+    activities = activity_infor.offset(offset).limit(page_size).all()
+    if len(activities) !=0 :
+        r = {}
+        for activity in activities:
+            r[activity.id] = {
+                'activity_name': activity.activity_name,
+                'category': activity.category,
+                'overview': activity.overview,
+                'detail': activity.detail,
+                'image':activity.image,
+                'status':activity.status,
+                'email':activity.email
+            }
+        return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
+    else:
+        return {'result': True, 'info': {'activities': []}}
+def show_user_identity(page):
+    user_infor = User.query.filter()
+    page_size = 10
+    offset = (page - 1) * page_size
+    total_rows = user_infor.count()
+    users = user_infor.offset(offset).limit(page_size).all()
+    if users:
+        r = {}
+        for user in users:
+            r[user.id] = {
+                'image': user.image,
+                'username': user.username,
+                'identity': user.identity,
+                'email': user.email
+            }
+        return {'result': True, 'info': {'total_rows': total_rows, 'users': r}}
+    else:
+        return {'result': True, 'info': {}}
 
+def delete_user(**kwargs):
+    user_email = kwargs['user_email']
 
+    user = User.query.filter_by(email=user_email).first()
+    passwordReset = PasswordReset.query.filter_by(email=user_email).first()
+    item = Item.query.filter_by(email=user_email)
+    activity = Activity.query.filter_by(email=user_email)
 
+    if passwordReset:
+        db.session.delete(passwordReset)
+        db.session.commit()
+
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+
+    if activity:
+        db.session.delete(activity)
+        db.session.commit()
+
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {'result': True, 'info': 'delete success'}
+    else:
+        return {'result': False, 'info': 'fail to delete the user'}
+
+def modify_permission(**kwargs):
+    # user permission update
+    user_email = kwargs['email']
+    identity = kwargs['identity']
+
+    try:
+        user = User.query.filter_by(email=user_email).first()
+        if user:
+            user.email = user_email
+            user.identity = identity
+            db.session.commit()
+            return {'result': True, 'info': f'update user permission success'}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to update user permission'}
+
+def approve_activity(**kwargs):
+    name = kwargs['name']
+    category = kwargs['category']
+    status = kwargs['status']
+    try:
+        activity = Activity.query.filter_by(activity_name=name,category=category).first()
+        if activity:
+            activity.status = status
+            db.session.commit()
+            return {'result': True, 'info': f'Approve the activity successfully'}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to approve the activity'}
