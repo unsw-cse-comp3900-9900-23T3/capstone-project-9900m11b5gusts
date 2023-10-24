@@ -9,7 +9,7 @@ from .models import user_register, user_login, get_profile, update_profile, inse
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
     delete_user, modify_permission, show_activities_infor, approve_activity
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-
+from collections import OrderedDict
 
 authorizations = {
     'jsonWebToken': {
@@ -73,7 +73,7 @@ class ResetPassword(Resource):
         args = Author.payload
         result = reset_password(**args)
         if result['result']:
-            return {'success': result['info']}, 200
+            return {'success': OrderedDict(result['info'])}, 200
         else:
             return {'error': result['info']}, 400
 
@@ -114,6 +114,7 @@ class OtherProfile(Resource):
         
 
 Item = Namespace('Items')
+
 
 @Item.route('/getCategory')
 class GetItemCategory(Resource):
@@ -212,9 +213,13 @@ class SearchItem(Resource):
         args = Item.payload
         result = search_item(page, **args)
         if result['result']:
+            print(result['info'])
+            print('-------------')
+            print({'success': result['info']})
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Item.route('/searchItemByCategory/<int:page>')
 class SearchItemByCategory(Resource):
@@ -229,6 +234,7 @@ class SearchItemByCategory(Resource):
 Activity = Namespace('Activity', authorizations=authorizations)
 
 @Activity.route('/searchActivity/<int:page>')
+
 class SearchActivity(Resource):
     @Activity.doc(description='Can search activity by name and category and status')
     @Activity.expect(search_activity_model)
