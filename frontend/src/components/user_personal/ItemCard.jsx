@@ -16,6 +16,8 @@ import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
 // import Star from "@mui/icons-material/Star"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UserInfoChip from "../user_general/UserInfoChip"
+import SeeItemDetail from "../user_market/SeeItemDetail"
 
 
 
@@ -34,12 +36,18 @@ export default function ItemCard({
   exchangeItem = '',
   finished = false,
   image = 'https://glamadelaide.com.au/wp-content/uploads/2022/06/Coles-Collectable-Harry-Potter.jpg',
-  manageItemID
+  manageItemID,
+  ownerEmail=''
 }) {
 
+  const [showDetailFlag, setShowDetailFlag] = React.useState(false)
+
+  const handleSeeDetail = () => {
+    console.log('clicked')
+
+  }
+
   const handleEditButton = () => {
-    // console.log('clicked')
-    // console.log(index)
     manageItemID(index)
     window.location.href='/myposts/edititem'
   }
@@ -124,42 +132,17 @@ export default function ItemCard({
                 Finished
               </Chip>
             )}
-            <Stack direction="column">
-            <IconButton
-                variant="plain"
-                size="sm"
-                color={"neutral"}
-                onClick={handleEditButton}
-                sx={{
-                  display: { xs: "flex", sm: "none" },
-                  ml: "auto",
-                  borderRadius: "50%",
-                  zIndex: "20"
-                }}
-              >
-                <EditNoteIcon />Edit
-              </IconButton>
-              <IconButton
-                variant="plain"
-                size="sm"
-                color={"danger"}
-                // onClick={handleEditButton}
-                sx={{
-                  display: { xs: "flex", sm: "none" },
-                  ml: "auto",
-                  borderRadius: "50%",
-                  zIndex: "20"
-                }}
-              >
-                <DeleteIcon />Delete
-              </IconButton>
+            {}
 
-            </Stack>
 
 
           </Stack>
+          
         </AspectRatio>
+        
       </CardOverflow>
+
+
       <CardContent>
         <Stack
           spacing={1}
@@ -175,43 +158,47 @@ export default function ItemCard({
             
             </Typography>
             <Typography level="title-md">
-              <Link
+              <SeeItemDetail title={title} />
+              {/* <Link
                 overlay
                 underline="none"
-                href="#interactive-card"
+                // href="#interactive-card"
                 sx={{ color: "text.primary" }}
+                onClick={handleSeeDetail}
               >
                 {title}
-              </Link>
+              </Link> */}
             </Typography>
           </div>
-          <Stack direction="column">
-            <IconButton
-              variant="plain"
-              size="sm"
-              color={"primary"}
-              onClick={handleEditButton}
-              sx={{
-                display: { xs: "none", sm: "flex" },
-                borderRadius: "50%"
-              }}
-            >
-              <EditNoteIcon />Edit
-            </IconButton>
-            <IconButton
-              variant="plain"
-              size="sm"
-              color={"danger"}
-              // onClick={handleEditButton}
-              sx={{
-                display: { xs: "none", sm: "flex" },
-                borderRadius: "50%"
-              }}
-              onClick={handleDeleteButton}
-            >
-              <DeleteIcon />Delete
-            </IconButton>
-          </Stack>
+          {ownerEmail ? 
+            <UserInfoChip token={token} email={ownerEmail}/>
+            :
+            <Stack direction="column">
+              <IconButton
+                variant="plain"
+                size="sm"
+                color={"primary"}
+                onClick={handleEditButton}
+                sx={{
+                  borderRadius: "50%"
+                }}
+              >
+                <EditNoteIcon />Edit
+              </IconButton>
+              <IconButton
+                variant="plain"
+                size="sm"
+                color={"danger"}
+                // onClick={handleEditButton}
+                sx={{
+                  borderRadius: "50%"
+                }}
+                onClick={handleDeleteButton}
+              >
+                <DeleteIcon />Delete
+              </IconButton>
+            </Stack>
+          }
 
           
         </Stack>
