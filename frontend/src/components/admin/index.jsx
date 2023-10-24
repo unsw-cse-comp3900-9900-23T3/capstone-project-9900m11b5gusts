@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // other components
 import ShowImg from './showImage';
@@ -35,13 +36,19 @@ const SearchItem = (props) => {
 
 const MediaCard = (props) => {
 
-  const {setOpen} = props
+  const { setOpen } = props
+  const navigate = useNavigate();
 
   const handleBtnClick = () => {
     setOpen(true)
   }
+
+  const handleClick = () => {
+    navigate('/comments');
+  }
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} onClick={handleClick}>
       <CardMedia
         sx={{ height: 140 }}
         image={ActivityImg}
@@ -77,11 +84,11 @@ const MediaCard = (props) => {
           Detail
         </Typography>
       </CardContent>
-      <CardActions>
+      {/* <CardActions>
         <div className={styles.buttonRight}>
           <Button size="small" variant="contained" onClick={handleBtnClick}>Edit</Button>
         </div>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }

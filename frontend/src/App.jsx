@@ -21,6 +21,7 @@ import MyEcharts from './components/echart'
 import ShowImg from './components/admin/showImage'
 import Admin from './components/admin'
 import UserMgr from './components/admin/User'
+import Check from './components/admin/Check'
 
 import {
   BrowserRouter,
@@ -118,6 +119,7 @@ export default function App() {
 						<Route path="/showImg" element={<ShowImg />} />
 						<Route path="/admin" element={<Admin />} />
 						<Route path="/user" element={<UserMgr />} />
+						<Route path="/check" element={<Check />} />
 
 					</Routes>
 				</BrowserRouter>
