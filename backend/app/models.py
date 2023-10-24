@@ -446,12 +446,8 @@ def search_item_by_category(page, **kwargs):
     else:
         return {'result': True, 'info': {}}
 
-<<<<<<< HEAD
-
-def search_activity(**kwargs):
-=======
 def search_activity(page,**kwargs):
->>>>>>> 1f1f2746a8b069269d19886b5994d5e636819fff
+
     activity_name = kwargs['activity_name']
     category = kwargs['category']
     status = kwargs['status']

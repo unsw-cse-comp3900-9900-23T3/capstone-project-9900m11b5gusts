@@ -233,12 +233,8 @@ class SearchItemByCategory(Resource):
 
 Activity = Namespace('Activity', authorizations=authorizations)
 
-<<<<<<< HEAD
-
-@Activity.route('/searchActivity')
-=======
 @Activity.route('/searchActivity/<int:page>')
->>>>>>> 1f1f2746a8b069269d19886b5994d5e636819fff
+
 class SearchActivity(Resource):
     @Activity.doc(description='Can search activity by name and category and status')
     @Activity.expect(search_activity_model)
