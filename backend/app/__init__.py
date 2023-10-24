@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from flask import Flask
 from .extensions import api, db, jwt, mail
 from .resources import Author, Item, Activity

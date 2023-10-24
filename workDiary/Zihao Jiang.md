@@ -38,3 +38,4 @@ add search other profile API
 add search item by category
 add owner_email in every item's json.
 bug fixed, combine search item by keyword and filter category together
+bug fixed,but no idea about sorting price bug.

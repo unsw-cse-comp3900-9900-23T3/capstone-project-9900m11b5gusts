@@ -249,6 +249,7 @@ def get_personal_item(email):
     personal_items = Item.query.filter_by(email=email).all()
     if personal_items:
         temp_dict = {}
+        
         for item in personal_items:
             temp_dict[item.id] = {
                 'item_id': item.id,
@@ -265,6 +266,7 @@ def get_personal_item(email):
                 'change': item.change,
                 'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
             }
+        
         return {'result': True, 'info': temp_dict}
     else:
         return {'result': True, 'info': 'no item'}
@@ -334,8 +336,15 @@ def search_item(page, **kwargs):
         'asc': Item.item_price.asc(),
         'desc': Item.item_price.desc()
     }
+    
     try:
         items = Item.query
+        # 将排序条件应用到查询之前
+        if price_sorted in p_dict:
+            sort_condition = p_dict[price_sorted]
+        else:
+            # 默认排序条件
+            sort_condition = None
         if cls1:
             items = items.filter(Item.class1==cls1)
         if cls2:
@@ -353,20 +362,24 @@ def search_item(page, **kwargs):
         )
         if trading_method != 'default':
             query = query.filter(Item.trading_method == trading_method)
-        sort_condition = p_dict[price_sorted]
-        query = query.order_by(sort_condition)
+        # sort_condition = p_dict[price_sorted]
+        # query = query.order_by(sort_condition)
         print(query.all())
         query = query.filter(Item.change == change)
         page_size = 10
         offset = (page - 1) * page_size
         total_rows = query.count()
-        s_items = query.offset(offset).limit(page_size).all()
-
+        s_items = query.order_by(sort_condition).offset(offset).limit(page_size).all()
+        
         if s_items:
             item_dict = {'total_rows': total_rows}
             for item in s_items:
+                print(item, item.item_price)
+                user = User.query.filter_by(email=item.email).first()
+                user_name = user.username
                 item_dict[item.id] = {
                     'owner_email': item.email,
+                    'username': user_name,
                     'item_id': item.id,
                     'item_name': item.item_name,
                     'image': item.image,
@@ -381,6 +394,7 @@ def search_item(page, **kwargs):
                     'class3': item.class3,
                     'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
                 }
+            print(item_dict)
             return {'result': True, 'info': item_dict}
         else:
 
@@ -427,6 +441,7 @@ def search_item_by_category(page, **kwargs):
         return {'result': True, 'info': {'total_rows': total_rows, 'items': r}}
     else:
         return {'result': True, 'info': {}}
+
 
 def search_activity(**kwargs):
     activity_name = kwargs['activity_name']
