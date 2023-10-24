@@ -2,10 +2,12 @@ from flask_restx import Resource, Namespace
 from .api_models import login_model, register_model, changeProfile_model, insertItem_model, get_personal_item_model, \
     update_personal_item_model, search_items_model, forget_password_model, reset_password_model, \
     delete_personal_item_model, create_activity_model, search_activity_model, delete_activity_model, \
-    update_activity_model, search_items_by_category_model, check_profile_model
+    update_activity_model, search_items_by_category_model, check_profile_model, \
+    delete_user_model, update_activity_permission_model, approve_activity_permission_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
-    get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category
+    get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
+    delete_user, modify_permission, show_activities_infor, approve_activity
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -250,15 +252,15 @@ class CreateActivity(Resource):
         email = get_jwt_identity()
         identity = get_user_identity(email)
 
-        if identity == "manager":
-            result = create_activity(**args)
+        if identity == "manager" or identity == "administrator":
+            result = create_activity(email,**args)
 
             if result['result']:
                 return {'success': result['info']}, 200
             else:
                 return {'error': result['info']}, 400
         else:
-            return {'error':f'Only manager can create the activity'},400
+            return {'error':f'Only manager or administrator can create the activity'},400
 
 @Activity.route('/deleteActivity')
 class DeleteActivity(Resource):
@@ -268,7 +270,8 @@ class DeleteActivity(Resource):
     @Activity.expect(delete_activity_model)
     def delete(self):
         args = Activity.payload
-        result = delete_activity(**args)
+        email = get_jwt_identity()
+        result = delete_activity(email,**args)
         if result['result']:
             return {'success': result['info']}, 200
         else:
@@ -283,8 +286,98 @@ class EditActivity(Resource):
     @Activity.expect(update_activity_model)
     def post(self):
         args = Activity.payload
-        update_activity_result = update_activity(**args)
+        email = get_jwt_identity()
+
+        update_activity_result = update_activity(email,**args)
         if update_activity_result['result']:
             return {'success': update_activity_result['info']}, 200
         else:
             return {'error': update_activity_result['info']}, 400
+
+@Activity.route('/showActivity/<int:page>')
+class ShowActivityInfor(Resource):
+    @Activity.doc(description='Show all the activities')
+    def post(self,page):
+        result = show_activities_infor(page)
+        if result['result']:
+            return {'success': result['info']['activities']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+'''------Admin-----'''
+Admin = Namespace('Admin', authorizations=authorizations)
+
+@Admin.route('/infor/<int:page>')
+class ShowInfor(Resource):
+    @Admin.doc(description='Show the permission and status of all users')
+    @Admin.doc(security='jsonWebToken')
+    @jwt_required()
+    def post(self,page):
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        if identity == "administrator":
+            result = show_user_identity(page)
+            if result['result']:
+                return {'success': result['info']['users']}, 200
+            else:
+                return {'error': result['info']}, 400
+        else:
+            return {'error': 'insufficient privileges'}, 400
+
+@Admin.route('/deleteUser')
+class DeleteUser(Resource):
+    @Admin.doc(description='Can delete activity')
+    @Admin.doc(security='jsonWebToken')
+    @jwt_required()
+    @Admin.expect(delete_user_model)
+    def delete(self):
+        args = Admin.payload
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        if identity == "administrator":
+            result = delete_user(**args)
+            if result['result']:
+                return {'success': result['info']}, 200
+            else:
+                return {'error': result['info']}, 400
+        else:
+            return {'error': 'insufficient privileges'}, 400
+
+@Admin.route('/modifyPermission')
+class ModifyPermission(Resource):
+    @Admin.doc(description='Edit the permission of all users')
+    @Admin.doc(security='jsonWebToken')
+    @jwt_required()
+    @Admin.expect(update_activity_permission_model)
+    def post(self):
+        args = Admin.payload
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        if identity == "administrator":
+            update_activity_result = modify_permission(**args)
+            if update_activity_result['result']:
+                return {'success': update_activity_result['info']}, 200
+            else:
+                return {'error': update_activity_result['info']}, 400
+        else:
+            return {'error': 'insufficient privileges'}, 400
+
+@Admin.route('/approveActivity')
+class ApproveActivity(Resource):
+    @Admin.doc(description='Approve the activity')
+    @Admin.doc(security='jsonWebToken')
+    @jwt_required()
+    @Admin.expect(approve_activity_permission_model)
+    def post(self):
+        args = Admin.payload
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        if identity == "administrator":
+            result = approve_activity(**args)
+            if result['result']:
+                return {'success': result['info']}, 200
+            else:
+                return {'error': result['info']}, 400
+        else:
+            return {'error': 'insufficient privileges'}, 400
