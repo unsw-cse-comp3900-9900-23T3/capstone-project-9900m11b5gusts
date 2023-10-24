@@ -436,7 +436,12 @@ def search_activity(page,**kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
     status = kwargs['status']
-
+    if len(activity_name) == 0:
+        activity_name = "*****"
+    if len(category) == 0:
+        category = "*****"
+    if len(status) == 0:
+        status = "*****"
     activity_infor = Activity.query.filter(
         or_(
             Activity.activity_name.ilike(f'%{activity_name}%'),
