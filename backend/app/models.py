@@ -1,3 +1,5 @@
+from flask_jwt_extended import get_jwt_identity
+
 from .extensions import db, mail
 from sqlalchemy import or_
 from flask import current_app
@@ -491,7 +493,9 @@ def delete_activity(email,**kwargs):
     category = kwargs['category']
 
     activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
-    if activity.email != email:
+    email = get_jwt_identity()
+    identity = get_user_identity(email)
+    if activity.email != email and identity != "administrator":
         return  {'result': False, 'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
     if activity:
         db.session.delete(activity)
