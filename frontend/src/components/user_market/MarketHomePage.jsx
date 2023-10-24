@@ -18,6 +18,11 @@ export default function MarketHomePage ({ token }) {
   const [posts, setPosts] = React.useState([])
   const [searchWords, setSearchWords] = React.useState('')
 
+
+  React.useEffect(() =>{
+    search()
+  },[])
+
   React.useEffect(() => {
     console.log('market: ', posts)
     console.log(posts.length)

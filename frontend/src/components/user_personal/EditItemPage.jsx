@@ -239,52 +239,52 @@ export default function EditItemPage({ token, index, profileData }) {
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-<UploadFileButton setPicture={setPicture} words='Upload a picture'/>
-                  
-<FormControl >
-<FormLabel>Name of the item</FormLabel>
-	<Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
-</FormControl>
+              <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
+                                
+              <FormControl >
+              <FormLabel>Name of the item</FormLabel>
+                <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+              </FormControl>
 
-<FormControl>
-	<FormLabel>Amount of the item</FormLabel>
-	<Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
-</FormControl>
+              <FormControl>
+                <FormLabel>Amount of the item</FormLabel>
+                <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
+              </FormControl>
 
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Description</FormLabel>
-	<Textarea
-    minRows={3}
-		style={{width: '100%'}} 
-		size="sm"
-		sx={{ flexGrow: 1 }}
-    value={description}
-    onChange={handleDescriptionChange}
-    placeholder="Describe your item here..."
-	/>
-</FormControl>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Description</FormLabel>
+                <Textarea
+                  minRows={3}
+                  style={{width: '100%'}} 
+                  size="sm"
+                  sx={{ flexGrow: 1 }}
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  placeholder="Describe your item here..."
+                />
+              </FormControl>
 
-<br />
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Exchange for cash or goods?</FormLabel>
-    <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
-      <Option value='cash'>cash</Option>
-      <Option value='goods'>goods</Option>
-    </Select>
-</FormControl>
+              <br />
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Exchange for cash or goods?</FormLabel>
+                  <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
+                    <Option value='cash'>cash</Option>
+                    <Option value='goods'>goods</Option>
+                  </Select>
+              </FormControl>
 
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
-	<Input
-		style={{width: '100%'}} 
-		size="sm"
-		sx={{ flexGrow: 1 }}
-    value={price}
-    onChange={handlePriceChange}
-	/>
-</FormControl>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
+                <Input
+                  style={{width: '100%'}} 
+                  size="sm"
+                  sx={{ flexGrow: 1 }}
+                  value={price}
+                  onChange={handlePriceChange}
+                />
+              </FormControl>
 
-</Stack>
+            </Stack>
           </Stack>
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>

@@ -247,7 +247,7 @@ export default function PostNewItemPage({ token, profileData }) {
 </FormControl>
 
 <FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
+	<FormLabel>{tradeMethod === 'cash' ? 'Total price ($AUD)': 'Describe the goods you want to exchange for' }</FormLabel>
 	<Input
 		style={{width: '100%'}} 
 		size="sm"
