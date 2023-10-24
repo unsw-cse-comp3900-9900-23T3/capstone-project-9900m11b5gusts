@@ -191,7 +191,7 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
             position: 'absolute',
             height: { xs: '80%', md: '90%' },
             width:{ xs: '90%', md: '60%' },
-            left: { xs: '', md: '60%' }
+            left: { xs: '', md: '58%' }
 
           }}
         >
