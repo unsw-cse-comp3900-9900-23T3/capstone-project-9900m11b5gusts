@@ -330,10 +330,13 @@ def get_personal_item(email):
     personal_items = Item.query.filter_by(email=email).all()
     if personal_items:
         temp_dict = {}
-        
+        user = User.query.filter_by(email=item.email).first()
+        user_name = user.username
         for item in personal_items:
             temp_dict[item.id] = {
                 'item_id': item.id,
+                'owner_email': email,
+                'username': user_name,
                 'item_name': item.item_name,
                 'image': item.image,
                 'item_price': str(item.item_price),
