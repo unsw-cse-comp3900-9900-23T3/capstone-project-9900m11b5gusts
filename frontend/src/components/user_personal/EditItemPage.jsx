@@ -52,6 +52,7 @@ import Option from '@mui/joy/Option';
 
 import UploadFileButton from "../user_general/UploadFileButton.jsx"
 
+import SelectCategoryButton from "../user_general/SelectCategoryButton.jsx"
 
 
 export default function EditItemPage({ token, index, profileData }) {
@@ -68,6 +69,14 @@ export default function EditItemPage({ token, index, profileData }) {
   const [tradeMethod, setTradeMedod] = React.useState('')
   const [itemID, setItemID] = React.useState(0)
 
+  const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
+  const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
+  const [classesString, setClassesString] = React.useState('')
+
+  const handleClearCategory = () => {
+    setClasses((p) => ({...p, c1: '', c2: '', c3: ''}))
+    setApplyClassesFlag(false)
+  }
 
   const handleItemNameChange = (event) => {
     setItemName(event.target.value)
@@ -98,6 +107,22 @@ export default function EditItemPage({ token, index, profileData }) {
     }
   },[email])
 
+  React.useEffect(() => {
+    setClassesString('')
+    if (applyClassesFlag) {
+      if (classes.c1) {
+        setClassesString(p=>(p+classes.c1+' 》'))
+      }
+      if (classes.c2) {
+        setClassesString(p=>(p+classes.c2+' 》'))
+      }
+      if (classes.c3) {
+        setClassesString(p=>(p+classes.c3))
+      }
+    }
+
+  }, [classes, applyClassesFlag])
+
 
   React.useEffect(()=>{
     if (posts.length > 0) {
@@ -106,11 +131,15 @@ export default function EditItemPage({ token, index, profileData }) {
       console.log('post: ', posts[index])
       setItemName(posts[index].item_name)
       setAmount(posts[index].item_num)
-      setPrice(posts[index].item_price)
+      setPrice(posts[index].exchange_item)
       setDescription(posts[index].item_desc)
       setPicture(posts[index].image)
       setTradeMedod(posts[index].trading_method)
       setItemID(posts[index].item_id)
+      setClasses((p) => ({...p, c1: posts[index].class1, c2: posts[index].class2, c3: posts[index].class3}))
+      if (posts[index].class1) {
+        setApplyClassesFlag(true)
+      }
     }
   }, [posts])
 
@@ -161,10 +190,10 @@ export default function EditItemPage({ token, index, profileData }) {
           "description": description,
           "price": isNaN(price) ? "0" : price,
           "num": parseInt(amount),
-          "class1": "coles",
-          "class2": "study",
-          "class3": "stationery",
-          "trading_method": "",
+          "class1": classes.c1,
+          "class2": classes.c2,
+          "class3": classes.c3,
+          "trading_method": tradeMethod,
           "exchange_item": price,
           "change": true
         })
@@ -239,52 +268,60 @@ export default function EditItemPage({ token, index, profileData }) {
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-<UploadFileButton setPicture={setPicture} words='Upload a picture'/>
-                  
-<FormControl >
-<FormLabel>Name of the item</FormLabel>
-	<Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
-</FormControl>
+              <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
 
-<FormControl>
-	<FormLabel>Amount of the item</FormLabel>
-	<Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
-</FormControl>
+              <FormControl >
+                <FormLabel>Select a category</FormLabel>
+                <Stack direction="row" spacing={1}>
+                  <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
+                  <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
+                </Stack>
+              </FormControl>               
+                
+              <FormControl >
+                <FormLabel>Name of the item</FormLabel>
+                <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+              </FormControl>
 
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Description</FormLabel>
-	<Textarea
-    minRows={3}
-		style={{width: '100%'}} 
-		size="sm"
-		sx={{ flexGrow: 1 }}
-    value={description}
-    onChange={handleDescriptionChange}
-    placeholder="Describe your item here..."
-	/>
-</FormControl>
+              <FormControl>
+                <FormLabel>Amount of the item</FormLabel>
+                <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
+              </FormControl>
 
-<br />
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>Exchange for cash or goods?</FormLabel>
-    <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
-      <Option value='cash'>cash</Option>
-      <Option value='goods'>goods</Option>
-    </Select>
-</FormControl>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Description</FormLabel>
+                <Textarea
+                  minRows={3}
+                  style={{width: '100%'}} 
+                  size="sm"
+                  sx={{ flexGrow: 1 }}
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  placeholder="Describe your item here..."
+                />
+              </FormControl>
 
-<FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
-	<Input
-		style={{width: '100%'}} 
-		size="sm"
-		sx={{ flexGrow: 1 }}
-    value={price}
-    onChange={handlePriceChange}
-	/>
-</FormControl>
+              <br />
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Exchange for cash or goods?</FormLabel>
+                  <Select value={tradeMethod?tradeMethod:''} onChange={(e)=>{if(e) {setTradeMedod(e.target.innerText)}}}>
+                    <Option value='cash'>cash</Option>
+                    <Option value='goods'>goods</Option>
+                  </Select>
+              </FormControl>
 
-</Stack>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>{tradeMethod === 'cash' ? 'Total price ($AUD)': 'Describe the goods you want to exchange for' }</FormLabel>
+                <Input
+                  style={{width: '100%'}} 
+                  size="sm"
+                  sx={{ flexGrow: 1 }}
+                  value={price}
+                  onChange={handlePriceChange}
+                />
+              </FormControl>
+
+            </Stack>
           </Stack>
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>

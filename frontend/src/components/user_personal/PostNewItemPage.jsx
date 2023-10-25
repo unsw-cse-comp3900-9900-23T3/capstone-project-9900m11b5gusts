@@ -155,7 +155,7 @@ export default function PostNewItemPage({ token, profileData }) {
 
 						</Stack>
 					</Stack>
-      <Box sx={{ position: "sticky", top: { sm: -100, md: -110 }, bgcolor: "background.body", zIndex: 9995 }} >
+      <Box sx={{ position: "sticky", top: { sm: -100, md: -110 }, bgcolor: "background.body" }} >
         
         <Box sx={{ px: { xs: 2, md: 6 } }} >
           <Typography
@@ -205,7 +205,7 @@ export default function PostNewItemPage({ token, profileData }) {
 <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
                   
 <FormControl >
-<FormLabel>Select a category</FormLabel>
+  <FormLabel>Select a category</FormLabel>
   <Stack direction="row" spacing={1}>
     <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
     <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
@@ -213,7 +213,7 @@ export default function PostNewItemPage({ token, profileData }) {
 </FormControl>
 
 <FormControl >
-<FormLabel>Name of the item</FormLabel>
+  <FormLabel>Name of the item</FormLabel>
   <Stack direction="row" spacing={1}>
     <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
   </Stack>
@@ -247,7 +247,7 @@ export default function PostNewItemPage({ token, profileData }) {
 </FormControl>
 
 <FormControl sx={{ flexGrow: 1 }}>
-	<FormLabel>{tradeMethod === 'cash' ? 'Total price': 'Describe the goods you want to exchange for' }</FormLabel>
+	<FormLabel>{tradeMethod === 'cash' ? 'Total price ($AUD)': 'Describe the goods you want to exchange for' }</FormLabel>
 	<Input
 		style={{width: '100%'}} 
 		size="sm"

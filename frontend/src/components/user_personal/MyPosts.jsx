@@ -9,7 +9,7 @@ import Typography from "@mui/joy/Typography"
 import Button from '@mui/joy/Button';
 import AddIcon from '@mui/icons-material/Add';
 
-import ItemCard from "./ItemCard";
+import ItemCard from "../user_general/ItemCard";
 import Pagination from "../user_general/Pagination";
 import Alert from '@mui/joy/Alert';
 import PlaylistAddCheckCircleRoundedIcon from '@mui/icons-material/PlaylistAddCheckCircleRounded';
@@ -44,31 +44,33 @@ export default function MyPosts({ token, profileData, manageItemID }) {
 
 
   async function checkPersonalItem(){
-    console.log('email: ', email)
-    console.log('token: ', token)
-    const response = await fetch('http://127.0.0.1:5000/Items/checkPersonalItem', {
-        method:'POST',
-        headers:{
-          'Content-type': 'application/json',
-          'Authorization' : `Bearer ${token}`,
-        },
-        body:JSON.stringify({
-          'user_email': email
-        })
-      });
-      if (response.status===200){
-        const data = await response.json();
-        console.log('posts: ', data.success)
-        if (data.success !== 'no item'){
-            setPosts([])
-            Object.entries(data.success).map((item) => {
-            setPosts(prev => [...prev, item[1]])
+    if (token && email) {
+      console.log('email: ', email)
+      console.log('token: ', token)
+      const response = await fetch('http://127.0.0.1:5000/Items/checkPersonalItem', {
+          method:'POST',
+          headers:{
+            'Content-type': 'application/json',
+            'Authorization' : `Bearer ${token}`,
+          },
+          body:JSON.stringify({
+            'user_email': email
           })
+        });
+        if (response.status===200){
+          const data = await response.json();
+          console.log('posts: ', data.success)
+          if (data.success !== 'no item'){
+              setPosts([])
+              Object.entries(data.success).map((item) => {
+              setPosts(prev => [...prev, item[1]])
+            })
+          }
+        }else{
+          const data = await response.json();
+          alert(data)
         }
-      }else{
-        const data = await response.json();
-        alert(data)
-      }
+    }
   }
 
   return (
@@ -104,30 +106,12 @@ export default function MyPosts({ token, profileData, manageItemID }) {
                 <ItemCard key={index} 
                   token={token}
                   index={index}
-                  category1={item.class1} 
-                  category2={item.class2} 
-                  category3={item.class3} 
-                  title={item.item_name} 
-                  item_id={item.item_id}
-                  description={item.item_desc}
-                  amount={item.item_num} 
-                  price={item.item_price}
-                  exchangeMethod={item.trading_method}
-                  exchangeItem={item.exchange_item}
-                  image={item.image}
+                  item={item}
                   manageItemID={manageItemID}
                 />
                 )  
               })
             }
-
-            <ItemCard
-              title="Designer NY style loft"
-              category="Entire loft in central business district"
-              liked 
-              finished = {true}
-              image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
-            />
             
            
           </Stack>

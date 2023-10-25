@@ -18,7 +18,7 @@ import ListDivider from '@mui/joy/ListDivider';
 
 
 
-export default function UserInfoChip({ token, email }) {
+export default function UserInfoChip({ token, email, name }) {
 	const [open, setOpen] = React.useState(false);
 	const [userInfo, setUserInfor] = React.useState(null);
 
@@ -65,7 +65,7 @@ export default function UserInfoChip({ token, email }) {
 						startDecorator={<Avatar size="sm" />}
 						onClick={handleChipClick}
 					>
-						Mark
+						{name}
 					</Chip>
 			{userInfo &&
 				<>

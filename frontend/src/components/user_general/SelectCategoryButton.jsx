@@ -21,13 +21,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function SelectCategoryButton({ token, classes, setClasses, handleClearCategory, setApplyClassesFlag }) {
 
-
   const [layout, setLayout] = React.useState(undefined);
   const [category, setCategory] = React.useState(null)
 
 
   const handleButtonClick = () => {
-    updateProfile()
+    updateCategory()
     setLayout('center')
   }
 
@@ -38,7 +37,7 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
   }, [classes])
 
 
-  async function updateProfile(){
+  async function updateCategory(){
     const response = await fetch('http://127.0.0.1:5000/Items/getCategory', {
       method:'GET',
       headers:{
