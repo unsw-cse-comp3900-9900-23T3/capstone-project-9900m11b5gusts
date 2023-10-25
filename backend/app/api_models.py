@@ -11,7 +11,7 @@ register_model = api.model('register_data', {
         'register_email': fields.String(example='root@qq.com'),
         'username': fields.String(example='root'),
         'password': fields.String(example='123456'),
-        'identity': fields.String(example='manager')
+        'identity': fields.String(example='User')
 })
 
 forget_password_model = api.model('forget_password_data', {
@@ -49,6 +49,37 @@ insertItem_model = api.model('insertItem_data', {
         'exchange_item': fields.String(example=''),
         'change': fields.Boolean(example=False)
 })
+
+
+insert_wishlist_model = api.model('wishlist_data', {
+        'item_name': fields.String(example='pen'),
+        'image': fields.String(example='a image of item'),
+        'description': fields.String(example='some description about this item'),
+        'price': fields.String(example='66.66'),
+        'num': fields.String(example='2'),
+        'class1': fields.String(example='coles'),
+        'class2': fields.String(example='study'),
+        'class3': fields.String(example='stationery'),
+        'trading_method': fields.String(example='cash'),
+        'exchange_item': fields.String(example=''),
+        'change': fields.Boolean(example=False)
+})
+
+
+insert_inventory_model = api.model('inventory_data', {
+        'item_name': fields.String(example='pen'),
+        'image': fields.String(example='a image of item'),
+        'description': fields.String(example='some description about this item'),
+        'price': fields.String(example='66.66'),
+        'num': fields.String(example='2'),
+        'class1': fields.String(example='coles'),
+        'class2': fields.String(example='study'),
+        'class3': fields.String(example='stationery'),
+        'trading_method': fields.String(example='cash'),
+        'exchange_item': fields.String(example=''),
+        'change': fields.Boolean(example=False)
+})
+
 
 get_personal_item_model = api.model('get_personal_item_data', {
         'user_email': fields.String(example='root@qq.com')

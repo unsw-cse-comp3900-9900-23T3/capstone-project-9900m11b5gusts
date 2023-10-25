@@ -15,10 +15,11 @@ class User(db.Model):
     image = db.Column(db.String(1000), default='image of user')
     username = db.Column(db.String(30), unique=False, index=True)
     password = db.Column(db.String(30))
-    identity = db.Column(db.String(10), default='user')
+    identity = db.Column(db.String(10), default='User')
     gender = db.Column(db.String(10), default='male')
     state = db.Column(db.String(30), default='state')
     suburb = db.Column(db.String(30), default='suburb')
+
 
 class PasswordReset(db.Model):
     __tablename__ = 'tb_passReset'
@@ -26,6 +27,7 @@ class PasswordReset(db.Model):
     email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
     code = db.Column(db.String(100))
     create_at = db.Column(db.DateTime, default=datetime.datetime.now())
+
 
 class Activity(db.Model):
     __tablename__ = 'tb_activity'
@@ -38,8 +40,45 @@ class Activity(db.Model):
     image = db.Column(db.String(1000), default='image of activity')
     email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
 
+
 class Item(db.Model):
     __tablename__ = 'tb_item'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    image = db.Column(db.String(1000), default='image of Item')
+    item_name = db.Column(db.String(30))
+    item_desc = db.Column(db.String(1000))
+    item_price = db.Column(db.Float)
+    item_num = db.Column(db.Integer)
+    class1 = db.Column(db.String(30))
+    class2 = db.Column(db.String(30))
+    class3 = db.Column(db.String(30))
+    trading_method = db.Column(db.String(10), default='cash')
+    exchange_item = db.Column(db.String(100), default='')
+    change = db.Column(db.Boolean, default=False)
+    time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+class WishItem(db.Model):
+    __tablename__ = 'tb_wishitem'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    image = db.Column(db.String(1000), default='image of Item')
+    item_name = db.Column(db.String(30))
+    item_desc = db.Column(db.String(1000))
+    item_price = db.Column(db.Float)
+    item_num = db.Column(db.Integer)
+    class1 = db.Column(db.String(30))
+    class2 = db.Column(db.String(30))
+    class3 = db.Column(db.String(30))
+    trading_method = db.Column(db.String(10), default='cash')
+    exchange_item = db.Column(db.String(100), default='')
+    change = db.Column(db.Boolean, default=False)
+    time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+class Inventory(db.Model):
+    __tablename__ = 'tb_inventory'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
     image = db.Column(db.String(1000), default='image of Item')
@@ -101,20 +140,57 @@ def user_register(**kwargs):
     input_password = kwargs['password']
     input_identity = kwargs['identity']
     # 输入数据格式校验
+    if input_identity != 'User':
+        manager_code = ['zxcvb', 'asdfg', 'qwert']
+        admin_code = ['poiuy', 'lkjhg', 'mnbvc']
+        if input_identity in manager_code:
+            temp_code = input_identity
+            input_identity = 'Manager'
 
-    # 数据库插入记录
-    try:
-        event = User(email=input_register_email, username=input_username, password=input_password,
-                     identity=input_identity)
-        db.session.add(event)
-        db.session.commit()
-        print(f'LOG: {input_register_email} register success!')
-        return {'result': True,
-                'info': f'{input_register_email} Register success!'}
-    except Exception as e:
-        print(f'LOG: {input_register_email} register failed(user is already exists)!')
-        return {'result': False,
-                'info': f'Register failed: user is already exists!'}
+            try:
+                event = User(email=input_register_email, username=input_username, password=input_password,
+                             identity=input_identity)
+                db.session.add(event)
+                db.session.commit()
+
+                print('-----', input_register_email)
+                print(f'LOG: {input_register_email} register success!')
+                manager_code.remove(temp_code)
+                return {'result': True,
+                        'info': f'{input_register_email} Register success!'}
+            except Exception as e:
+                print(f'LOG: {input_register_email} register failed(manager user is already exists) {e}!')
+                return {'result': False,
+                        'info': f'Register failed: user is already exists!'}
+
+        elif input_identity in admin_code:
+            temp_code = input_identity
+            input_identity = 'Admin'
+            try:
+                event = User(email=input_register_email, username=input_username, password=input_password,
+                             identity=input_identity)
+                db.session.add(event)
+                db.session.commit()
+                admin_code.remove(temp_code)
+                print(f'LOG: {input_register_email} register success!')
+                return {'result': True, 'info': f'{input_register_email} Register success!'}
+            except Exception as e:
+                print(f'LOG: {input_register_email} register failed(admin user is already exists){e}!')
+                return {'result': False, 'info': f'Register failed: user is already exists!'}
+        else:
+            return {'result': False, 'info': 'invalid code!'}
+    else:
+        try:
+            event = User(email=input_register_email, username=input_username, password=input_password,
+                         identity=input_identity)
+            db.session.add(event)
+            db.session.commit()
+            print(f'LOG: {input_register_email} register success!')
+
+            return {'result': True, 'info': f'{input_register_email} Register success!'}
+        except Exception as e:
+            print(f'LOG: {input_register_email} register failed(user is already exists)!')
+            return {'result': False, 'info': f'Register failed: user is already exists!'}
 
 
 def user_login(**kwargs):
@@ -224,6 +300,7 @@ def update_profile(email, **kwargs):
         return {'result': False, 'info': f'Failed to update city for user with email {email}'}
 
 
+@time_test
 def insert_item(email, **kwargs):
     input_email = email
     input_item_image = kwargs['image']
@@ -283,7 +360,7 @@ def update_personal_item(email, **kwargs):
             if kwargs['item_name']:
                 personal_item.item_name = kwargs['item_name']
             if kwargs['description']:
-                personal_item.desc = kwargs['description']
+                personal_item.item_desc = kwargs['description']
             if kwargs['price']:
                 personal_item.item_price = float(kwargs['price'])
             if kwargs['num']:
@@ -327,6 +404,7 @@ def delete_personal_item(email, **kwargs):
         return {'result': False, 'info': 'do not have this item'}
 
 
+@time_test
 def search_item(page, **kwargs):
     keyword = kwargs['keyword']
     price_sorted = kwargs['price_sorted']
@@ -445,6 +523,62 @@ def search_item_by_category(page, **kwargs):
         return {'result': True, 'info': {'total_rows': total_rows, 'items': r}}
     else:
         return {'result': True, 'info': {}}
+
+
+def insert_wish_list(email, **kwargs):
+    input_email = email
+    input_item_image = kwargs['image']
+    input_item_name = kwargs['item_name']
+    input_item_desc = kwargs['description']
+    input_item_price = float(kwargs['price'])
+    input_item_num = int(kwargs['num'])
+    input_class1 = kwargs['class1']
+    input_class2 = kwargs['class2']
+    input_class3 = kwargs['class3']
+    input_method = kwargs['trading_method']
+    input_change = kwargs['change']
+    input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
+    print('wishlist')
+    try:
+        event = WishItem(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
+                     item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
+                     class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
+        db.session.add(event)
+        db.session.commit()
+        return {'result': True, 'info': 'insert item success'}
+    except Exception as e:
+        print(e)
+        return {'result': False, 'info': f'{e}'}
+
+
+def insert_inventory(email, **kwargs):
+    input_email = email
+    input_item_image = kwargs['image']
+    input_item_name = kwargs['item_name']
+    input_item_desc = kwargs['description']
+    input_item_price = float(kwargs['price'])
+    input_item_num = int(kwargs['num'])
+    input_class1 = kwargs['class1']
+    input_class2 = kwargs['class2']
+    input_class3 = kwargs['class3']
+    input_method = kwargs['trading_method']
+    input_change = kwargs['change']
+    input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
+    print('inventory')
+    try:
+        event = Inventory(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
+                     item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
+                     class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
+        db.session.add(event)
+        db.session.commit()
+        return {'result': True, 'info': 'insert item success'}
+    except Exception as e:
+        print(e)
+        return {'result': False, 'info': e}
+
+
+'''--------------------------------'''
+
 
 def search_activity(page,**kwargs):
 

@@ -3,11 +3,12 @@ from .api_models import login_model, register_model, changeProfile_model, insert
     update_personal_item_model, search_items_model, forget_password_model, reset_password_model, \
     delete_personal_item_model, create_activity_model, search_activity_model, delete_activity_model, \
     update_activity_model, search_items_by_category_model, check_profile_model, \
-    delete_user_model, update_activity_permission_model, approve_activity_permission_model
+    delete_user_model, update_activity_permission_model, approve_activity_permission_model, \
+    insert_wishlist_model, insert_inventory_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
-    delete_user, modify_permission, show_activities_infor, approve_activity
+    delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, insert_inventory
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
 
@@ -39,7 +40,8 @@ class Login(Resource):
 
 @Author.route('/register')
 class Register(Resource):
-    @Author.doc(description='User register')
+    @Author.doc(description='User register: Manager code:[zxcvb, asdfg, qwert] \
+        Admin_code:[poiuy, lkjhg, mnbvc]')
     @Author.expect(register_model)
     def post(self):
         args = Author.payload
@@ -209,6 +211,7 @@ class SearchItem(Resource):
     @Item.doc(description='Can search by keyword and sort the price(default,asc,desc) trading_method(cash,exchange), '
                           'every page has 10 records')
     @Item.expect(search_items_model)
+    @time_test
     def post(self, page):
         args = Item.payload
         result = search_item(page, **args)
@@ -223,7 +226,7 @@ class SearchItem(Resource):
 
 @Item.route('/searchItemByCategory/<int:page>')
 class SearchItemByCategory(Resource):
-    @Item.doc(description='search item by 3 categories, empty string means no filter')
+    @Item.doc(description='Search item by 3 categories, empty string means no filter')
     @Item.expect(search_items_by_category_model)
     def post(self, page):
         args = Item.payload
@@ -231,7 +234,42 @@ class SearchItemByCategory(Resource):
         return {'success': result['info']}, 200
 
 
+@Item.route('/insertWishList')
+class InsertWishList(Resource):
+    @Item.doc(description='post the item the user wanted')
+    @Item.expect(insert_wishlist_model)
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    def post(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        result = insert_wish_list(email, **args)
+        if result['info']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+@Item.route('insertInventory')
+class InsertInventory(Resource):
+    @Item.doc(description='post the item the user wanted')
+    @Item.expect(insert_inventory_model)
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    def post(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        result = insert_inventory(email, **args)
+        if result['info']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+'''-------------------------------'''
+
 Activity = Namespace('Activity', authorizations=authorizations)
+
 
 @Activity.route('/searchActivity/<int:page>')
 
