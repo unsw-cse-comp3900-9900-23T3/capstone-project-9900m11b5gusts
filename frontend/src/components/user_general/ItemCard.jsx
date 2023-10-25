@@ -23,13 +23,6 @@ import SeeItemDetail from "../user_market/SeeItemDetail"
 
 export default function ItemCard({ token, index, item, manageItemID, finished=false }) {
 
-  const [showDetailFlag, setShowDetailFlag] = React.useState(false)
-
-  const handleSeeDetail = () => {
-    console.log('clicked')
-
-  }
-
   const handleEditButton = () => {
     manageItemID(index)
     window.location.href='/myposts/edititem'
@@ -141,16 +134,7 @@ export default function ItemCard({ token, index, item, manageItemID, finished=fa
               
               </Typography>
               <Typography level="title-md">
-                <SeeItemDetail title={item.item_name} />
-                {/* <Link
-                  overlay
-                  underline="none"
-                  // href="#interactive-card"
-                  sx={{ color: "text.primary" }}
-                  onClick={handleSeeDetail}
-                >
-                  {title}
-                </Link> */}
+                <SeeItemDetail token={token} item={item} />
               </Typography>
             </div>
             {item.owner_email ? 

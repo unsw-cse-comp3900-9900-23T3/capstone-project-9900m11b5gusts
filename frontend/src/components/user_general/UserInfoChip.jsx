@@ -23,12 +23,14 @@ export default function UserInfoChip({ token, email, name }) {
 	const [userInfo, setUserInfor] = React.useState(null);
 
 	const handleChipClick = () => {
-		console.log(token, email)
-		fetchUserInfoByEmail()
-		
+		// console.log(token, email)
+		// fetchUserInfoByEmail()
 		setOpen(true)
-
 	}
+
+	React.useEffect(() => {
+		fetchUserInfoByEmail()
+	},[])
 
 
 
@@ -62,7 +64,7 @@ export default function UserInfoChip({ token, email, name }) {
 						variant="outlined"
 						color="neutral"
 						size="lg"
-						startDecorator={<Avatar size="sm" />}
+						startDecorator={<Avatar size="sm" src={userInfo ? userInfo.image: ''} />}
 						onClick={handleChipClick}
 					>
 						{name}
@@ -74,7 +76,13 @@ export default function UserInfoChip({ token, email, name }) {
 						aria-describedby="modal-desc"
 						open={open}
 						onClose={() => setOpen(false)}
-						sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+						sx={{ 
+							display: 'flex', 
+							justifyContent: 'center', 
+							alignItems: 'center', 
+							position: 'absolute',
+							left: { xs: '', md: '20%' },
+						}}
 					>
 						<Sheet
 							variant="outlined"
@@ -123,7 +131,7 @@ export default function UserInfoChip({ token, email, name }) {
 												<>Location: </>
 											</Grid>
 											<Grid xs={9}>
-												<>{userInfo.state} &nbsp; {userInfo.suburb}</>
+												<>{userInfo.suburb} &nbsp; {userInfo.state}</>
 											</Grid>
 										</Grid>
 										<ListDivider />

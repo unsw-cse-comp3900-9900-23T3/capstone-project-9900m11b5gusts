@@ -20,9 +20,10 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Chip from '@mui/joy/Chip';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import UserInfoChip from '../user_general/UserInfoChip';
 
 
-export default function DialogVerticalScroll({ title }) {
+export default function SeeItemDetail({ token, item }) {
   const [layout, setLayout] = React.useState(undefined);
 
   return (
@@ -35,7 +36,7 @@ export default function DialogVerticalScroll({ title }) {
 				sx={{ color: "text.primary" }}
 				onClick={()=>{setLayout('center')}}
 			>
-        {title}
+        {item.item_name}
       </Link>
       </Stack>
       <Modal
@@ -52,57 +53,76 @@ export default function DialogVerticalScroll({ title }) {
             left: { xs: '', md: '58%' },
           }}
         >
-          <ModalClose />
-          <DialogTitle>Vertical scroll example</DialogTitle>
+          <ModalClose token={token} email={item.owner_email} />
+          
 
-          <Box sx={{overflow: 'auto'}}>
+          <Box sx={{overflow: 'auto', height: '100%', marginTop:'24px'}}>
 
-            <Card sx={{ width: '100%' }}>
+            <Card variant='plain' sx={{ width: '100%'}}>
               <CardOverflow>
                 <AspectRatio sx={{ minWidth: 200 }}>
                   <img
-                    src="https://images.unsplash.com/photo-1593121925328-369cc8459c08?auto=format&fit=crop&w=286"
+                    src={item.image}
                     loading="lazy"
                     alt=""
                   />
                 </AspectRatio>
               </CardOverflow>
               <CardContent>
-                <Typography level="body-xs">Bluetooth Headset</Typography>
-                <Link
-                  href="#product-card"
-                  fontWeight="md"
-                  color="neutral"
-                  textColor="text.primary"
-                  overlay
-                  endDecorator={<ArrowOutwardIcon />}
-                >
-                  Super Rockez A400
-                </Link>
+                
+                <Typography level="body-xs" sx={{margin:'5px'}}>
+                  Category: &nbsp;
+                  {item.class1 ? item.class1 : 'None'}
+                  {item.class2 && (' 》' + item.class2)}
+                  {item.class3 && (' 》' + item.class3)} 
+                </Typography>
+
+                <DialogTitle level="title-xl" sx={{margin:'5px'}}>
+                  {item.item_name}
+                </DialogTitle>
+                <Typography level="body-sm" sx={{marginLeft:'15px'}}>
+                  (Amount: <b>7</b>)
+                </Typography>
 
                 <Typography
                   level="title-lg"
-                  sx={{ mt: 1, fontWeight: 'xl' }}
-                  endDecorator={
-                    <Chip component="span" size="sm" variant="soft" color="success">
-                      Lowest price
-                    </Chip>
-                  }
+                  sx={{ mt: 1, fontWeight: 'xl' , margin:'5px' ,marginLeft:'15px'}}
+                  // endDecorator={
+                  //   <Chip component="span" size="sm" variant="soft" color="success">
+                  //     Lowest price
+                  //   </Chip>
+                  // }
                 >
-                  2,900 THB
+                  {item.trading_method==='cash'
+                    ?
+                      'AUD $' + item.item_price
+                    :
+                      'Exchange for ' + item.exchange_item
+                  }
                 </Typography>
-                <Typography level="body-sm">
-                  (Only <b>7</b> left in stock!)
+
+                <span> &nbsp; <UserInfoChip token={token} email={item.owner_email} name={item.username}/></span>
+
+                <Typography >
+                  <br /> 
+                  Description: <br />                  
+                  {item.item_desc}
                 </Typography>
+                
               </CardContent>
               <CardOverflow>
-                <Button variant="solid" color="danger" size="lg">
-                  Add to cart
-                </Button>
+                {/* <Button variant="solid" color="primary" size="lg">
+                  Buy now
+                </Button> */}
               </CardOverflow>
             </Card>
 
           </Box>
+          <CardOverflow>
+            <Button variant="solid" color="primary" size="lg" >
+                    Buy now
+            </Button>
+          </CardOverflow>
 
         </ModalDialog>
       </Modal>
