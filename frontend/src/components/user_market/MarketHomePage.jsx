@@ -9,7 +9,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchBar from './SearchBar';
 import SelectCategoryButton from '../user_general/SelectCategoryButton';
 import Pagination from "../user_general/Pagination";
-import ItemCard from '../user_personal/ItemCard';
+import ItemCard from '../user_general/ItemCard';
+
 
 export default function MarketHomePage ({ token }) {
   const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
@@ -101,18 +102,22 @@ export default function MarketHomePage ({ token }) {
               if (item.item_id) {
                 return(
                   <ItemCard 
-                    category1={item.class1} 
-                    category2={item.class2} 
-                    category3={item.class3} 
-                    title={item.item_name} 
-                    description={item.item_desc}
-                    amount={item.item_num} 
-                    price={item.item_price}
-                    exchangeMethod={item.trading_method}
-                    exchangeItem={item.exchange_item}
-                    image={item.image}
-                    ownerEmail={item.owner_email}
+                    item = {item}
                   />
+                  //   <ItemCard 
+                  //   category1={item.class1} 
+                  //   category2={item.class2} 
+                  //   category3={item.class3} 
+                  //   title={item.item_name} 
+                  //   description={item.item_desc}
+                  //   amount={item.item_num} 
+                  //   price={item.item_price}
+                  //   exchangeMethod={item.trading_method}
+                  //   exchangeItem={item.exchange_item}
+                  //   image={item.image}
+                  //   ownerEmail={item.owner_email}
+                  //   ownerName={item.username}
+                  // />
                   )  
               }
 

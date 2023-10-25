@@ -14,6 +14,12 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import Box from '@mui/joy/Box';
 import Link from "@mui/joy/Link"
+import AspectRatio from '@mui/joy/AspectRatio';
+import Card from '@mui/joy/Card';
+import CardContent from '@mui/joy/CardContent';
+import CardOverflow from '@mui/joy/CardOverflow';
+import Chip from '@mui/joy/Chip';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 
 export default function DialogVerticalScroll({ title }) {
@@ -50,8 +56,51 @@ export default function DialogVerticalScroll({ title }) {
           <DialogTitle>Vertical scroll example</DialogTitle>
 
           <Box sx={{overflow: 'auto'}}>
-            
 
+            <Card sx={{ width: '100%' }}>
+              <CardOverflow>
+                <AspectRatio sx={{ minWidth: 200 }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1593121925328-369cc8459c08?auto=format&fit=crop&w=286"
+                    loading="lazy"
+                    alt=""
+                  />
+                </AspectRatio>
+              </CardOverflow>
+              <CardContent>
+                <Typography level="body-xs">Bluetooth Headset</Typography>
+                <Link
+                  href="#product-card"
+                  fontWeight="md"
+                  color="neutral"
+                  textColor="text.primary"
+                  overlay
+                  endDecorator={<ArrowOutwardIcon />}
+                >
+                  Super Rockez A400
+                </Link>
+
+                <Typography
+                  level="title-lg"
+                  sx={{ mt: 1, fontWeight: 'xl' }}
+                  endDecorator={
+                    <Chip component="span" size="sm" variant="soft" color="success">
+                      Lowest price
+                    </Chip>
+                  }
+                >
+                  2,900 THB
+                </Typography>
+                <Typography level="body-sm">
+                  (Only <b>7</b> left in stock!)
+                </Typography>
+              </CardContent>
+              <CardOverflow>
+                <Button variant="solid" color="danger" size="lg">
+                  Add to cart
+                </Button>
+              </CardOverflow>
+            </Card>
 
           </Box>
 
