@@ -330,7 +330,7 @@ def get_personal_item(email):
     personal_items = Item.query.filter_by(email=email).all()
     if personal_items:
         temp_dict = {}
-        user = User.query.filter_by(email=item.email).first()
+        user = User.query.filter_by(email=email).first()
         user_name = user.username
         for item in personal_items:
             temp_dict[item.id] = {
