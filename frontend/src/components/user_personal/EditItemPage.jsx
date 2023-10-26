@@ -318,6 +318,7 @@ export default function EditItemPage({ token, index, profileData }) {
                   sx={{ flexGrow: 1 }}
                   value={price}
                   onChange={handlePriceChange}
+                  type={tradeMethod==='cash'? 'number':''}
                 />
               </FormControl>
 

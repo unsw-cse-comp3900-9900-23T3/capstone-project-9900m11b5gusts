@@ -104,20 +104,6 @@ export default function MarketHomePage ({ token }) {
                   <ItemCard 
                     item = {item}
                   />
-                  //   <ItemCard 
-                  //   category1={item.class1} 
-                  //   category2={item.class2} 
-                  //   category3={item.class3} 
-                  //   title={item.item_name} 
-                  //   description={item.item_desc}
-                  //   amount={item.item_num} 
-                  //   price={item.item_price}
-                  //   exchangeMethod={item.trading_method}
-                  //   exchangeItem={item.exchange_item}
-                  //   image={item.image}
-                  //   ownerEmail={item.owner_email}
-                  //   ownerName={item.username}
-                  // />
                   )  
               }
 
