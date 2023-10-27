@@ -459,7 +459,7 @@ def search_item(page, **kwargs):
         if s_items:
             item_dict = {'total_rows': total_rows}
             for item in s_items:
-                print(item, item.item_price)
+                # print(item, item.item_price)
                 user = User.query.filter_by(email=item.email).first()
                 user_name = user.username
                 item_dict[item.id] = {
@@ -479,7 +479,7 @@ def search_item(page, **kwargs):
                     'class3': item.class3,
                     'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
                 }
-            print(item_dict)
+            # print(item_dict)
             return {'result': True, 'info': item_dict}
         else:
 

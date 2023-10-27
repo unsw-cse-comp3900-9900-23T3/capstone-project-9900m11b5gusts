@@ -216,9 +216,9 @@ class SearchItem(Resource):
         args = Item.payload
         result = search_item(page, **args)
         if result['result']:
-            print(result['info'])
-            print('-------------')
-            print({'success': result['info']})
+            # print(result['info'])
+            # print('-------------')
+            # print({'success': result['info']})
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
