@@ -137,7 +137,7 @@ export default function ItemCard({ token, index, item, manageItemID, finished=fa
                 <SeeItemDetail token={token} item={item} />
               </Typography>
             </div>
-            {item.owner_email ? 
+            {!window.location.href.includes('myposts') ? 
               <UserInfoChip token={token} email={item.owner_email} name={item.username}/>
               :
               <Stack direction="column">
