@@ -42,3 +42,7 @@ bug fixed,but no idea about sorting price bug.
 Add wishlist API
 Add inventory API
 Add manager & admin code
+Week 7
+Finish the wishlist update API
+Finish the wishlist delete API
+Finish the wishlist check API(all user and specific user)
