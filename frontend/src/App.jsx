@@ -41,6 +41,7 @@ import MyProfileContent from './components/user_personal/MyProfileContent';
 import PostNewItemPage from './components/user_personal/PostNewItemPage';
 import EditItemPage from './components/user_personal/EditItemPage';
 import MarketHomePage from './components/user_market/MarketHomePage';
+import WishListContent from './components/user_personal/WishListContent';
 
 
 
@@ -163,6 +164,7 @@ export default function App() {
 									<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
 									<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
 									<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
+									<Route path="/wishlist" element={<WishListContent token={token} profileData={profileData} />} />
 								</Routes>
 							</BrowserRouter>
 

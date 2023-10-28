@@ -203,16 +203,24 @@ export default function Sidebar({ logout, profileData }) {
                     selected={currentURL === 'myposts' || currentURL ==='postnewitem'}
                     onClick={()=>{setCurrentURL('myposts')}}
                     component={currentURL === 'myposts' ? undefined : 'a'}
-                    href='/myposts'>
-                      My Posts
+                    href='/myposts'
+                  >
+                    My Posts
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Wish List</ListItemButton>
+                  <ListItemButton
+                    selected={currentURL === 'wishlist'}
+                    onClick={()=>{setCurrentURL('wishlist')}}
+                    component={currentURL === 'wishlist' ? undefined : 'a'}
+                    href='/wishlist'
+                  >
+                    Wish List
+                  </ListItemButton>
                 </ListItem>
-                <ListItem>
+                {/* <ListItem>
                   <ListItemButton>Inventory</ListItemButton>
-                </ListItem>
+                </ListItem> */}
               </List>
             </Toggler>
           </ListItem>
