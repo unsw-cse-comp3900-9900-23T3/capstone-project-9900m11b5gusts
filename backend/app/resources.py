@@ -363,7 +363,7 @@ class ShowInfor(Resource):
         if identity == "administrator":
             result = show_user_identity(page)
             if result['result']:
-                return {'success': result['info']['users']}, 200
+                return {'success': result['info']['users'],'total_rows':result['info']['total_rows']}, 200
             else:
                 return {'error': result['info']}, 400
         else:
