@@ -690,9 +690,9 @@ def update_activity(email,**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update activity'}
 
-def show_activities_infor(page):
+def show_activities_infor(page,page_size):
     activity_infor = Activity.query.filter()
-    page_size = 10
+    # page_size = 10
     offset = (page - 1) * page_size
     total_rows = activity_infor.count()
     activities = activity_infor.offset(offset).limit(page_size).all()
@@ -710,10 +710,10 @@ def show_activities_infor(page):
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
-        return {'result': True, 'info': {'activities': []}}
-def show_user_identity(page):
+        return {'result': True, 'info': {'activities':'','total_rows':0}}
+def show_user_identity(page,page_size):
     user_infor = User.query.filter()
-    page_size = 10
+    # page_size = 10
     offset = (page - 1) * page_size
     total_rows = user_infor.count()
     users = user_infor.offset(offset).limit(page_size).all()
@@ -728,7 +728,7 @@ def show_user_identity(page):
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'users': r}}
     else:
-        return {'result': True, 'info': {}}
+        return {'result': True, 'info': {'users':'','total_rows':0}}
 
 def delete_user(**kwargs):
     user_email = kwargs['user_email']

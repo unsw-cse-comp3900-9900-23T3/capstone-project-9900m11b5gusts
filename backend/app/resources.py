@@ -338,13 +338,13 @@ class EditActivity(Resource):
         else:
             return {'error': update_activity_result['info']}, 400
 
-@Activity.route('/showActivity/<int:page>')
+@Activity.route('/showActivity/<int:page>/<int:pagesize>')
 class ShowActivityInfor(Resource):
     @Activity.doc(description='Show all the activities')
-    def post(self,page):
-        result = show_activities_infor(page)
+    def post(self,page,pagesize):
+        result = show_activities_infor(page,pagesize)
         if result['result']:
-            return {'success': result['info']['activities']}, 200
+            return {'success': result['info']['activities'],'total':result['info']['total_rows'],'pageSize':pagesize,'page':page}, 200
         else:
             return {'error': result['info']}, 400
 
@@ -352,18 +352,18 @@ class ShowActivityInfor(Resource):
 '''------Admin-----'''
 Admin = Namespace('Admin', authorizations=authorizations)
 
-@Admin.route('/infor/<int:page>')
+@Admin.route('/infor/<int:page>/<int:pagesize>')
 class ShowInfor(Resource):
     @Admin.doc(description='Show the permission and status of all users')
     @Admin.doc(security='jsonWebToken')
     @jwt_required()
-    def post(self,page):
+    def post(self,page,pagesize):
         email = get_jwt_identity()
         identity = get_user_identity(email)
         if identity == "administrator":
-            result = show_user_identity(page)
+            result = show_user_identity(page,pagesize)
             if result['result']:
-                return {'success': result['info']['users'],'total_rows':result['info']['total_rows']}, 200
+                return {'success': result['info']['users'],'total':result['info']['total_rows'],'pageSize':pagesize,'page':page}, 200
             else:
                 return {'error': result['info']}, 400
         else:
