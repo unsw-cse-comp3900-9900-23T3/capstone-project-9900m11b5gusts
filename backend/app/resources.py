@@ -4,11 +4,12 @@ from .api_models import login_model, register_model, changeProfile_model, insert
     delete_personal_item_model, create_activity_model, search_activity_model, delete_activity_model, \
     update_activity_model, search_items_by_category_model, check_profile_model, \
     delete_user_model, update_activity_permission_model, approve_activity_permission_model, \
-    insert_wishlist_model, insert_inventory_model
+    insert_wishlist_model, insert_inventory_model, get_wish_list_model, delete_wishList_model, update_wishList_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
-    delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, insert_inventory
+    delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, insert_inventory, \
+    update_wish_list, delete_wish_list, check_wish_item
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
 
@@ -234,6 +235,36 @@ class SearchItemByCategory(Resource):
         return {'success': result['info']}, 200
 
 
+@Item.route('/getWishList')
+class GetWishList(Resource):
+    @Item.doc(description='use email to get specific user(including himself) wish items, empty string means all user wish list item.')
+    @Item.expect(get_wish_list_model)
+    def post(self):
+        args = Item.payload
+        email = args['email']
+        result = check_wish_item(email)
+        if result['info']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+@Item.route('/deleteWishList')
+class DeleteWishList(Resource):
+    @Item.doc(description='delete wish list item wish item id')
+    @Item.doc(security='jsonWebToken')
+    @Item.expect(delete_wishList_model)
+    @jwt_required()
+    def delete(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        result = delete_wish_list(email, **args)
+        if result['info']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
 @Item.route('/insertWishList')
 class InsertWishList(Resource):
     @Item.doc(description='post the item the user wanted')
@@ -250,7 +281,23 @@ class InsertWishList(Resource):
             return {'error': result['info']}, 400
 
 
-@Item.route('insertInventory')
+@Item.route('/updateWishList')
+class UpdateWishList(Resource):
+    @Item.doc(description='update wish list item by wish list item id')
+    @Item.doc(security='jsonWebToken')
+    @Item.expect(update_wishList_model)
+    @jwt_required()
+    def post(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        result = update_wish_list(email, **args)
+        if result['info']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+@Item.route('/insertInventory')
 class InsertInventory(Resource):
     @Item.doc(description='post the item the user wanted')
     @Item.expect(insert_inventory_model)
@@ -363,7 +410,7 @@ class ShowInfor(Resource):
         if identity == "administrator":
             result = show_user_identity(page)
             if result['result']:
-                return {'success': result['info']['users']}, 200
+                return {'success': result['info']['users'],'total_rows':result['info']['total_rows']}, 200
             else:
                 return {'error': result['info']}, 400
         else:
