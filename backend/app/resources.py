@@ -114,7 +114,7 @@ class OtherProfile(Resource):
         email = args['email']
         profile = get_profile(email)
         return {'success': profile}, 200
-        
+
 
 Item = Namespace('Items')
 
@@ -319,13 +319,12 @@ Activity = Namespace('Activity', authorizations=authorizations)
 
 
 @Activity.route('/searchActivity/<int:page>')
-
 class SearchActivity(Resource):
     @Activity.doc(description='Can search activity by name and category and status')
     @Activity.expect(search_activity_model)
-    def post(self,page):
+    def post(self, page):
         args = Activity.payload
-        result = search_activity(page,**args)
+        result = search_activity(page, **args)
         if result['result']:
             return {'success': result['info']['activities']}, 200
         else:
@@ -343,15 +342,16 @@ class CreateActivity(Resource):
         email = get_jwt_identity()
         identity = get_user_identity(email)
 
-        if identity == "Manager" or identity == "Admin":
-            result = create_activity(email,**args)
+        if identity == "manager" or identity == "administrator":
+            result = create_activity(email, **args)
 
             if result['result']:
                 return {'success': result['info']}, 200
             else:
                 return {'error': result['info']}, 400
         else:
-            return {'error':f'Only manager or administrator can create the activity'},400
+            return {'error': f'Only manager or administrator can create the activity'}, 400
+
 
 @Activity.route('/deleteActivity')
 class DeleteActivity(Resource):
@@ -362,11 +362,12 @@ class DeleteActivity(Resource):
     def delete(self):
         args = Activity.payload
         email = get_jwt_identity()
-        result = delete_activity(email,**args)
+        result = delete_activity(email, **args)
         if result['result']:
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Activity.route('/editActivity')
 class EditActivity(Resource):
@@ -379,19 +380,20 @@ class EditActivity(Resource):
         args = Activity.payload
         email = get_jwt_identity()
 
-        update_activity_result = update_activity(email,**args)
+        update_activity_result = update_activity(email, **args)
         if update_activity_result['result']:
             return {'success': update_activity_result['info']}, 200
         else:
             return {'error': update_activity_result['info']}, 400
 
+
 @Activity.route('/showActivity/<int:page>/<int:pagesize>')
 class ShowActivityInfor(Resource):
     @Activity.doc(description='Show all the activities')
-    def post(self,page,pagesize):
-        result = show_activities_infor(page,pagesize)
+    def post(self, page, pagesize):
+        result = show_activities_infor(page, pagesize)
         if result['result']:
-            return {'success': result['info']['activities'],'total':result['info']['total_rows'],'pageSize':pagesize,'page':page}, 200
+            return {'success': result['info']['activities'], 'total': result['info']['total_rows'], 'pageSize': pagesize, 'page': page}, 200
         else:
             return {'error': result['info']}, 400
 
@@ -399,22 +401,24 @@ class ShowActivityInfor(Resource):
 '''------Admin-----'''
 Admin = Namespace('Admin', authorizations=authorizations)
 
+
 @Admin.route('/infor/<int:page>/<int:pagesize>')
 class ShowInfor(Resource):
     @Admin.doc(description='Show the permission and status of all users')
     @Admin.doc(security='jsonWebToken')
     @jwt_required()
-    def post(self,page,pagesize):
+    def post(self, page, pagesize):
         email = get_jwt_identity()
         identity = get_user_identity(email)
         if identity == "administrator":
-            result = show_user_identity(page,pagesize)
+            result = show_user_identity(page, pagesize)
             if result['result']:
-                return {'success': result['info']['users'],'total':result['info']['total_rows'],'pageSize':pagesize,'page':page}, 200
+                return {'success': result['info']['users'], 'total': result['info']['total_rows'], 'pageSize': pagesize, 'page': page}, 200
             else:
                 return {'error': result['info']}, 400
         else:
             return {'error': 'insufficient privileges'}, 400
+
 
 @Admin.route('/deleteUser')
 class DeleteUser(Resource):
@@ -435,6 +439,7 @@ class DeleteUser(Resource):
         else:
             return {'error': 'insufficient privileges'}, 400
 
+
 @Admin.route('/modifyPermission')
 class ModifyPermission(Resource):
     @Admin.doc(description='Edit the permission of all users')
@@ -453,6 +458,7 @@ class ModifyPermission(Resource):
                 return {'error': update_activity_result['info']}, 400
         else:
             return {'error': 'insufficient privileges'}, 400
+
 
 @Admin.route('/approveActivity')
 class ApproveActivity(Resource):
