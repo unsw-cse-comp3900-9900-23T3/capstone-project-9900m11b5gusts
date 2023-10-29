@@ -833,11 +833,13 @@ def delete_user(**kwargs):
         db.session.commit()
 
     if item:
-        db.session.delete(item)
+        for u in item:
+            db.session.delete(u)
         db.session.commit()
 
     if activity:
-        db.session.delete(activity)
+        for u in activity:
+            db.session.delete(u)
         db.session.commit()
 
     if user:

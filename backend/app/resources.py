@@ -343,7 +343,7 @@ class CreateActivity(Resource):
         email = get_jwt_identity()
         identity = get_user_identity(email)
 
-        if identity == "manager" or identity == "administrator":
+        if identity == "Manager" or identity == "Admin":
             result = create_activity(email,**args)
 
             if result['result']:
@@ -426,7 +426,7 @@ class DeleteUser(Resource):
         args = Admin.payload
         email = get_jwt_identity()
         identity = get_user_identity(email)
-        if identity == "administrator":
+        if identity == "Admin":
             result = delete_user(**args)
             if result['result']:
                 return {'success': result['info']}, 200
