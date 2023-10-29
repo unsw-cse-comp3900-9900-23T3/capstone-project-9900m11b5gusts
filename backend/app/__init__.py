@@ -1,7 +1,7 @@
 from datetime import timedelta
 from flask import Flask
 from .extensions import api, db, jwt, mail
-from .resources import Author, Item, Activity
+from .resources import Author, Item, Activity, Admin
 from flask_cors import CORS
 
 
@@ -26,6 +26,7 @@ def create_app():
     api.add_namespace(Author)
     api.add_namespace(Item)
     api.add_namespace(Activity)
+    api.add_namespace(Admin)
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24*7)  # 24*7 hour expired
     app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 
