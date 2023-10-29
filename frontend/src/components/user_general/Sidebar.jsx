@@ -213,6 +213,25 @@ export default function Sidebar({ logout, profileData }) {
                 <ListItem>
                   <ListItemButton>Inventory</ListItemButton>
                 </ListItem>
+                  {profileData.identity == 'manager' ?
+                    <div>
+                      <ListItem>
+                        <ListItemButton
+                          selected={currentURL === 'compaign'}
+                          onClick={() => { setCurrentURL('compaign'); }}
+                          component={currentURL === 'compaign' ? undefined : 'a'}
+                          href='/compaign'
+                        >campaigns</ListItemButton>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemButton
+                          selected={currentURL === 'echarts'}
+                          onClick={() => { setCurrentURL('echarts'); }}
+                          component={currentURL === 'echarts' ? undefined : 'a'}
+                          href='/echarts'
+                        >Analysis</ListItemButton>
+                      </ListItem>
+                    </div>: ""}
               </List>
             </Toggler>
           </ListItem>

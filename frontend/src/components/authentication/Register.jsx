@@ -249,8 +249,6 @@ export default function Register({ onSuccess }) {
         <Input style={{width:'300px'}}  name="email" onChange={handleIdentity} />
       </FormControl>
     }
-
-    
     <Stack gap={4} sx={{ mt: 2 }}>
       <Box
         sx={{
@@ -260,7 +258,6 @@ export default function Register({ onSuccess }) {
         }}
       >
       {/* <Checkbox size="sm" label="Remember me" name="persistent" /> */}
-
       </Box>
       {errorMessage && (
           <Typography variant="body1" style={{ color: 'red' }}>
@@ -270,10 +267,8 @@ export default function Register({ onSuccess }) {
       <Button type="submit" fullWidth>
         Sign up
       </Button>
-
     </Stack>
   </form>
-
 </Stack>
           </Box>
           <Box component="footer" sx={{ py: 3 }}>

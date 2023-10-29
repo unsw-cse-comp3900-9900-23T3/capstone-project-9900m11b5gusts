@@ -52,7 +52,7 @@
 }
 .buttonRight{
     display: flex;
-    justify-content: end;
+    justify-content:space-around;
     width: 100%;
 }
 .select{
