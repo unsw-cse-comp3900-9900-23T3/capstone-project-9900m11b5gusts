@@ -20,7 +20,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 
 // assets
-import ActivityImg from '../../assets/GuiyangMoon.jpg'
 import styles from "./mainPage.module.css"
 const baseUrl = "http://127.0.0.1:5000/";
 const urls = {
@@ -42,7 +41,7 @@ export default function MainPage() {
   const [imgUrl, setImgUrl] = useState('')
   const [paginationObj, setPaginationObj] = useState({
     currentPage: 1,
-    pageSize: 2,
+    pageSize: 10,
     count: 1,
   })
   const intiDialogData = {
@@ -69,10 +68,21 @@ export default function MainPage() {
 
   useEffect(() => {
     showActivity()
-  }, [])
+  }, [paginationObj.count])
 
   const handleChange = (v) => {
-    setPaginationObj(Object.assign(paginationObj,{pageSize:v.target.value}))
+    setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+    initQueryData()
+    showActivity()
+    // searchActivity()
+
+  }
+  const initQueryData = () => {
+    setQueryData({
+      category: "",
+      activity_name: "",
+      status: "",
+    })
   }
 
   const handleDialogClose = () => {
@@ -97,10 +107,12 @@ export default function MainPage() {
   const changeSearch = (e, type) => {
     setQueryData(Object.assign(queryData, { [type]: e.target.value }))
   }
-  const changePagination = (e) => {
-    console.log(e.target)
-    // console.log(paginationObj)
+  const changePagination = (e, value) => {
+    setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
     // searchActivity()
+    initQueryData()
+
+    showActivity()
   }
   const formatData = (data) => {
     let arr = []
@@ -120,10 +132,9 @@ export default function MainPage() {
       }
     })
 
-    const { success } = await res.json();
+    const { success, total } = await res.json();
     setActivityData(formatData(success))
-    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(activityData.length / paginationObj.pageSize) }))
-
+    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total / paginationObj.pageSize) }))
   }
 
   const createActivity = () => {
@@ -176,10 +187,9 @@ export default function MainPage() {
       }
 
     })
-    const { success } = await res.json();
+    const { success, total } = await res.json();
     setActivityData(formatData(success))
-    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(activityData.length / paginationObj.pageSize) }))
-
+    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total / paginationObj.pageSize) }))
   }
 
 
@@ -274,9 +284,7 @@ export default function MainPage() {
           count: {
             paginationObj.count
           }
-          page: {
-            paginationObj.currentPage
-          }
+          page:{paginationObj.currentPage}
           <Select
             labelId="demo-simple-select-standard-label"
             className={styles.select}

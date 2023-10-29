@@ -46,23 +46,32 @@ export default function Admin() {
   })
   const [paginationObj, setPaginationObj] = useState({
     currentPage: 1,
-    pageSize: 2,
+    pageSize: 10,
     count: 1,
   })
 
   useEffect(() => {
     showActivity();
-  }, [])
+  }, [paginationObj.count])
 
   const changeSearch = (e, type) => {
     setQueryData(Object.assign(queryData, { [type]: e.target.value }))
   }
-  const changePagination = (e) => {
-    console.log(e.target)
-    // console.log(paginationObj)
+  const changePagination = (e, value) => {
+    setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
     // searchActivity()
+    initQueryData()
+
+    showActivity()
   }
 
+  const initQueryData = () => {
+    setQueryData({
+      category: "",
+      activity_name: "",
+      status: "",
+    })
+  }
   const searchActivity = async () => {
     setPaginationObj(Object.assign(paginationObj, { currentPage: 1 }))
     const res = await fetch(urls.searchActivity + paginationObj.currentPage, {
@@ -98,8 +107,12 @@ export default function Admin() {
   }
 
 
-  const handleChange = (v) => {
+ const handleChange = (v) => {
     setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+    initQueryData()
+    showActivity()
+    // searchActivity()
+
   }
 
 
