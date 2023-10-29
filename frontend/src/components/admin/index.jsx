@@ -46,7 +46,7 @@ export default function Admin() {
   })
   const [paginationObj, setPaginationObj] = useState({
     currentPage: 1,
-    pageSize: 2,
+    pageSize: 10,
     count: 1,
   })
 

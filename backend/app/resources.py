@@ -430,7 +430,7 @@ class DeleteUser(Resource):
         args = Admin.payload
         email = get_jwt_identity()
         identity = get_user_identity(email)
-        if identity == "Admin":
+        if identity == "administrator":
             result = delete_user(**args)
             if result['result']:
                 return {'success': result['info']}, 200
