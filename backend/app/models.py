@@ -313,7 +313,7 @@ def insert_item(email, **kwargs):
     input_class3 = kwargs['class3']
     input_method = kwargs['trading_method']
     input_change = kwargs['change']
-    input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
+    input_exchange_item = kwargs['exchange_item']  # if kwargs['trading_method'] != 'cash' else ''
     try:
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
