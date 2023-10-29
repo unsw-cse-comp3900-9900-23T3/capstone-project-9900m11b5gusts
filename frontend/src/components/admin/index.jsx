@@ -125,7 +125,7 @@ export default function Admin() {
   }
 
   const showActivity = async () => {
-    const res = await fetch(urls.showActivity + paginationObj.currentPage, {
+    const res = await fetch(urls.showActivity + paginationObj.currentPage + "/" + paginationObj.pageSize, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
