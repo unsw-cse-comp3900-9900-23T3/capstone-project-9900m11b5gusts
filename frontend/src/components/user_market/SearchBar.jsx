@@ -7,6 +7,9 @@ import Button from '@mui/joy/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/joy/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import Chip from '@mui/joy/Chip';
+import ChipDelete from '@mui/joy/ChipDelete';
+
 
 export default function SearchBar({ 
   token, 
@@ -58,29 +61,20 @@ export default function SearchBar({
           })}
         >
           {applyClassesFlag && classes.c1 && 
-            <IconButton
-              aria-label="cancel_category_selection"
-              size="sm"
-              variant="outlined"
-              color="neutral"
-              sx={{
-                bgcolor: "background.body",
-                // position: "absolute",
-                // zIndex: 2,
-                borderRadius: "50%",
-                // left: 85,
-                // top: 180,
-                boxShadow: "sm"
-              }}
-              onClick={handleClearCategory}
+            <Chip
+              size="lg"
+              variant="soft"
+              // color="danger"
+              startDecorator={<ChipDelete variant='solid' onDelete={handleClearCategory} />}
             >
-              <CancelOutlinedIcon />
-            </IconButton> 
+              &nbsp;
+              {applyClassesFlag && classes.c1 && 'Filter: ' + classes.c1}
+              {applyClassesFlag && classes.c2 && (' 》' + classes.c2) }
+              {applyClassesFlag && classes.c3 && (' 》' + classes.c3) } 
+            </Chip>
           }
           
-          {applyClassesFlag && classes.c1 && 'Filter: ' + classes.c1}
-          {applyClassesFlag && classes.c2 && (' 》' + classes.c2) }
-          {applyClassesFlag && classes.c3 && (' 》' + classes.c3) } 
+
         </FormLabel>
       </FormControl>
     </form>
