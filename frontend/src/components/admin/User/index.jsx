@@ -28,7 +28,7 @@ export default function UserMgr() {
 
     async function getUserData() {
         const token = localStorage.getItem('token')
-        const response = await fetch(`http://127.0.0.1:5000/Admin/infor/1`, {
+        const response = await fetch(`http://127.0.0.1:5000/Admin/infor/1/10`, {
             method:'POST',
             headers:{
                 'Content-type': 'application/json',
@@ -73,6 +73,7 @@ export default function UserMgr() {
             const data = await response.json();
             console.log('Error: ', data)
         }
+        await getUserData()
     }
 
     async function modifyPermission(email, identity) {
