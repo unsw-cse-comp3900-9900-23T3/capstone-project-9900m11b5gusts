@@ -203,13 +203,24 @@ export default function Sidebar({ logout, profileData }) {
                     selected={currentURL === 'myposts' || currentURL ==='postnewitem'}
                     onClick={()=>{setCurrentURL('myposts')}}
                     component={currentURL === 'myposts' ? undefined : 'a'}
-                    href='/myposts'>
-                      My Posts
+                    href='/myposts'
+                  >
+                    My Posts
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Wish List</ListItemButton>
+                  <ListItemButton
+                    selected={currentURL === 'wishlist'}
+                    onClick={()=>{setCurrentURL('wishlist')}}
+                    component={currentURL === 'wishlist' ? undefined : 'a'}
+                    href='/wishlist'
+                  >
+                    Wish List
+                  </ListItemButton>
                 </ListItem>
+                {/* <ListItem>
+                  <ListItemButton>Inventory</ListItemButton>
+                </ListItem> */}
                 {profileData.identity == 'administrator'?
                   <div>
                       <ListItem>
@@ -229,7 +240,25 @@ export default function Sidebar({ logout, profileData }) {
                     >Admin</ListItemButton>
                       </ListItem>
                     </div> : ""}
-
+                {profileData.identity == 'manager' ?
+                  <div>
+                    <ListItem>
+                      <ListItemButton
+                        selected={currentURL === 'compaign'}
+                        onClick={() => { setCurrentURL('compaign'); }}
+                        component={currentURL === 'compaign' ? undefined : 'a'}
+                        href='/compaign'
+                      >campaigns</ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton
+                        selected={currentURL === 'echarts'}
+                        onClick={() => { setCurrentURL('echarts'); }}
+                        component={currentURL === 'echarts' ? undefined : 'a'}
+                        href='/echarts'
+                      >Analysis</ListItemButton>
+                    </ListItem>
+                  </div>: ""}
               </List>
             </Toggler>
           </ListItem>

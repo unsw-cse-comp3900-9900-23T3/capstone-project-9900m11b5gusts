@@ -36,6 +36,7 @@ changeProfile_model = api.model('changeProfile_data', {
         'suburb': fields.String(example='a new suburb')
 })
 
+
 insertItem_model = api.model('insertItem_data', {
         'item_name': fields.String(example='pen'),
         'image': fields.String(example='a image of item'),
@@ -85,8 +86,28 @@ get_personal_item_model = api.model('get_personal_item_data', {
         'user_email': fields.String(example='root@qq.com')
 })
 
+get_wish_list_model = api.model('get_wish_list_data', {
+        'email': fields.String(example='root@qq.com')
+})
+
 update_personal_item_model = api.model('update_personal_item_data', {
         'item_id': fields.String(example='2'),
+        'item_name': fields.String('pencil'),
+        'image': fields.String('a new image of item'),
+        'description': fields.String('a new description'),
+        'price': fields.String(example='55.55'),
+        'num': fields.String(example='1'),
+        'class1': fields.String(example='woolworth'),
+        'class2': fields.String(example='working'),
+        'class3': fields.String(example='pens'),
+        'trading_method': fields.String(example='exchange'),
+        'exchange_item': fields.String(example='PenBox'),
+        'change': fields.Boolean(example=False)
+})
+
+
+update_wishList_model = api.model('update_wishList_data', {
+        'item_id': fields.String(example='1'),
         'item_name': fields.String('pencil'),
         'image': fields.String('a new image of item'),
         'description': fields.String('a new description'),
@@ -104,6 +125,9 @@ delete_personal_item_model = api.model('delete_personal_item_data', {
         'item_id': fields.String(example='2')
 })
 
+delete_wishList_model = api.model('delete_wishList_data', {
+        'item_id': fields.String(example='1')
+})
 
 search_items_model = api.model('search_items_data', {
         'keyword': fields.String(example='pen'),

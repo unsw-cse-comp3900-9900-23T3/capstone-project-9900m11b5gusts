@@ -36,6 +36,7 @@ const ExpandMore = styled((props) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -109,7 +110,6 @@ export default function Comments() {
                             if you like.
                         </Typography>
                     </CardContent>
-
                 </Card>
 
             </div>
@@ -140,24 +140,15 @@ export default function Comments() {
                                 </Collapse>
 
                             </>))}
-
-
-
-
-
                     </List>
-
                 </Card>
-
             </div>
-
             <Modal
                 open={openModal}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Text in a modal
@@ -181,16 +172,10 @@ export default function Comments() {
                                     secondary={secondary ? 'Secondary text' : null}
                                 />
                             </ListItem>
-
                         </>)}
-
                     </List>
                 </Box>
-
-
             </Modal>
-
-
         </div>
     );
 }

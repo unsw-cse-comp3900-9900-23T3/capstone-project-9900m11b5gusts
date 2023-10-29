@@ -14,7 +14,7 @@ export default function RadioButtonsGroup({value, onChange}) {
           label="User (default option)"
           slotProps={{ input: { 'aria-describedby': 'female-helper-text' } }}
         />
-        <Radio value="Manager" label="Manager (need authorization code)" />
+        <Radio value="Manager" label="Manager or Administrator (needs authorization code)" />
       </RadioGroup>
     </FormControl>
   );
