@@ -325,7 +325,7 @@ def insert_item(email, **kwargs):
     input_class3 = kwargs['class3']
     input_method = kwargs['trading_method']
     input_change = kwargs['change']
-    input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
+    input_exchange_item = kwargs['exchange_item']  # if kwargs['trading_method'] != 'cash' else ''
     try:
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
@@ -573,6 +573,96 @@ def insert_wish_list(email, **kwargs):
         return {'result': False, 'info': f'{e}'}
 
 
+def update_wish_list(email, **kwargs):
+    input_id = kwargs['item_id']
+    input_item_image = kwargs['image']
+    input_item_name = kwargs['item_name']
+    input_item_desc = kwargs['description']
+    input_item_price = float(kwargs['price'])
+    input_item_num = int(kwargs['num'])
+    input_class1 = kwargs['class1']
+    input_class2 = kwargs['class2']
+    input_class3 = kwargs['class3']
+    input_method = kwargs['trading_method']
+    input_change = kwargs['change']
+    input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
+    try:
+        wish_list_item = WishItem.query.filter_by(email=email, id=input_id).first()
+        if input_item_image:
+            wish_list_item.image = input_item_image
+        if input_item_name:
+            wish_list_item.item_name = input_item_name
+        if input_item_desc:
+            wish_list_item.item_desc = input_item_desc
+        if input_item_price:
+            wish_list_item.item_price = float(input_item_price)
+        if input_item_num:
+            wish_list_item.item_nums = int(input_item_num)
+        if input_class1:
+            wish_list_item.class1 = input_class1
+        if input_class2:
+            wish_list_item.class2 = input_class2
+        if input_class3:
+            wish_list_item.class3 = input_class3
+        if input_method:
+            wish_list_item.trading_method = input_method
+        if input_exchange_item:
+            wish_list_item.exchange_item = input_exchange_item
+        if input_change:
+            wish_list_item.change = input_change
+        wish_list_item.time_stamp = datetime.datetime.now()
+        db.session.commit()
+        return {'result': True, 'info': 'update wish item success!'}
+    except Exception as e:
+        return {'result': False, 'info': f'{e}'}
+
+
+def delete_wish_list(email, **kwargs):
+    input_id = kwargs['item_id']
+    wish_list_item = WishItem.query.filter_by(email=email, id=int(input_id)).first()
+    if wish_list_item:
+        db.session.delete(wish_list_item)
+        db.session.commit()
+        return {'result': True, 'info': 'delete wish item success!'}
+    else:
+        return {'result': False, 'info': 'no wish item'}
+
+
+def check_wish_item(email):
+    if email:
+        wish_list_items = WishItem.query.filter_by(email=email).all()
+    else:
+        wish_list_items = WishItem.query.all()
+    try:
+        if wish_list_items:
+            item_dict = {}
+            for wish_item in wish_list_items:
+                user = User.query.filter_by(email=wish_item.email).first()
+                user_name = user.username
+                item_dict[wish_item.id] = {
+                    'owner_email': wish_item.email,
+                    'username': user_name,
+                    'item_id': str(wish_item.id),
+                    'item_name': wish_item.item_name,
+                    'image': wish_item.image,
+                    'item_price': str(wish_item.item_price),
+                    'item_num': str(wish_item.item_num),
+                    'item_desc': wish_item.item_desc,
+                    'trading_method': wish_item.trading_method,
+                    'exchange_item': wish_item.exchange_item,
+                    'change': str(wish_item.change),
+                    'class1': wish_item.class1,
+                    'class2': wish_item.class2,
+                    'class3': wish_item.class3,
+                    'time_stamp': wish_item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+                }
+            return {'result': True, 'info': item_dict}
+        else:
+            return {'result': True, 'info': 'no item'}
+    except Exception as e:
+        return {'result': False, 'info': f'{e}'}
+
+
 def insert_inventory(email, **kwargs):
     input_email = email
     input_item_image = kwargs['image']
@@ -714,10 +804,9 @@ def update_activity(email, **kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update activity'}
 
-
-def show_activities_infor(page):
+def show_activities_infor(page,page_size):
     activity_infor = Activity.query.filter()
-    page_size = 10
+    # page_size = 10
     offset = (page - 1) * page_size
     total_rows = activity_infor.count()
     activities = activity_infor.offset(offset).limit(page_size).all()
@@ -735,12 +824,10 @@ def show_activities_infor(page):
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
-        return {'result': True, 'info': {'activities': []}}
-
-
-def show_user_identity(page):
+        return {'result': True, 'info': {'activities':'','total_rows':0}}
+def show_user_identity(page,page_size):
     user_infor = User.query.filter()
-    page_size = 10
+    # page_size = 10
     offset = (page - 1) * page_size
     total_rows = user_infor.count()
     users = user_infor.offset(offset).limit(page_size).all()
@@ -755,7 +842,7 @@ def show_user_identity(page):
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'users': r}}
     else:
-        return {'result': True, 'info': {}}
+        return {'result': True, 'info': {'users':'','total_rows':0}}
 
 
 def delete_user(**kwargs):
@@ -771,11 +858,13 @@ def delete_user(**kwargs):
         db.session.commit()
 
     if item:
-        db.session.delete(item)
+        for u in item:
+            db.session.delete(u)
         db.session.commit()
 
     if activity:
-        db.session.delete(activity)
+        for u in activity:
+            db.session.delete(u)
         db.session.commit()
 
     if user:

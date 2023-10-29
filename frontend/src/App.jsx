@@ -41,6 +41,7 @@ import MyProfileContent from './components/user_personal/MyProfileContent';
 import PostNewItemPage from './components/user_personal/PostNewItemPage';
 import EditItemPage from './components/user_personal/EditItemPage';
 import MarketHomePage from './components/user_market/MarketHomePage';
+import WishListPage from './components/user_personal/WishListPage';
 
 import {
   experimental_extendTheme as materialExtendTheme,
@@ -126,9 +127,9 @@ export default function App() {
 	} else {
 		return(
 			<>
-
 				<MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-					<CssVarsProvider disableTransitionOnChange>
+				
+				<CssVarsProvider disableTransitionOnChange>
 						<CssBaseline />
 						<Box sx={{ display: 'flex', minHeight: '100dvh' }}>
 							<Sidebar logout={logout} profileData={profileData} />
@@ -162,17 +163,19 @@ export default function App() {
 										<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
 										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
-
+										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
+									
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
 										<Route path="/comments" element={<Comments />} />
 										<Route path="/echarts" element={<MyEcharts />} />
-
 									</Routes>
 								</BrowserRouter>
+
 							</Box>
 						</Box>
 					</CssVarsProvider>
 				</MaterialCssVarsProvider>
+
 			</>
 		)
 	}

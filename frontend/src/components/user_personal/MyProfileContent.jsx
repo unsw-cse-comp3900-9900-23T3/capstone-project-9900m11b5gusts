@@ -112,9 +112,16 @@ export default function MyProfileContent({ token, profileData }) {
 
   return (
     <Box sx={{ flex: 1, width: "100%", minWidth: '600px' }} >
-      <Box sx={{ position: "sticky", top: { sm: -100, md: -110 }, bgcolor: "background.body", zIndex: 9995 }} >
+      <Box
+        sx={{
+          backgroundColor: "background.surface",
+          px: { xs: 2, md: 4 },
+          py: 2,
+          borderBottom: "1px solid",
+          borderColor: "divider"
+      }}>
         
-        <Box sx={{ px: { xs: 2, md: 6 } }} >
+        <Box  >
           <Typography
             level="h2"
             sx={{
@@ -177,7 +184,7 @@ export default function MyProfileContent({ token, profileData }) {
                     
                     <FormControl>
                       <FormLabel>Identity</FormLabel>
-                      <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
+                      <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity} />
                     </FormControl>
 
                   </Stack>
@@ -243,7 +250,7 @@ export default function MyProfileContent({ token, profileData }) {
                       
                       <FormControl>
                         <FormLabel>Identity</FormLabel>
-                        <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity === 'User'? 'User' : 'Manager'} />
+                        <Input style={{width: '120px'}} disabled size="sm" value={profileData.identity} />
                       </FormControl>
                     </Stack>
 

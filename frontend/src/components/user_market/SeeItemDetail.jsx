@@ -61,11 +61,13 @@ export default function SeeItemDetail({ token, item }) {
             <Card variant='plain' sx={{ width: '100%'}}>
               <CardOverflow>
                 <AspectRatio sx={{ minWidth: 200 }}>
-                  <img
-                    src={item.image}
-                    loading="lazy"
-                    alt=""
-                  />
+                  {item.image &&
+                    <img
+                      src={item.image}
+                      loading="lazy"
+                      alt=""
+                    />
+                  }
                 </AspectRatio>
               </CardOverflow>
               <CardContent>
