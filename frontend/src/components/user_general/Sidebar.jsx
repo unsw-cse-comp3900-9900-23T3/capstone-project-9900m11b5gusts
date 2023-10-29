@@ -210,9 +210,26 @@ export default function Sidebar({ logout, profileData }) {
                 <ListItem>
                   <ListItemButton>Wish List</ListItemButton>
                 </ListItem>
-                <ListItem>
-                  <ListItemButton>Inventory</ListItemButton>
+                {profileData.identity == 'administrator'?
+                  <div>
+                      <ListItem>
+                    <ListItemButton
+                    selected={currentURL === '/user'}
+                    onClick={()=>{setCurrentURL('/user')}}
+                    component={currentURL === '/user' ? undefined : 'a'}
+                    href='/user'
+                    >User Mgr</ListItemButton>
                 </ListItem>
+                <ListItem>
+                    <ListItemButton
+                    selected={currentURL === '/admin'}
+                    onClick={()=>{setCurrentURL('/admin')}}
+                    component={currentURL === '/admin' ? undefined : 'a'}
+                    href='/admin'
+                    >Admin</ListItemButton>
+                      </ListItem>
+                    </div> : ""}
+
               </List>
             </Toggler>
           </ListItem>
