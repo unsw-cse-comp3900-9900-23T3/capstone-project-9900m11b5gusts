@@ -27,6 +27,9 @@ Campaign Monitoring page (frontend -- administrator): Administrators can monitor
 
 week7: 10/29
 
+Complete the frontend and backend of the administration page, including the administrative user interface, and delete users' accounts, delete the comments and posts of the activities.
+
+
 
 
 
