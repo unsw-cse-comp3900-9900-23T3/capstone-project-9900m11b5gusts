@@ -23,27 +23,33 @@ import Person2Icon from '@mui/icons-material/Person2';
 import { Button } from '@mui/material';
 
 export default function UserMgr() {
+    const [paginationObj, setPaginationObj] = useState({
+        currentPage: 1,
+        pageSize: 10,
+        count: 1,
+    })
 
     const [userData, setUserData] = useState([]);
 
     async function getUserData() {
         const token = localStorage.getItem('token')
-        const response = await fetch(`http://127.0.0.1:5000/Admin/infor/1/10`, {
-            method:'POST',
-            headers:{
+        const response = await fetch(`http://127.0.0.1:5000/Admin/infor/${paginationObj.currentPage}/${paginationObj.pageSize}`, {
+            method: 'POST',
+            headers: {
                 'Content-type': 'application/json',
-                'Authorization' : `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
             },
 
         });
-        if (response.status===200){
+        if (response.status === 200) {
             const data = await response.json();
             console.log('UserInfo: ', data.success)
+            setPaginationObj(Object.assign(paginationObj, { count: data.total/paginationObj.pageSize }))
             if (data.success) {
                 setUserData(data.success)
                 console.log(data)
             }
-        }else{
+        } else {
             const data = await response.json();
             console.log('Error: ', data)
         }
@@ -52,10 +58,10 @@ export default function UserMgr() {
     async function delUserData(email) {
         const token = localStorage.getItem('token')
         const response = await fetch(`http://127.0.0.1:5000/Admin/deleteUser`, {
-            method:'DELETE',
-            headers:{
+            method: 'DELETE',
+            headers: {
                 'Content-type': 'application/json',
-                'Authorization' : `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(
                 {
@@ -64,12 +70,12 @@ export default function UserMgr() {
             )
 
         });
-        if (response.status===200){
+        if (response.status === 200) {
             const data = await response.json();
             if (data.success) {
                 console.log(data)
             }
-        }else{
+        } else {
             const data = await response.json();
             console.log('Error: ', data)
         }
@@ -79,10 +85,10 @@ export default function UserMgr() {
     async function modifyPermission(email, identity) {
         const token = localStorage.getItem('token')
         const response = await fetch(`http://127.0.0.1:5000/Admin/modifyPermission`, {
-            method:'POST',
-            headers:{
+            method: 'POST',
+            headers: {
                 'Content-type': 'application/json',
-                'Authorization' : `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(
                 {
@@ -92,12 +98,12 @@ export default function UserMgr() {
             )
 
         });
-        if (response.status===200){
+        if (response.status === 200) {
             const data = await response.json();
             if (data.success) {
                 console.log(data)
             }
-        }else{
+        } else {
             const data = await response.json();
             console.log('Error: ', data)
         }
@@ -105,8 +111,17 @@ export default function UserMgr() {
 
     useEffect(() => {
         getUserData()
-    }, [])
+    }, [paginationObj.count])
 
+    const handleChange = (v) => {
+        setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+        getUserData()
+    }
+    const changePagination = (e, value) => {
+        setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
+        getUserData()
+
+    }
     const gen_usertable = () => {
         const table_item = []
         for (let key in userData) {
@@ -116,7 +131,7 @@ export default function UserMgr() {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                     <TableCell component="th" scope="row" align='center'>
-                        <Person2Icon/>
+                        <Person2Icon />
                     </TableCell>
                     <TableCell align='center'>{userData[key].username}</TableCell>
                     <TableCell align='center'>
@@ -126,7 +141,7 @@ export default function UserMgr() {
                             value={userData[key].identity}
                             onChange={(e) => {
                                 userData[key].identity = e.target.value
-                                setUserData({...userData})
+                                setUserData({ ...userData })
                                 modifyPermission(userData[key].email, userData[key].identity)
                             }}
                             size='small'
@@ -145,14 +160,14 @@ export default function UserMgr() {
                     </TableCell>
                 </TableRow>
             )
-        
+
         }
         return table_item
     }
 
     return (
         <div className={styles.mainBox}>
-            <Card className={styles.cardBg}>
+            <Card style={{overflowY:"scroll"}} className={styles.cardBg}>
                 <h1 className={styles.mainTitle}>User Mgr</h1>
                 <TableContainer>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -171,12 +186,13 @@ export default function UserMgr() {
                     </Table>
                 </TableContainer>
                 <div className={styles.paginationBox}>
-                    <Pagination count={10} variant="outlined" color="primary" />
+                    <Pagination count={paginationObj.count} page={paginationObj.currentPage} variant="outlined" color="primary" onChange={changePagination} />
+
                     <Select
                         labelId="demo-simple-select-standard-label"
                         className={styles.select}
                         // value={age}
-                        // onChange={handleChange}
+                        onChange={handleChange}
                         defaultValue={10}
                         size='small'
                         label="pageSize"

@@ -83,9 +83,9 @@ export default function Admin() {
       }
 
     })
-    const { success } = await res.json();
+    const { success,total } = await res.json();
     setActivityData(formatData(success))
-    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(activityData.length / paginationObj.pageSize) }))
+    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total / paginationObj.pageSize) }))
   }
 
   const checkActivity = async (name, category, status) => {
@@ -146,9 +146,9 @@ export default function Admin() {
       }
     })
 
-    const { success } = await res.json();
+    const { success,total } = await res.json();
     setActivityData(formatData(success))
-    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(activityData.length / paginationObj.pageSize) }))
+    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total / paginationObj.pageSize) }))
 
   }
 
@@ -184,7 +184,7 @@ export default function Admin() {
             detail:{activityObj.detail}
           </Typography>
           <Typography variant="body2" color="text.secondary" style={{ textAlign: 'right', color: 'skyblue' }}>
-            审核状态:{activityObj.status == 0 ? ' Unaudited' : ' Audited'}
+            AuditStatus:{activityObj.status == 0 ? ' Unaudited' : ' Audited'}
           </Typography>
           <Typography variant="body2" color="text.secondary" style={{ textAlign: 'right', color: 'skyblue' }}>
             {activityObj.status == 0 ? <Button onClick={
