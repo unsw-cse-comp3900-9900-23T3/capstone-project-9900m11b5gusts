@@ -42,7 +42,7 @@ export default function MainPage() {
   const [imgUrl, setImgUrl] = useState('')
   const [paginationObj, setPaginationObj] = useState({
     currentPage: 1,
-    pageSize: 2,
+    pageSize: 10,
     count: 1,
   })
   const intiDialogData = {
