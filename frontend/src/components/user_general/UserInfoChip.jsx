@@ -47,7 +47,7 @@ export default function UserInfoChip({ token, email, name }) {
 			});
 			if (response.status===200){
 				const data = await response.json();
-				console.log('UserInfo: ', data.success)
+				// console.log('UserInfo: ', data.success)
 				if (data.success.email) {
 					setUserInfor(data.success)
 				}

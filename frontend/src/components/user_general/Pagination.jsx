@@ -5,83 +5,111 @@ import IconButton, { iconButtonClasses } from "@mui/joy/IconButton"
 import Typography from "@mui/joy/Typography"
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded"
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded"
+import Input from '@mui/joy/Input';
 
-export default function Pagination() {
+export default function Pagination( { pageNum, setPageNum, maxPageNum, search } ) {
+  
+  const [previousPageNum, setPreviousPageNum] = React.useState(pageNum)
+  console.log('maxpagenum: ',maxPageNum)
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if(parseInt(pageNum)>parseInt(maxPageNum)) {
+      setPageNum(maxPageNum)
+      search(maxPageNum)
+    } else if (pageNum<1){
+      setPageNum(1)
+      search(1)
+    } else {
+      search(pageNum)
+    }
+    
+  };
+  
+
+
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <Box
         className="Pagination-mobile"
         sx={{
-          display: { xs: "flex", md: "none" },
+          display: 'flex',
           alignItems: "center",
+          justifyContent: "center",
           mx: 2,
-          my: 1
+          my: 1,
         }}
       >
         <IconButton
-          aria-label="previous page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <ArrowBackIosRoundedIcon />
-        </IconButton>
-        <Typography level="body-sm" mx="auto">
-          Page 1 of 10
-        </Typography>
-        <IconButton
+          disabled={pageNum <= 1}
           aria-label="next page"
           variant="outlined"
           color="neutral"
           size="sm"
+          sx= {{margin: '8px'}}
+          onClick={()=>{
+            if (pageNum>0){
+              setPageNum(p=>(p-1))
+              search(pageNum-1)
+            }
+          }}
+        >
+          <ArrowBackIosRoundedIcon />
+        </IconButton>
+        <Typography level="body-sm" >
+          Page &nbsp;
+        </Typography>
+
+        
+        <Input
+          type="number"
+          value={pageNum} 
+          size="sm" 
+          style={{width: `${(pageNum.toString().length || 1) * 8 +80}px`}}
+          onChange={(e)=>{
+            if (e.target.value){
+              setPageNum(parseInt(e.target.value))
+            } else {
+              setPageNum('')
+            }
+          }}
+          sx={{ '--Input-decoratorChildHeight': '30px' }}
+          endDecorator={
+            <Button 
+              variant="solid"
+              color="primary"
+              // loading={data.status === 'loading'}
+              type="submit"
+              sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, width:'20px'}}
+            >
+              Go
+            </Button>
+          }
+          
+        />
+
+
+        <Typography level="body-sm" >
+          &nbsp; of {maxPageNum}
+        </Typography>
+        <IconButton
+          disabled={pageNum >= maxPageNum}
+          aria-label="next page"
+          variant="outlined"
+          color="neutral"
+          size="sm"
+          sx= {{margin: '8px'}}
+          onClick={()=>{
+            if (pageNum<maxPageNum){
+              setPageNum(p=>(p+1))
+              search(pageNum+1)
+            }
+          }}
         >
           <ArrowForwardIosRoundedIcon />
         </IconButton>
       </Box>
-      <Box
-        className="Pagination-laptopUp"
-        sx={{
-          gap: 1,
-          [`& .${iconButtonClasses.root}`]: { borderRadius: "50%" },
-          display: {
-            xs: "none",
-            md: "flex"
-          },
-          mx: 4,
-          my: 2
-        }}
-      >
-        <Button
-          size="sm"
-          variant="plain"
-          color="neutral"
-          startDecorator={<ArrowBackIosRoundedIcon />}
-        >
-          Previous
-        </Button>
-
-        <Box sx={{ flex: 1 }} />
-        {["1", "2", "3", "…", "8", "9", "10"].map(page => (
-          <IconButton
-            key={page}
-            size="sm"
-            variant={Number(page) ? "plain" : "soft"}
-            color="neutral"
-          >
-            {page}
-          </IconButton>
-        ))}
-        <Box sx={{ flex: 1 }} />
-
-        <Button
-          size="sm"
-          variant="plain"
-          color="neutral"
-          endDecorator={<ArrowForwardIosRoundedIcon />}
-        >
-          Next
-        </Button>
-      </Box>
-    </div>
+    </form>
   )
 }

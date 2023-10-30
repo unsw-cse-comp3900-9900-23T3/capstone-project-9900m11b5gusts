@@ -15,18 +15,18 @@ import ItemCard from '../user_general/ItemCard';
 export default function MarketHomePage ({ token }) {
   const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
   const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
-  const [pageNum, setPageNum] = React.useState(1)
   const [posts, setPosts] = React.useState([])
   const [searchWords, setSearchWords] = React.useState('')
-
+  const [pageNum, setPageNum] = React.useState(1)
+  const [maxPageNum, setMaxPageNum] = React.useState(1)
 
   React.useEffect(() =>{
-    search()
+    search(pageNum)
   },[])
 
   React.useEffect(() => {
     console.log('market: ', posts)
-    console.log(posts.length)
+    setMaxPageNum(Math.ceil(posts[posts.length-1] / 10))
   },[posts])
 
   const handleClearCategory = () => {
@@ -34,8 +34,9 @@ export default function MarketHomePage ({ token }) {
     setApplyClassesFlag(false)
   }
 
-  async function search(){
-    const response = await fetch(`http://127.0.0.1:5000/Items/searchItem/${pageNum}`, {
+  async function search(pageNumber){
+    console.log('ppp:', pageNumber)
+    const response = await fetch(`http://127.0.0.1:5000/Items/searchItem/${pageNumber}`, {
         method:'POST',
         headers:{
           'Content-type': 'application/json',
@@ -53,7 +54,7 @@ export default function MarketHomePage ({ token }) {
       });
       if (response.status===200){
         const data = await response.json();
-        console.log('posts: ', data.success)
+        // console.log('posts: ', data.success)
         if (data.success !== 'no item'){
             setPosts([])
             Object.entries(data.success).map((item) => {
@@ -122,7 +123,7 @@ export default function MarketHomePage ({ token }) {
         </Stack>
 
 
-      {/* <Pagination/> */}
+      <Pagination pageNum={pageNum} setPageNum={setPageNum} maxPageNum={maxPageNum} search={search} />
 
     </Box>
   )
