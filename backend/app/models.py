@@ -705,9 +705,9 @@ def search_activity(page, **kwargs):
         status = "*****"
     activity_infor = Activity.query.filter(
         or_(
-            Activity.activity_name.ilike(f'%{activity_name}%'),
-            Activity.category.ilike(f'%{category}%'),
-            Activity.status.ilike(f'%{status}%')
+            Activity.activity_name.ilike(f'{activity_name}'),
+            Activity.category.ilike(f'{category}'),
+            Activity.status.ilike(f'{status}')
         )
     )
 
