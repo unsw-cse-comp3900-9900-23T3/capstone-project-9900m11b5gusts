@@ -1,3 +1,4 @@
+The diary work is all my individual work, not us.
 #### week1
 Familiar with the project
 ### week2
@@ -42,11 +43,11 @@ bug fixed,but no idea about sorting price bug.
 Add wishlist API
 Add inventory API
 Add manager & admin code
-Week 7
+### Week 7
 Finish the wishlist update API
 Finish the wishlist delete API
 Finish the wishlist check API(all user and specific user)
-Week8
+### Week8
 Finished the checkTradingStatus API
 Finished the purchaseItem API
 Finished the purchaseRequest API
