@@ -4,12 +4,13 @@ from .api_models import login_model, register_model, changeProfile_model, insert
     delete_personal_item_model, create_activity_model, search_activity_model, delete_activity_model, \
     update_activity_model, search_items_by_category_model, check_profile_model, \
     delete_user_model, update_activity_permission_model, approve_activity_permission_model, \
-    insert_wishlist_model, insert_inventory_model, get_wish_list_model, delete_wishList_model, update_wishList_model
+    insert_wishlist_model, insert_inventory_model, get_wish_list_model, delete_wishList_model, update_wishList_model, \
+    purchase_item_model, purchase_request_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
     delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, insert_inventory, \
-    update_wish_list, delete_wish_list, check_wish_item
+    update_wish_list, delete_wish_list, check_wish_item, purchase_request, check_trading_status, selling_request
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
 
@@ -234,6 +235,52 @@ class SearchItemByCategory(Resource):
         result = search_item_by_category(page, **args)
         return {'success': result['info']}, 200
 
+
+@Item.route('/purchaseItem')
+class PurchaseItem(Resource):
+    @Item.doc(description='buy item by item ID')
+    @Item.expect(purchase_item_model)
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    def post(self):
+        args = Item.payload
+        email = get_jwt_identity()
+        result = purchase_request(email, **args)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+@Item.route('/checkTradingStatus')
+class CheckTradingStatus(Resource):
+    @Item.doc(description='(ONLY have token to use it)for both users and sellers, check the trading msessage')
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    def get(self):
+        email = get_jwt_identity()
+        result = check_trading_status(email)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
+@Item.route('/purchaseRequest')
+class PurchaseRequest(Resource):
+    @Item.doc(description='(ONlY have checktradingmessage have other user request can use it)agree or disagree to sold the item')
+    @Item.expect(purchase_request_model)
+    @Item.doc(security='jsonWebToken')
+    @jwt_required()
+    def post(self):
+        args = Item.payload
+        action = args['action']
+        email = get_jwt_identity()
+        result = selling_request(email, action)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'success': result['info']}, 400
 
 @Item.route('/getWishList')
 class GetWishList(Resource):

@@ -46,3 +46,13 @@ Week 7
 Finish the wishlist update API
 Finish the wishlist delete API
 Finish the wishlist check API(all user and specific user)
+Week8
+Finished the checkTradingStatus API
+Finished the purchaseItem API
+Finished the purchaseRequest API
+First, both user can use checkTradingStatus API after register or login(must have token)
+Then, user1 want to buy user2's pen, user2 can get the message from checkTradingStatus API
+and can action(agree or disagree).
+Some conditions:buyer have to wait for the seller response, if seller is not response(seller do not disagree or agree)
+buyer can not buy another item.Another thing is buyer can not buy himself item(might cause bugs)
+buyer buy item can have some tips by calling purchaseItem API such as amount exceed the seller have... 

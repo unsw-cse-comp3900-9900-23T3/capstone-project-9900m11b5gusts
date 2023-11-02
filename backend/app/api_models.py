@@ -125,6 +125,15 @@ delete_personal_item_model = api.model('delete_personal_item_data', {
         'item_id': fields.String(example='2')
 })
 
+purchase_item_model = api.model('purchase_item_model', {
+        'item_id': fields.String(example='1'),
+        'purchase_amount': fields.String(example='1')
+})
+
+purchase_request_model = api.model('purchase_request', {
+        'action': fields.Boolean(example=True)
+})
+
 delete_wishList_model = api.model('delete_wishList_data', {
         'item_id': fields.String(example='1')
 })
