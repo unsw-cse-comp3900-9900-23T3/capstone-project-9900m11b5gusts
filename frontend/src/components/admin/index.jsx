@@ -25,95 +25,96 @@ import ActivityImg from '../../assets/bear.jpg'
 import styles from "./index.module.css"
 
 
-const SearchItem = (props) => {
-  const { showInfo } = props;
-
-  return <div className={styles.searchItem}>
-    <SearchIcon className={styles.searchIcon} />
-    <TextField label={showInfo} variant="filled" size="small" />
-  </div>
+const baseUrl = "http://127.0.0.1:5000/";
+const urls = {
+  searchActivity: baseUrl + "Activity/searchActivity/",
+  showActivity: baseUrl + "Activity/showActivity/",
+  approveActivity: baseUrl + "Admin/approveActivity",
 }
 
-const MediaCard = (props) => {
 
-  const { setOpen } = props
+
+export default function Admin() {
   const navigate = useNavigate();
-
-  const handleBtnClick = () => {
-    setOpen(true)
-  }
-
-  const handleClick = () => {
-    navigate('/comments');
-  }
-
-  return (
-    <Card sx={{ maxWidth: 345 }} onClick={handleClick}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image={ActivityImg}
-        title="green iguana"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Hello
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-          Detail
-        </Typography>
-      </CardContent>
-      {/* <CardActions>
-        <div className={styles.buttonRight}>
-          <Button size="small" variant="contained" onClick={handleBtnClick}>Edit</Button>
-        </div>
-      </CardActions> */}
-    </Card>
-  );
-}
-
-export default function Admin({ token }) {
-
-  const [data, setData] = useState({})
+  const token = localStorage.getItem("token");
+  const [activityData, setActivityData] = useState([])
   const [open, setOpen] = useState(false)
-
-  const [imgUrl, setImgUrl] = useState('')
-
-  const [dialogData, setDialogData] = useState({
-    Category: "Category",
-    Name: "Name",
-    Status: "Status",
-    img: ActivityImg
+  const [queryData, setQueryData] = useState({
+    category: "",
+    activity_name: "",
+    status: "",
+  })
+  const [paginationObj, setPaginationObj] = useState({
+    currentPage: 1,
+    pageSize: 10,
+    count: 1,
   })
 
   useEffect(() => {
+    showActivity();
+  }, [paginationObj.count])
 
-  }, [])
-
-  const handleChange = (v) => {
-    console.log(v)
+  const changeSearch = (e, type) => {
+    setQueryData(Object.assign(queryData, { [type]: e.target.value }))
   }
+  const changePagination = (e, value) => {
+    setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
+    // searchActivity()
+    initQueryData()
+
+    showActivity()
+  }
+
+  const initQueryData = () => {
+    setQueryData({
+      category: "",
+      activity_name: "",
+      status: "",
+    })
+  }
+  const searchActivity = async () => {
+    setPaginationObj(Object.assign(paginationObj, { currentPage: 1 }))
+    const res = await fetch(urls.searchActivity + paginationObj.currentPage, {
+      method: 'POST',
+      body: JSON.stringify(queryData),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+
+    })
+    const { success,total } = await res.json();
+    setActivityData(formatData(success))
+    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total / paginationObj.pageSize) }))
+  }
+
+  const checkActivity = async (name, category, status) => {
+    let body = {
+      name,
+      category,
+      status
+    }
+    fetch(urls.approveActivity, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    }).then(() => {
+      showActivity()
+    })
+  }
+
+
+ const handleChange = (v) => {
+    setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+    initQueryData()
+    showActivity()
+    // searchActivity()
+
+  }
+
 
   const handleDialogClose = () => {
     setOpen(false)
@@ -127,29 +128,107 @@ export default function Admin({ token }) {
     console.log("保存")
 
   }
+  const formatData = (data) => {
+    let arr = []
+    for (let k in data) {
+      arr.push(data[k])
+    }
+    return arr;
+
+  }
+
+  const showActivity = async () => {
+    const res = await fetch(urls.showActivity + paginationObj.currentPage + "/" + paginationObj.pageSize, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+
+    const { success,total } = await res.json();
+    setActivityData(formatData(success))
+    setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total / paginationObj.pageSize) }))
+
+  }
+
+  const handleClick = () => {
+    // navigate('/comments');
+  }
+  const SearchItem = ({ showInfo }) => {
+    return <div className={styles.searchItem}>
+      <SearchIcon className={styles.searchIcon} />
+      <TextField label={showInfo.label} variant="outlined" size="small" defaultValue={showInfo.defaultValue} onChange={(e) => changeSearch(e, showInfo.type)} />
+    </div>
+  }
+
+  const MediaCard = ({ activityObj }) => {
+
+    return (
+      <Card sx={{ width: 345 }} onClick={handleClick}>
+        <CardMedia
+          sx={{ height: 140 }}
+          image={activityObj.image}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            name:{activityObj.activity_name}
+          </Typography>
+          <Typography gutterBottom variant="h5" component="div">
+            category:{activityObj.category}
+          </Typography>
+          <Typography gutterBottom variant="h5" component="div">
+            overview:{activityObj.overview}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            detail:{activityObj.detail}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" style={{ textAlign: 'right', color: 'skyblue' }}>
+            AuditStatus:{activityObj.status == 0 ? ' Unaudited' : ' Audited'}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" style={{ textAlign: 'right', color: 'skyblue' }}>
+            {activityObj.status == 0 ? <Button onClick={
+              () => {
+                checkActivity(activityObj.activity_name, activityObj.category, "1")
+              }
+            }>Pass</Button> : ''}
+
+          </Typography>
+        </CardContent>
+        {/* <CardActions>
+          <div className={styles.buttonRight}>
+            <Button size="small" variant="outlined" onClick={() => handleBtnDelClick(activityObj)}>Delete</Button>
+
+            <Button size="small" variant="outlined" onClick={() => handleBtnClick(activityObj)}>Edit</Button>
+          </div>
+        </CardActions> */}
+      </Card>
+    );
+  }
   return (
     <div className={styles.myCard}>
-      <Card className={[styles.cardItem].join(',')}>
+      <Card style={{ 'overflow-y': 'scroll' }} className={[styles.cardItem].join(',')}>
 
         <div className={styles.searchBox}>
-          <SearchItem showInfo={'Category'} />
-          <SearchItem showInfo={'Name'} />
-          <SearchItem showInfo={'Status'} />
-           <div>
-          {/* <Button variant="contained" size="medium" onClick={handlerNewClick}>New</Button> */}
-          <div style={{ padding: '10px' }}></div>
-          <Button variant="contained" size="medium">Search</Button>
-        </div>
+          <SearchItem showInfo={{ label: 'Category', type: "category", defaultValue: queryData.category }} />
+          <SearchItem showInfo={{ label: 'Name', type: "activity_name", defaultValue: queryData.activity_name }} />
+          <SearchItem showInfo={{ label: 'Status', type: "status", defaultValue: queryData.status }} />
+          <div>
+            {/* <Button variant="contained" size="medium" onClick={handlerNewClick}>New</Button> */}
+            <div style={{ padding: '10px' }}></div>
+            <Button variant="contained" size="medium" onClick={searchActivity}>Search</Button>
+
+          </div>
         </div>
 
 
         <div className={styles.MediaCardBox}>
           {
-            [1, 1, 1, 1].map(() => <div className={styles.mediaCard}><MediaCard setOpen={setOpen}></MediaCard></div>)
+            activityData.map((item) => <div className={styles.mediaCard}><MediaCard activityObj={item}></MediaCard></div>)
           }
         </div>
         <div className={styles.paginationBox}>
-          <Pagination count={10} variant="outlined" color="secondary" />
+          <Pagination count={paginationObj.count} page={paginationObj.currentPage} variant="outlined" color="primary" onChange={changePagination} />
           <Select
             labelId="demo-simple-select-standard-label"
             className={styles.select}
@@ -173,7 +252,7 @@ export default function Admin({ token }) {
           <div className={styles.picBox}>
             <ShowImg
               imgUrl={ActivityImg}
-              ></ShowImg>
+            ></ShowImg>
           </div>
           <div className={styles.searchBox}>
             <div className={styles.textFieldDialog}><TextField label="Category" variant="filled" size="small" /></div>

@@ -221,6 +221,44 @@ export default function Sidebar({ logout, profileData }) {
                 {/* <ListItem>
                   <ListItemButton>Inventory</ListItemButton>
                 </ListItem> */}
+                {profileData.identity == 'administrator'?
+                  <div>
+                      <ListItem>
+                    <ListItemButton
+                    selected={currentURL === '/user'}
+                    onClick={()=>{setCurrentURL('/user')}}
+                    component={currentURL === '/user' ? undefined : 'a'}
+                    href='/user'
+                    >User Mgr</ListItemButton>
+                </ListItem>
+                <ListItem>
+                    <ListItemButton
+                    selected={currentURL === '/admin'}
+                    onClick={()=>{setCurrentURL('/admin')}}
+                    component={currentURL === '/admin' ? undefined : 'a'}
+                    href='/admin'
+                    >Admin</ListItemButton>
+                      </ListItem>
+                    </div> : ""}
+                {profileData.identity == 'manager' ?
+                  <div>
+                    <ListItem>
+                      <ListItemButton
+                        selected={currentURL === 'compaign'}
+                        onClick={() => { setCurrentURL('compaign'); }}
+                        component={currentURL === 'compaign' ? undefined : 'a'}
+                        href='/compaign'
+                      >campaigns</ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton
+                        selected={currentURL === 'echarts'}
+                        onClick={() => { setCurrentURL('echarts'); }}
+                        component={currentURL === 'echarts' ? undefined : 'a'}
+                        href='/echarts'
+                      >Analysis</ListItemButton>
+                    </ListItem>
+                  </div>: ""}
               </List>
             </Toggler>
           </ListItem>

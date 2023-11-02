@@ -32,7 +32,8 @@ class PasswordReset(db.Model):
 class Activity(db.Model):
     __tablename__ = 'tb_activity'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    activity_name = db.Column(db.String(30), unique=True, default='activity name')
+    activity_name = db.Column(
+        db.String(30), unique=True, default='activity name')
     status = db.Column(db.String(30), default='status')
     category = db.Column(db.String(30), default='category')
     overview = db.Column(db.String(1000), default='overview')
@@ -44,7 +45,8 @@ class Activity(db.Model):
 class Item(db.Model):
     __tablename__ = 'tb_item'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    email = db.Column(db.String(30), db.ForeignKey(
+        'tb_user.email'), index=True)
     image = db.Column(db.String(1000), default='image of Item')
     item_name = db.Column(db.String(30))
     item_desc = db.Column(db.String(1000))
@@ -76,7 +78,8 @@ class Purchase(db.Model):
 class WishItem(db.Model):
     __tablename__ = 'tb_wishitem'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    email = db.Column(db.String(30), db.ForeignKey(
+        'tb_user.email'), index=True)
     image = db.Column(db.String(1000), default='image of Item')
     item_name = db.Column(db.String(30))
     item_desc = db.Column(db.String(1000))
@@ -94,7 +97,8 @@ class WishItem(db.Model):
 class Inventory(db.Model):
     __tablename__ = 'tb_inventory'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    email = db.Column(db.String(30), db.ForeignKey(
+        'tb_user.email'), index=True)
     image = db.Column(db.String(1000), default='image of Item')
     item_name = db.Column(db.String(30))
     item_desc = db.Column(db.String(1000))
@@ -143,7 +147,8 @@ def time_test(fn):
 def send_email(email, content, code):
     with current_app.app_context():
         mail.connect()
-        msg = Message('5Gusts(Password Reset Request)', sender='923519550@qq.com', recipients=[email])
+        msg = Message('5Gusts(Password Reset Request)',
+                      sender='923519550@qq.com', recipients=[email])
         msg.body = '5Gusts Technology company:\n' + content + f'{code}'
         mail.send(msg)
 
@@ -159,7 +164,7 @@ def user_register(**kwargs):
         admin_code = ['poiuy', 'lkjhg', 'mnbvc']
         if input_identity in manager_code:
             temp_code = input_identity
-            input_identity = 'Manager'
+            input_identity = 'manager'
 
             try:
                 event = User(email=input_register_email, username=input_username, password=input_password,
@@ -173,13 +178,14 @@ def user_register(**kwargs):
                 return {'result': True,
                         'info': f'{input_register_email} Register success!'}
             except Exception as e:
-                print(f'LOG: {input_register_email} register failed(manager user is already exists) {e}!')
+                print(
+                    f'LOG: {input_register_email} register failed(manager user is already exists) {e}!')
                 return {'result': False,
                         'info': f'Register failed: user is already exists!'}
 
         elif input_identity in admin_code:
             temp_code = input_identity
-            input_identity = 'Admin'
+            input_identity = 'administrator'
             try:
                 event = User(email=input_register_email, username=input_username, password=input_password,
                              identity=input_identity)
@@ -189,7 +195,8 @@ def user_register(**kwargs):
                 print(f'LOG: {input_register_email} register success!')
                 return {'result': True, 'info': f'{input_register_email} Register success!'}
             except Exception as e:
-                print(f'LOG: {input_register_email} register failed(admin user is already exists){e}!')
+                print(
+                    f'LOG: {input_register_email} register failed(admin user is already exists){e}!')
                 return {'result': False, 'info': f'Register failed: user is already exists!'}
         else:
             return {'result': False, 'info': 'invalid code!'}
@@ -203,7 +210,8 @@ def user_register(**kwargs):
 
             return {'result': True, 'info': f'{input_register_email} Register success!'}
         except Exception as e:
-            print(f'LOG: {input_register_email} register failed(user is already exists)!')
+            print(
+                f'LOG: {input_register_email} register failed(user is already exists)!')
             return {'result': False, 'info': f'Register failed: user is already exists!'}
 
 
@@ -220,7 +228,8 @@ def user_login(**kwargs):
             return {'result': True,
                     'info': 'Login success!'}
         else:
-            print(f'LOG: {input_user_email} login failed(Wrong email or password)!')
+            print(
+                f'LOG: {input_user_email} login failed(Wrong email or password)!')
             return {'result': False,
                     'info': 'Wrong email or password!'}
     else:
@@ -234,11 +243,13 @@ def forget_pass(email):
     if user:
         try:
             code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-            reset_code = PasswordReset(email=email, code=code, create_at=datetime.datetime.now())
+            reset_code = PasswordReset(
+                email=email, code=code, create_at=datetime.datetime.now())
             db.session.add(reset_code)
             db.session.commit()
             with current_app.app_context():
-                send_email(email, 'In order to reset your password,please fill your code:', code)
+                send_email(
+                    email, 'In order to reset your password,please fill your code:', code)
             return {'result': True, 'info': 'A password reset email has been sent to your email.'}
         except Exception as e:
             return {'result': False, 'info': f'{e}'}
@@ -250,7 +261,8 @@ def reset_password(**kwargs):
     email = kwargs['email']
     code = kwargs['code']
     new_password = kwargs['new_password']
-    user_ = PasswordReset.query.filter_by(email=email).order_by(PasswordReset.create_at.desc()).first()
+    user_ = PasswordReset.query.filter_by(email=email).order_by(
+        PasswordReset.create_at.desc()).first()
 
     if user_:
         try:
@@ -362,16 +374,18 @@ def get_personal_item(email):
                 'trading_method': item.trading_method,
                 'exchange_item': item.exchange_item,
                 'change': item.change,
-                'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+                # 将日期时间转换为字符串格式
+                'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
             }
-        
+
         return {'result': True, 'info': temp_dict}
     else:
         return {'result': True, 'info': 'no item'}
 
 
 def update_personal_item(email, **kwargs):
-    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id'])).first()
+    personal_item = Item.query.filter_by(
+        email=email, id=int(kwargs['item_id'])).first()
     if personal_item:
         try:
             if kwargs['item_name']:
@@ -411,7 +425,8 @@ def update_personal_item(email, **kwargs):
 
 
 def delete_personal_item(email, **kwargs):
-    personal_item = Item.query.filter_by(email=email, id=int(kwargs['item_id'])).first()
+    personal_item = Item.query.filter_by(
+        email=email, id=int(kwargs['item_id'])).first()
     print(personal_item)
     if personal_item:
         db.session.delete(personal_item)
@@ -523,7 +538,7 @@ def search_item(page, **kwargs):
         'asc': Item.item_price.asc(),
         'desc': Item.item_price.desc()
     }
-    
+
     try:
         items = Item.query
         # 将排序条件应用到查询之前
@@ -533,14 +548,15 @@ def search_item(page, **kwargs):
             # 默认排序条件
             sort_condition = None
         if cls1:
-            items = items.filter(Item.class1==cls1)
+            items = items.filter(Item.class1 == cls1)
         if cls2:
-            items = items.filter(Item.class2==cls2)
+            items = items.filter(Item.class2 == cls2)
         if cls3:
-            items = items.filter(Item.class3==cls3)
+            items = items.filter(Item.class3 == cls3)
         query = items.filter(
             or_(
-                Item.item_name.ilike(f'%{keyword}%'),  # ilike means upper and lower is the same
+                # ilike means upper and lower is the same
+                Item.item_name.ilike(f'%{keyword}%'),
                 Item.item_desc.ilike(f'%{keyword}%'),
                 # Item.class1.ilike(f'%{keyword}%'),
                 # Item.class2.ilike(f'%{keyword}%'),
@@ -556,8 +572,9 @@ def search_item(page, **kwargs):
         page_size = 10
         offset = (page - 1) * page_size
         total_rows = query.count()
-        s_items = query.order_by(sort_condition).offset(offset).limit(page_size).all()
-        
+        s_items = query.order_by(sort_condition).offset(
+            offset).limit(page_size).all()
+
         if s_items:
             item_dict = {'total_rows': total_rows}
             for item in s_items:
@@ -579,7 +596,8 @@ def search_item(page, **kwargs):
                     'class1': item.class1,
                     'class2': item.class2,
                     'class3': item.class3,
-                    'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+                    # 将日期时间转换为字符串格式
+                    'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                 }
             # print(item_dict)
             return {'result': True, 'info': item_dict}
@@ -597,11 +615,11 @@ def search_item_by_category(page, **kwargs):
     cls3 = kwargs['class3']
     items = Item.query
     if cls1:
-        items = items.filter(Item.class1==cls1)
+        items = items.filter(Item.class1 == cls1)
     if cls2:
-        items = items.filter(Item.class2==cls2)
+        items = items.filter(Item.class2 == cls2)
     if cls3:
-        items = items.filter(Item.class3==cls3)
+        items = items.filter(Item.class3 == cls3)
     page_size = 10
     total_rows = items.count()
     offset = (page - 1) * page_size
@@ -610,21 +628,22 @@ def search_item_by_category(page, **kwargs):
         r = {}
         for item in s_items:
             r[item.id] = {
-                    'owner_email': item.email,
-                    'item_id': item.id,
-                    'item_name': item.item_name,
-                    'image': item.image,
-                    'item_price': str(item.item_price),
-                    'item_num': str(item.item_num),
-                    'item_desc': item.item_desc,
-                    'trading_method': item.trading_method,
-                    'exchange_item': item.exchange_item,
-                    'change': str(item.change),
-                    'class1': item.class1,
-                    'class2': item.class2,
-                    'class3': item.class3,
-                    'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
-                }
+                'owner_email': item.email,
+                'item_id': item.id,
+                'item_name': item.item_name,
+                'image': item.image,
+                'item_price': str(item.item_price),
+                'item_num': str(item.item_num),
+                'item_desc': item.item_desc,
+                'trading_method': item.trading_method,
+                'exchange_item': item.exchange_item,
+                'change': str(item.change),
+                'class1': item.class1,
+                'class2': item.class2,
+                'class3': item.class3,
+                # 将日期时间转换为字符串格式
+                'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+            }
         return {'result': True, 'info': {'total_rows': total_rows, 'items': r}}
     else:
         return {'result': True, 'info': {}}
@@ -646,8 +665,8 @@ def insert_wish_list(email, **kwargs):
     print('wishlist')
     try:
         event = WishItem(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
-                     item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
-                     class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
+                         item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
+                         class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
         db.session.add(event)
         db.session.commit()
         return {'result': True, 'info': 'insert item success'}
@@ -762,8 +781,8 @@ def insert_inventory(email, **kwargs):
     print('inventory')
     try:
         event = Inventory(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
-                     item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
-                     class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
+                          item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
+                          class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
         db.session.add(event)
         db.session.commit()
         return {'result': True, 'info': 'insert item success'}
@@ -775,7 +794,7 @@ def insert_inventory(email, **kwargs):
 '''--------------------------------'''
 
 
-def search_activity(page,**kwargs):
+def search_activity(page, **kwargs):
 
     activity_name = kwargs['activity_name']
     category = kwargs['category']
@@ -788,9 +807,9 @@ def search_activity(page,**kwargs):
         status = "*****"
     activity_infor = Activity.query.filter(
         or_(
-            Activity.activity_name.ilike(f'%{activity_name}%'),
-            Activity.category.ilike(f'%{category}%'),
-            Activity.status.ilike(f'%{status}%')
+            Activity.activity_name.ilike(f'{activity_name}'),
+            Activity.category.ilike(f'{category}'),
+            Activity.status.ilike(f'{status}')
         )
     )
 
@@ -812,14 +831,16 @@ def search_activity(page,**kwargs):
     else:
         return {'result': True, 'info': {}}
 
-def create_activity(email,**kwargs):
+
+def create_activity(email, **kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
 
-    activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
+    activity = Activity.query.filter_by(
+        activity_name=activity_name, category=category).first()
 
     if activity:
-        return { 'result': False,'info': f'The activity exist.' }
+        return {'result': False, 'info': f'The activity exist.'}
     else:
         try:
             activity_name = kwargs['activity_name']
@@ -829,23 +850,24 @@ def create_activity(email,**kwargs):
             detail = kwargs['detail']
             image = kwargs['image']
             activity = Activity(activity_name=activity_name, status=status, category=category,
-                         overview=overview,detail=detail,image=image,email=email)
+                                overview=overview, detail=detail, image=image, email=email)
             db.session.add(activity)
             db.session.commit()
-            return { 'result': True,'info':'Create the activity successfully'}
+            return {'result': True, 'info': 'Create the activity successfully'}
         except Exception as e:
-            return { 'result': False,'info': f'Failed to create the activity'}
+            return {'result': False, 'info': f'Failed to create the activity'}
 
 
-def delete_activity(email,**kwargs):
+def delete_activity(email, **kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
 
-    activity = Activity.query.filter_by(activity_name=activity_name,category=category).first()
+    activity = Activity.query.filter_by(
+        activity_name=activity_name, category=category).first()
     email = get_jwt_identity()
     identity = get_user_identity(email)
     if activity.email != email and identity != "administrator":
-        return  {'result': False, 'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
+        return {'result': False, 'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
     if activity:
         db.session.delete(activity)
         db.session.commit()
@@ -853,12 +875,13 @@ def delete_activity(email,**kwargs):
     else:
         return {'result': False, 'info': 'do not have this activity'}
 
+
 def get_user_identity(email):
     user = User.query.filter_by(email=email).first()
     return user.identity
 
 
-def update_activity(email,**kwargs):
+def update_activity(email, **kwargs):
     # activity update
     activity_name = kwargs['activity_name']
     status = kwargs['status']
@@ -866,7 +889,8 @@ def update_activity(email,**kwargs):
     overview = kwargs['overview']
     detail = kwargs['detail']
     try:
-        activity = Activity.query.filter_by(activity_name=activity_name).first()
+        activity = Activity.query.filter_by(
+            activity_name=activity_name).first()
         if activity.email != email:
             return {'result': False, 'info': f'You don\'t have permission to update activities which are not created by you!'}
         if activity:
@@ -888,7 +912,7 @@ def show_activities_infor(page,page_size):
     offset = (page - 1) * page_size
     total_rows = activity_infor.count()
     activities = activity_infor.offset(offset).limit(page_size).all()
-    if len(activities) !=0 :
+    if len(activities) != 0:
         r = {}
         for activity in activities:
             r[activity.id] = {
@@ -896,9 +920,9 @@ def show_activities_infor(page,page_size):
                 'category': activity.category,
                 'overview': activity.overview,
                 'detail': activity.detail,
-                'image':activity.image,
-                'status':activity.status,
-                'email':activity.email
+                'image': activity.image,
+                'status': activity.status,
+                'email': activity.email
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
@@ -921,6 +945,7 @@ def show_user_identity(page,page_size):
         return {'result': True, 'info': {'total_rows': total_rows, 'users': r}}
     else:
         return {'result': True, 'info': {'users':'','total_rows':0}}
+
 
 def delete_user(**kwargs):
     user_email = kwargs['user_email']
@@ -951,6 +976,7 @@ def delete_user(**kwargs):
     else:
         return {'result': False, 'info': 'fail to delete the user'}
 
+
 def modify_permission(**kwargs):
     # user permission update
     user_email = kwargs['email']
@@ -966,12 +992,14 @@ def modify_permission(**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update user permission'}
 
+
 def approve_activity(**kwargs):
     name = kwargs['name']
     category = kwargs['category']
     status = kwargs['status']
     try:
-        activity = Activity.query.filter_by(activity_name=name,category=category).first()
+        activity = Activity.query.filter_by(
+            activity_name=name, category=category).first()
         if activity:
             activity.status = status
             db.session.commit()

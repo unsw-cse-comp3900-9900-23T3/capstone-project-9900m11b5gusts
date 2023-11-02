@@ -34,6 +34,7 @@ export default function UploadImage(props) {
 
                 reader.onload = function (evt) {
                     let src = evt.target.result;
+                    
                     // send by xhr
                     setImgUrl(src)
                 }

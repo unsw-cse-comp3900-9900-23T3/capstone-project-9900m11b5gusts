@@ -22,33 +22,152 @@ import styles from "./index.module.css"
 import Person2Icon from '@mui/icons-material/Person2';
 import { Button } from '@mui/material';
 
-export default function UserMgr({ token }) {
+export default function UserMgr() {
+    const [paginationObj, setPaginationObj] = useState({
+        currentPage: 1,
+        pageSize: 10,
+        count: 1,
+    })
+
+    const [userData, setUserData] = useState([]);
+
+    async function getUserData() {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://127.0.0.1:5000/Admin/infor/${paginationObj.currentPage}/${paginationObj.pageSize}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+
+        });
+        if (response.status === 200) {
+            const data = await response.json();
+            console.log('UserInfo: ', data.success)
+            setPaginationObj(Object.assign(paginationObj, { count: data.total/paginationObj.pageSize }))
+            if (data.success) {
+                setUserData(data.success)
+                console.log(data)
+            }
+        } else {
+            const data = await response.json();
+            console.log('Error: ', data)
+        }
+    }
+
+    async function delUserData(email) {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://127.0.0.1:5000/Admin/deleteUser`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(
+                {
+                    "user_email": email
+                }
+            )
+
+        });
+        if (response.status === 200) {
+            const data = await response.json();
+            if (data.success) {
+                console.log(data)
+            }
+        } else {
+            const data = await response.json();
+            console.log('Error: ', data)
+        }
+        await getUserData()
+    }
+
+    async function modifyPermission(email, identity) {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://127.0.0.1:5000/Admin/modifyPermission`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(
+                {
+                    "email": email,
+                    "identity": identity
+                }
+            )
+
+        });
+        if (response.status === 200) {
+            const data = await response.json();
+            if (data.success) {
+                console.log(data)
+            }
+        } else {
+            const data = await response.json();
+            console.log('Error: ', data)
+        }
+    }
 
     useEffect(() => {
-
-    }, [])
+        getUserData()
+    }, [paginationObj.count])
 
     const handleChange = (v) => {
-        console.log(v)
+        setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+        getUserData()
     }
+    const changePagination = (e, value) => {
+        setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
+        getUserData()
 
-
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
     }
+    const gen_usertable = () => {
+        const table_item = []
+        for (let key in userData) {
+            table_item.push(
+                <TableRow
+                    key={userData[key].username}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row" align='center'>
+                        <Person2Icon />
+                    </TableCell>
+                    <TableCell align='center'>{userData[key].username}</TableCell>
+                    <TableCell align='center'>
+                        <Select
+                            labelId="user-role-select"
+                            className={styles.select}
+                            value={userData[key].identity}
+                            onChange={(e) => {
+                                userData[key].identity = e.target.value
+                                setUserData({ ...userData })
+                                modifyPermission(userData[key].email, userData[key].identity)
+                            }}
+                            size='small'
+                            label="pageSize"
+                        >
+                            <MenuItem value={"User"} defaultOpen={true}>user</MenuItem>
+                            <MenuItem value={"manager"}>manager</MenuItem>
+                            <MenuItem value={"administrator"}>administrator</MenuItem>
+                        </Select>
+                    </TableCell>
+                    <TableCell align='center'>{userData[key].email}</TableCell>
+                    <TableCell align='center'>
+                        <Button variant="outlined" color="error" onClick={() => {
+                            delUserData(userData[key].email)
+                        }}>Del</Button>
+                    </TableCell>
+                </TableRow>
+            )
 
-    const rows = [
-        createData('Frozen yoghurt', 159, 1, 0, 1),
-        createData('Ice cream sandwich', 237, 0, 1, 1),
-        createData('Eclair', 262, 1, 1, 0),
-        createData('Cupcake', 305, 0, 0, 1),
-        createData('Gingerbread', 356, 1, 1, 1),
-    ];
-
+        }
+        return table_item
+    }
 
     return (
         <div className={styles.mainBox}>
-            <Card className={styles.cardBg}>
+            <Card style={{overflowY:"scroll"}} className={styles.cardBg}>
                 <h1 className={styles.mainTitle}>User Mgr</h1>
                 <TableContainer>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -57,37 +176,18 @@ export default function UserMgr({ token }) {
                                 <TableCell align='center'>Icon</TableCell>
                                 <TableCell align='center'>User Name</TableCell>
                                 <TableCell align='center'>authority management</TableCell>
-                                <TableCell align='center'>Lock</TableCell>
+                                <TableCell align='center'>Email</TableCell>
                                 <TableCell align='center'>Del</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
-                                <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row" align='center'>
-                                        {/* {row.name} */}
-                                        <Person2Icon/>
-                                    </TableCell>
-                                    <TableCell align='center'>{row.calories}</TableCell>
-                                    <TableCell align='center'>
-                                        {row.fat === 1 ? <Button variant="outlined" color="success">Mark As mgr</Button> : <Button variant="outlined">Mark As Normal User</Button>}
-                                    </TableCell>
-                                    <TableCell align='center'>
-                                        {row.carbs === 1 ? <Button variant="outlined" color="success">Lock</Button> : <Button variant="outlined">Unlock</Button>}
-                                    </TableCell>
-                                    <TableCell align='center'>
-                                        <Button variant="outlined" color="error">Del</Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {gen_usertable()}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <div className={styles.paginationBox}>
-                    <Pagination count={10} variant="outlined" color="primary" />
+                    <Pagination count={paginationObj.count} page={paginationObj.currentPage} variant="outlined" color="primary" onChange={changePagination} />
+
                     <Select
                         labelId="demo-simple-select-standard-label"
                         className={styles.select}

@@ -17,3 +17,6 @@ Lists the required interfaces
 week 7
 Complete the activity data analysis page
 Lists the required interfaces
+
+week 8
+Complete the front and back end of the active editing page
