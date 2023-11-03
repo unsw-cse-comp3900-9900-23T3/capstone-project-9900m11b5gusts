@@ -28,9 +28,17 @@ Week 5
 I recorded a demonstration video about our current progress for client. 
 Fixed some bugs.
 
+
 Week 6
 User's posts can now be edited and deleted.
 More information (image, location) in user profile can be modified. 
 Made a 'Select Category' button. 
-User can select the category of the item when posting new items. 
+Users can select the category of the item when posting new items. 
 
+
+Week 7
+I completed the collectibles searching function and result browsing function on the front end. Also I made the name chip that shows the user's contact info.
+
+
+Week 8
+I added pagination to the search result. 
