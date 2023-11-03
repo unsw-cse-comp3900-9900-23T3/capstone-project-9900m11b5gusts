@@ -197,6 +197,28 @@ approve_activity_permission_model = api.model('approve_activity_permission_model
         'status': fields.String(example='status')
 })
 
+create_topic_model = api.model('create_topic_model',{
+        'activityId': fields.String(example='1'),
+        'detail': fields.String(example='detail'),
+        'image': fields.String(example='a new image')
+})
+
+update_topic_model = api.model('update_topic_model',{
+        'topicId': fields.String(example='3'),
+        'detail': fields.String(example='detail'),
+        'image': fields.String(example='a new image')
+})
+
+delete_topic_model = api.model('delete_topic_model',{
+        'topicId': fields.String(example='3')
+})
+
+comment_topic_model = api.model('comment_topic_model',{
+        'topicId': fields.String(example='3'),
+        'comment': fields.String(example='comment')
+})
+
+
 # search_user_infor_model = api.model('search_user_infor', {
 #         'image': fields.String(example='user image'),
 #         'username': fields.String(example='username name'),

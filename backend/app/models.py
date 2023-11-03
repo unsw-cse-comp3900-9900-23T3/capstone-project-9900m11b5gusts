@@ -41,6 +41,19 @@ class Activity(db.Model):
     image = db.Column(db.String(1000), default='image of activity')
     email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
 
+class Topic(db.Model):
+    __tablename__ = 'tb_topic'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
+    activity_id = db.Column(db.Integer, db.ForeignKey('tb_activity.id'))
+    image = db.Column(db.String(1000), default='image of activity')
+    detail = db.Column(db.String(1000), default='detail')
+
+class Comment(db.Model):
+    __tablename__ = 'tb_comment'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    topic_id = db.Column(db.Integer, db.ForeignKey('tb_topic.id'))
+    comment = db.Column(db.String(1000), default='This is the comment')
 
 class Item(db.Model):
     __tablename__ = 'tb_item'
@@ -1006,3 +1019,59 @@ def approve_activity(**kwargs):
             return {'result': True, 'info': f'Approve the activity successfully'}
     except Exception as e:
         return {'result': False, 'info': f'Failed to approve the activity'}
+
+def create_topic(email,**kwargs):
+    try:
+        activityId = kwargs['activityId']
+        detail = kwargs['detail']
+        image = kwargs['image']
+        topic = Topic(activity_id=activityId,email=email, detail=detail, image=image)
+        db.session.add(topic)
+        db.session.commit()
+        topicId = topic.id
+        return {'result': True, 'info': 'Create the topic successfully','topicId':topicId}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to create the topic'}
+
+def update_topic(email,**kwargs):
+    # topic update
+    topicId = kwargs['topicId']
+    detail = kwargs['detail']
+    image = kwargs['image']
+    try:
+        topic = Topic.query.filter_by(
+            id=topicId).first()
+        if topic.email != email:
+            return {'result': False, 'info': f"You don't have priviledge!"}
+        topic.detail = detail
+        topic.image = image
+        db.session.commit()
+        return {'result': True, 'info': f'Update topic success'}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to update topic'}
+
+def delete_topic(email,identity,**kwargs):
+    topicId = kwargs['topicId']
+    try:
+        topic = Topic.query.filter_by(
+            id=topicId).first()
+        topic_email = topic.email
+        if topic_email == email or identity == "manager" or identity == "administrator":
+            db.session.delete(topic)
+            db.session.commit()
+            return {'result': True, 'info': f'Delete topic success'}
+        else:
+            return {'result': False, 'info': f"You don't have priviledge!"}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to delete topic'}
+
+def comment_topic(email,**kwargs):
+    topicId = kwargs['topicId']
+    comment = kwargs['comment']
+    try:
+        comment = Comment(topic_id=topicId, comment=comment)
+        db.session.add(comment)
+        db.session.commit()
+        return {'result': True, 'info': 'Create the comment successfully'}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to create the topic'}

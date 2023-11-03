@@ -5,12 +5,15 @@ from .api_models import login_model, register_model, changeProfile_model, insert
     update_activity_model, search_items_by_category_model, check_profile_model, \
     delete_user_model, update_activity_permission_model, approve_activity_permission_model, \
     insert_wishlist_model, insert_inventory_model, get_wish_list_model, delete_wishList_model, update_wishList_model, \
-    purchase_item_model, purchase_request_model
+    purchase_item_model, purchase_request_model, create_topic_model, update_topic_model, delete_topic_model, \
+    comment_topic_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
-    delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, insert_inventory, \
-    update_wish_list, delete_wish_list, check_wish_item, purchase_request, check_trading_status, selling_request
+    delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, \
+    insert_inventory, \
+    update_wish_list, delete_wish_list, check_wish_item, purchase_request, check_trading_status, selling_request, \
+    create_topic, update_topic, delete_topic, comment_topic
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
 
@@ -525,3 +528,71 @@ class ApproveActivity(Resource):
                 return {'error': result['info']}, 400
         else:
             return {'error': 'insufficient privileges'}, 400
+
+
+'''-------------------------------'''
+
+Topic = Namespace('Topic', authorizations=authorizations)
+
+@Topic.route('/createTopic')
+class CreateTopic(Resource):
+    @Topic.doc(description='User can create topics under the activity')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect(create_topic_model)
+    def post(self):
+        args = Topic.payload
+        email = get_jwt_identity()
+        result = create_topic(email,**args)
+
+        if result['result']:
+            return {'success': result['info'],'topicId':result['topicId']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+@Topic.route('/editTopic')
+class EditTopic(Resource):
+
+    @Topic.doc(description='Edit the topic information')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect(update_topic_model)
+    def post(self):
+        args = Topic.payload
+        email = get_jwt_identity()
+        update_topic_result = update_topic(email,**args)
+        if update_topic_result['result']:
+            return {'success': update_topic_result['info']}, 200
+        else:
+            return {'error': update_topic_result['info']}, 400
+
+@Topic.route('/deleteTopic')
+class DeleteTopic(Resource):
+    @Topic.doc(description='Can delete topic')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect(delete_topic_model)
+    def delete(self):
+        args = Admin.payload
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        result = delete_topic(email,identity,**args)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+@Topic.route('/commentTopic')
+class CommentTopic(Resource):
+    @Topic.doc(description='Can comment topic')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect(comment_topic_model)
+    def post(self):
+        args = Admin.payload
+        email = get_jwt_identity()
+        result = comment_topic(email,**args)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
