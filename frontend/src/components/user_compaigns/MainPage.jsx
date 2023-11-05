@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 // other components
 // import UploadImage from './jjUploadImage';
@@ -34,6 +36,7 @@ const urls = {
 
 
 export default function MainPage() {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [activityData, setActivityData] = useState([])
   const [open, setOpen] = useState(false)
@@ -241,9 +244,10 @@ export default function MainPage() {
     );
   }
 
-  const userActivityBtn = () => {
-    console.log('hahahahah')
-  
+  const userActivityBtn = (item) => {
+    const activity_name = item.activity_name;
+    // navigate("/post", { state: { activity_name} });
+    navigate("/post", { state: { activity_name: "我是标题" } });
   }
 
   return (
@@ -266,7 +270,7 @@ export default function MainPage() {
           {
             activityData.map(
               (item) =>
-                <div className={styles.mediaCard} onClick={userActivityBtn}>
+                <div className={styles.mediaCard} onClick={()=>userActivityBtn(item)}>
                   <MediaCard activityObj={item}>
                   </MediaCard>
                 </div>
