@@ -15,6 +15,7 @@ import MyPosts from './components/user_personal/MyPosts';
 import ForgetPasswordPage from './components/authentication/ForgetPasswordPage';
 
 import ActivityMainPag from './components/compaigns/MainPage';
+import UserCompaignMainPage from './components/user_compaigns/MainPage';
 import Comments from './components/comments'
 import MyEcharts from './components/echart'
 
@@ -158,7 +159,8 @@ export default function App() {
 										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
 										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
-									
+										<Route path="/user_compaigns" element={<UserCompaignMainPage />} token={token} />
+										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
 										<Route path="/comments" element={<Comments />} />
 										<Route path="/echarts" element={<MyEcharts />} />
@@ -167,6 +169,7 @@ export default function App() {
 										<Route path="/admin" element={<Admin />} />
 										<Route path="/user" element={<UserMgr />} />
 										<Route path="/check" element={<Check />} />
+										
 									</Routes>
 								</BrowserRouter>
 
