@@ -35,13 +35,9 @@ def create_app():
     mail.init_app(app)
     jwt.init_app(app)
     with app.app_context():
-<<<<<<< HEAD
         # db.drop_all()
         db.drop_all()
-=======
-    # db.drop_all()
-    #     db.drop_all()
->>>>>>> dd50759df712904efb46302dffd522a668095cac
+
         db.create_all()
 
     return app

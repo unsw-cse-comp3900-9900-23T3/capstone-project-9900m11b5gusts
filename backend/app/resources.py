@@ -10,16 +10,12 @@ from .api_models import login_model, register_model, changeProfile_model, insert
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
-<<<<<<< HEAD
-    delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, insert_inventory, \
-    update_wish_list, delete_wish_list, check_wish_item, purchase_request, buying_history, selling_history, buyer_process_request, \
-    seller_process_request, handle_purchase_request
-=======
     delete_user, modify_permission, show_activities_infor, approve_activity, time_test, insert_wish_list, \
     insert_inventory, \
-    update_wish_list, delete_wish_list, check_wish_item, purchase_request, check_trading_status, selling_request, \
-    create_topic, update_topic, delete_topic, comment_topic
->>>>>>> dd50759df712904efb46302dffd522a668095cac
+    update_wish_list, delete_wish_list, check_wish_item, purchase_request, \
+    create_topic, update_topic, delete_topic, comment_topic, buying_history, \
+    buyer_process_request, seller_process_request, selling_history, handle_purchase_request
+
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
 
