@@ -18,6 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -25,6 +26,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import img from '../../assets/GuiyangMoon.jpg'
 import styles from './index.module.css';
+
+import CheckIcon from '@mui/icons-material/Check'; 
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -53,7 +58,40 @@ const style = {
 
 export default function Comments() {
     const [expanded, setExpanded] = React.useState(false);
-    const [listData, setListData] = React.useState([{ id: 1, name: "zhangsan", open: false, children: [{ id: 4, name: "lisi", open: false, children: [] }] }, { id: 2, name: "zhangsan1", open: false, children: [{ id: 5, name: "lisi1", open: false, children: [] }] }, { id: 3, open: false, name: "zhangsan3", children: [] }]);
+    const [listData, setListData] = React.useState([
+        {
+            id: 1, pid: null, name: "Hello", open: false, user: 'aaa', children: [
+                {
+                    id: 4, pid: 1, name: "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文v", open: false, user: 'bbb', children: []
+                },
+                                {
+                    id: 4, pid: 1, name: "NiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNice", open: false, user: 'bbb', children: []
+                },                {
+                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
+                },                {
+                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
+                },                {
+                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
+                },                {
+                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
+                },                {
+                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
+                },                {
+                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
+                },
+            ]
+        },
+        {
+            id: 2, pid: null, name: "heheh", open: false, user: 'ccc', children: [
+                {
+                    id: 5, pid: 2, name: "hahah", open: false, user: 'bbb', children: []
+                }
+            ]
+        },
+        {
+            id: 3, pid: null, open: false, name: " heihei", user: 'ddd', children: []
+        }
+    ]);
 
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
@@ -65,10 +103,6 @@ export default function Comments() {
         setExpanded(!expanded);
     };
 
-    const handleClick = (item) => {
-
-
-    };
     const clickMore = (item) => {
         setOpenModal(true)
     }
@@ -79,63 +113,46 @@ export default function Comments() {
     return (
         <div className={styles.outerBox}>
             <div className={styles.showDetailTop}>
-                <Card sx={{ maxWidth: "30%" }}>
-                    <CardMedia
-                        component="img"
-                        height="194"
-                        image={img}
-                        alt="Paella dish"
-                    />
-                </Card>
-                <Card sx={{ maxWidth: '70%' }}>
+                <Card sx={{ maxWidth: '100%' }}>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary">
-                            This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like.
-                            This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like.
+                            My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer
+                            ,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer
                         </Typography>
                     </CardContent>
                 </Card>
 
             </div>
             <div className={styles.commentsBox}>
-                <Card sx={{ width: "99%" }}>
-
+                <Card sx={{ width: "99%" }} style={{overflowY: 'scroll'}}>
                     <List dense={dense}>
                         {listData.map(item => (
                             <>
-                                <ListItemButton onClick={handleClick(item)}>
+                                <ListItemButton onClick={() => {
+                                    clickMore(item)
+                                }}>
                                     <ListItemIcon>
                                         <AccountCircle />
                                     </ListItemIcon>
-                                    <ListItemText primary={item.name} />
-
-                                    {item.children.length > 0 ? <ExpandLess /> : <ExpandMore />}
-                                    <Button variant="text" onClick={clickMore}>MORE</Button>
+                                    <Card style={{marginRight: '3rem'}}>{ item.user }</Card>
+                                    <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all'}} primary={item.name}/>
                                 </ListItemButton>
                                 <Collapse in={item.children.length > 0} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
-                                        <ListItemButton sx={{ pl: 4 }}>
-                                            <ListItemIcon>
-                                                <AccountCircle />
-                                            </ListItemIcon>
-                                            <ListItemText primary={item.name} />
-                                        </ListItemButton>
+                                        {
+                                            item.children.map(child => (
+                                                <>
+                                                    <ListItemButton sx={{ pl: 4 }} onClick={()=>{ clickMore(child) }}>
+                                                        <ListItemIcon>
+                                                            <AccountCircle />
+                                                        </ListItemIcon>
+                                                        <Card style={{marginRight: '3rem'}}>{ child.user }</Card>
+                                                        <ListItemText style={{ whiteSpace: 'pre-line',  wordBreak: 'break-all' }} primary={child.name} />
+                                                    </ListItemButton>
+                                                </>
+                                            ))
+                                        }
+
                                     </List>
                                 </Collapse>
 
@@ -150,11 +167,13 @@ export default function Comments() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
+                    <Typography id="modal-modal-title" variant="h6" component="h2" style={{textAlign: 'center'}}>
+                        {/* Good criticism is the starting point of civilization */}
+                        Comment
                     </Typography>
                     <List>
-                        {[1, 2, 3, 4, 5, 6, 7].map(item => <>
+                        <Input style={{width: '100%'}} multiline placeholder="Good criticism starts civilization" ></Input>
+                        {/* {[1, 2, 3, 4, 5, 6, 7].map(item => <>
                             <ListItem
                                 secondaryAction={
                                     <IconButton edge="end" aria-label="delete" onClick={deleteClick}>
@@ -172,7 +191,19 @@ export default function Comments() {
                                     secondary={secondary ? 'Secondary text' : null}
                                 />
                             </ListItem>
-                        </>)}
+                        </>)} */}
+                        <div style={{display: 'flex', justifyContent: 'space-evenly', paddingTop: '2rem'}}>
+                            <IconButton color="primary" onClick={() => {
+                                setOpenModal(false)
+                            }}>
+                                <CheckIcon />
+                            </IconButton>
+                            <IconButton color="secondary" onClick={() => {
+                                setOpenModal(false)
+                            }}>
+                                <CloseIcon />
+                            </IconButton>
+                        </div>
                     </List>
                 </Box>
             </Modal>
