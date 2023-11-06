@@ -42,11 +42,11 @@ bug fixed,but no idea about sorting price bug.
 Add wishlist API
 Add inventory API
 Add manager & admin code
-Week 7
+### Week 7
 Finish the wishlist update API
 Finish the wishlist delete API
 Finish the wishlist check API(all user and specific user)
-Week8
+### Week8
 Finished the checkTradingStatus API
 Finished the purchaseItem API
 Finished the purchaseRequest API
@@ -56,3 +56,12 @@ and can action(agree or disagree).
 Some conditions:buyer have to wait for the seller response, if seller is not response(seller do not disagree or agree)
 buyer can not buy another item.Another thing is buyer can not buy himself item(might cause bugs)
 buyer buy item can have some tips by calling purchaseItem API such as amount exceed the seller have... 
+### week9
+Monday finished:
+getBuyerProcessHistory API;
+getBuyingHistory API;
+getSellerProcessHistory API;
+getSellingHistory API;
+purchaseItem API;
+handlePurchaseRequest API;
+These APIs can handle the purchase and purchase history function.
