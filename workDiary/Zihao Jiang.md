@@ -57,3 +57,7 @@ and can action(agree or disagree).
 Some conditions:buyer have to wait for the seller response, if seller is not response(seller do not disagree or agree)
 buyer can not buy another item.Another thing is buyer can not buy himself item(might cause bugs)
 buyer buy item can have some tips by calling purchaseItem API such as amount exceed the seller have... 
+### Week9
+Week8's API need to change,add 4 API instead, is still working.These APIs should handle the purchase and purchase history function for both buyer and seller.
+TODU 4 API,get_buyer_history API, get_seller_history API, get_process_traidng, purchase_item API.
+
