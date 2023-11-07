@@ -10,28 +10,32 @@ import Button from '@mui/joy/Button';
 import AddIcon from '@mui/icons-material/Add';
 
 import ItemCard from "../user_general/ItemCard";
-import Pagination from "../user_general/Pagination";
-import Alert from '@mui/joy/Alert';
-import PlaylistAddCheckCircleRoundedIcon from '@mui/icons-material/PlaylistAddCheckCircleRounded';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import IconButton from '@mui/joy/IconButton';
+import { useLocation } from 'react-router-dom';
 
 
-export default function MyPosts({ token, profileData, manageItemID }) {
+export default function Posts({ token, profileData, manageItemID }) {
   const [email, setEmail] = React.useState(null)
   const [posts, setPosts] = React.useState([])
 
+  
+  console.log('email: ', window.location.hash.slice(1))
 
 
   React.useEffect(() => {
-    if (profileData) {
-      setEmail(profileData.email)
-    }
+
+      if (window.location.hash.slice(1)){
+        
+        setEmail(window.location.hash.slice(1))
+      } else {
+        setEmail(profileData.email)
+      }
+      
   }, [profileData])
 
   React.useEffect(() => {
-    if (email !== null){
+    
+    if (email !== null && email !== undefined){
+      window.location.href=`/posts#${email}`
       checkPersonalItem()
     }
   },[email])
@@ -88,7 +92,15 @@ export default function MyPosts({ token, profileData, manageItemID }) {
         >
 					<Stack sx={{ mb: 2 }}>
 						<Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
-							<Typography level="h2">My Posts</Typography>
+              {email === profileData.email
+                ?
+                <Typography level="h2">My Posts</Typography>
+                :
+                <Typography level="h2">Post of {window.location.hash.slice(1)}</Typography>
+              }
+							
+
+
 							<Button component="a" href="/myposts/postnewitem" variant="soft" size="sm" startDecorator={<AddIcon />}>
 								Post New Item
 							</Button>
@@ -108,6 +120,7 @@ export default function MyPosts({ token, profileData, manageItemID }) {
                   index={index}
                   item={item}
                   manageItemID={manageItemID}
+                  current_user_email = {profileData.email}
                 />
                 )  
               })

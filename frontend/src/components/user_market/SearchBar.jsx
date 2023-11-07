@@ -26,7 +26,7 @@ export default function SearchBar({
   const handleSubmit = (event) => {
     event.preventDefault();
 		console.log('submiting...')
-    search()
+    search(1)
   };
 
   return (

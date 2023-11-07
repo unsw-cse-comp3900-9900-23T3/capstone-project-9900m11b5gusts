@@ -33,6 +33,11 @@ export default function UserInfoChip({ token, email, name }) {
 	},[])
 
 
+	function handleSeePosts() {
+		window.open(`/posts#${email}`, "_blank");
+	}
+
+
 
 	async function fetchUserInfoByEmail(){
 		const response = await fetch(`http://127.0.0.1:5000/Authors/checkOtherProfile`, {
@@ -136,6 +141,16 @@ export default function UserInfoChip({ token, email, name }) {
 										</Grid>
 										<ListDivider />
 									</Typography>
+
+									<br />
+
+									<Button 
+										variant='outlined'
+										onClick={handleSeePosts}
+									>
+										See His/Her Posts
+									</Button>
+
 								</CardContent>
 
 							</Card>
