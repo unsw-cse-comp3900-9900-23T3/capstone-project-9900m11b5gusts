@@ -16,6 +16,8 @@ We have set up both the basic backend and frontend. Users can register new accou
 We have discussed the upcoming missions. For frontend, I will be responsible for the user part, while the others will be responsible for the campaign manager and system administrator part.
 
 
+
+
 Week 4
 
 User can :
@@ -24,21 +26,38 @@ Post new items
 Change password with the code sent to their email.
 
 
+
+
 Week 5
+
 I recorded a demonstration video about our current progress for client. 
 Fixed some bugs.
 
 
+
+
 Week 6
+
 User's posts can now be edited and deleted.
 More information (image, location) in user profile can be modified. 
 Made a 'Select Category' button. 
 Users can select the category of the item when posting new items. 
 
 
+
+
 Week 7
-I completed the collectibles searching function and result browsing function on the front end. Also I made the name chip that shows the user's contact info.
+
+I completed the collectibles searching function and result browsing function on the front end. 
+Also I made the name chip that shows the user's contact info.
+
+
 
 
 Week 8
-I added pagination to the search result. 
+
+Pagination is added on the market page. 
+On one's personal information chip, a button that leads to his/her posts page is added. 
+Built a part of buying pages and some of the functions to do with buying. 
+
+

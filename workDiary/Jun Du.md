@@ -29,7 +29,14 @@ week7: 10/29
 
 Complete the frontend and backend of the administration page, including the administrative user interface, and delete users' accounts, delete the comments and posts of the activities.
 
+week8:
 
+Complete the frontend of the Campaigns page. All the accounts can browse the campaigns.
+
+
+week9:
+
+Complete the frontend and backend of the campaigns page. Finish all the tasks.
 
 
 

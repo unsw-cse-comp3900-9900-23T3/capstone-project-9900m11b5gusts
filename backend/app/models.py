@@ -64,7 +64,8 @@ class Item(db.Model):
     item_name = db.Column(db.String(30))
     item_desc = db.Column(db.String(1000))
     item_price = db.Column(db.Float)
-    item_num = db.Column(db.Integer)
+    item_num = db.Column(db.Integer)  # item_last_num 剩余物品数量
+    item_sold_num = db.Column(db.Integer, default=0)  # 卖出的物品数量
     class1 = db.Column(db.String(30))
     class2 = db.Column(db.String(30))
     class3 = db.Column(db.String(30))
@@ -85,7 +86,6 @@ class Purchase(db.Model):
     status = db.Column(db.String(30), default="processing")
     finished = db.Column(db.Boolean, default=False)
     time_stamp = db.Column(db.DateTime, default=datetime.datetime.now())
-
 
 
 class WishItem(db.Model):
@@ -357,7 +357,7 @@ def insert_item(email, **kwargs):
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
                      class3=input_class3, trading_method=input_method, exchange_item=input_exchange_item, change=input_change, time_stamp=datetime.datetime.now())
-        db.session.add(event)
+        db.session.add(event)                            #
         db.session.commit()
         return {'result': True, 'info': 'insert item success'}
     except Exception as e:
@@ -395,7 +395,7 @@ def get_personal_item(email):
     else:
         return {'result': True, 'info': 'no item'}
 
-
+# 修改的数量是哪一个？是剩余数量，还是卖出的数量，还是剩余数量+卖出的数量？
 def update_personal_item(email, **kwargs):
     personal_item = Item.query.filter_by(
         email=email, id=int(kwargs['item_id'])).first()
@@ -452,90 +452,212 @@ def delete_personal_item(email, **kwargs):
 def purchase_request(email, **kwargs):
     item_id = int(kwargs['item_id'])
     purchase_amount = int(kwargs['purchase_amount'])
-
     wanted_item = Item.query.filter_by(id=item_id).first()
+    # 如果有物品则继续，没有物品则提示
     if wanted_item:
-        if wanted_item.item_num - purchase_amount >= 0:
-            # 查看是否有未完成的购买请求
-            history = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).first()
-            if not history or (history and history.finished):
-                # 在Purchase表中进行记录
-                seller_email = wanted_item.email
-                item_name = wanted_item.item_name
-                purchase_history = Purchase(buyer_email=email, seller_email=seller_email, item_id=item_id,
-                                            purchase_amount=purchase_amount, item_name=item_name, time_stamp=datetime.datetime.now())
-                db.session.add(purchase_history)
-                db.session.commit()
-                return {'result': True,
-                        'info': 'the purchase request is sending to seller, please wait for the seller response'}
-            elif not history.finished:
-                return {'result': False, 'info': 'you already have one purchase request, please waiting for previous request'}
-
-        else:
-            # 物品数量不够
-            return {'result': False, 'info': 'not enough item amount'}
+        seller_email = wanted_item.email
+        item_name = wanted_item.item_name
+        purchase_history = Purchase(buyer_email=email, seller_email=seller_email, item_id=item_id,
+                                    purchase_amount=purchase_amount, item_name=item_name,
+                                    time_stamp=datetime.datetime.now())
+        db.session.add(purchase_history)
+        db.session.commit()
+        return {'result': True,
+                'info': 'the purchase request is sending to seller, please wait for the seller response'}
     else:
         return {'result': False, 'info': 'this item is selling out'}
 
+    # if wanted_item:
+    #     if wanted_item.item_num - purchase_amount >= 0:
+    #         # 查看是否有未完成的购买请求
+    #         history = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).first()
+    #         if not history or (history and history.finished):
+    #             # 在Purchase表中进行记录
+    #             seller_email = wanted_item.email
+    #             item_name = wanted_item.item_name
+    #             purchase_history = Purchase(buyer_email=email, seller_email=seller_email, item_id=item_id,
+    #                                         purchase_amount=purchase_amount, item_name=item_name, time_stamp=datetime.datetime.now())
+    #             db.session.add(purchase_history)
+    #             db.session.commit()
+    #             return {'result': True,
+    #                     'info': 'the purchase request is sending to seller, please wait for the seller response'}
+    #         elif not history.finished:
+    #             return {'result': False, 'info': 'you already have one purchase request, please waiting for previous request'}
+    #
+    #     else:
+    #         # 物品数量不够
+    #         return {'result': False, 'info': 'not enough item amount'}
+    # else:
+    #     return {'result': False, 'info': 'this item is selling out'}
 
-def check_trading_status(email):
-    buyer_request = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).first()
-    seller_request = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).first()
-    if buyer_request and not buyer_request.finished:
-        if buyer_request.status == 'processing':
-            return {'result': False, 'info': 'In processing'}
-        elif buyer_request.status == 'reject':
-            buyer_request.finished = True
-            buyer_request.time_stamp = datetime.datetime.now()
-            db.session.commit()
-            return {'result': True, 'info': 'Seller reject your purchasing'}
-        elif buyer_request.status == 'approve':
-            buyer_request.finished = True
-            buyer_request.time_stamp = datetime.datetime.now()
-            db.session.commit()
-            return {'result': True, 'info': 'Seller approve your purchasing'}
-    elif seller_request and not seller_request.finished:
-        if seller_request.status == 'processing':
-            seller_email = seller_request.seller_email
-            item_name = seller_request.item_name
-            purchase_amount = seller_request.purchase_amount
-            return {'result': True, 'info': f'{seller_email} want to buy {purchase_amount} {item_name}'}
-        else:
-            return {'result': False, 'info': ''}
+def selling_history(email):
+    seller_history = Purchase.query.filter_by(seller_email=email).all()
+    if seller_history:
+        history = {}
+        for h in seller_history:
+            history[h.id] = {
+                'item_id': h.item_id,
+                'item_name': h.item_name,
+                'buyer_email': h.buyer_email,
+                'seller_email': h.seller_email,
+                'purchase_amount': h.purchase_amount,
+                'status': h.status,
+                'finished': h.finished,
+                'time_stamp': h.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        return {'result': True, 'info': history}
     else:
-        return {'result': False, 'info': 'No new message'}
+        return {'result': True, 'info': {}}
 
 
-def selling_request(email, action):
-    seller_request = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).first()
-    if seller_request and not seller_request.finished:
+def buying_history(email):
+    buyer_history = Purchase.query.filter_by(buyer_email=email).all()
+    if buyer_history:
+        history = {}
+        for h in buyer_history:
+            history[h.id] = {
+                'item_id': h.item_id,
+                'item_name': h.item_name,
+                'buyer_email': h.buyer_email,
+                'seller_email': h.seller_email,
+                'purchase_amount': h.purchase_amount,
+                'status': h.status,
+                'finished': h.finished,
+                'time_stamp': h.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        return {'result': True, 'info': history}
+    else:
+        return {'result': True, 'info': {}}
+
+# TODO
+# 对于购买者，交易状态为processing的请求(历史记录)
+# 对于卖家，交易状态为processing的请求（历史记录）
+
+
+def buyer_process_request(email):
+    buyer_process_histories = Purchase.query.filter_by(buyer_email=email, status='processing').all()
+    if buyer_process_histories:
+        history = {}
+        for h in buyer_process_histories:
+            history[h.id] = {
+                'item_id': h.item_id,
+                'item_name': h.item_name,
+                'buyer_email': h.buyer_email,
+                'seller_email': h.seller_email,
+                'purchase_amount': h.purchase_amount,
+                'status': h.status,
+                'finished': h.finished,
+                'time_stamp': h.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        return {'result': True, 'info': history}
+    else:
+        return {'result': True, 'info': {}}
+
+
+def seller_process_request(email):
+    seller_process_histories = Purchase.query.filter_by(seller_email=email, status='processing').all()
+    if seller_process_histories:
+        history = {}
+        for h in seller_process_histories:
+            history[h.id] = {
+                "item_id": h.item_id,
+                "item_name": h.item_name,
+                "buyer_email": h.buyer_email,
+                "seller_email": h.seller_email,
+                "purchase_amount": h.purchase_amount,
+                "status": h.status,
+                "finished": h.finished,
+                "time_stamp": h.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        return {'result': True, 'info': history}
+    else:
+        return {'result': True, 'info': {}}
+
+# def check_trading_status(email):
+#     buyer_request = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).first()
+#     seller_request = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).first()
+#     if buyer_request and not buyer_request.finished:
+#         if buyer_request.status == 'processing':
+#             return {'result': False, 'info': 'In processing'}
+#         elif buyer_request.status == 'reject':
+#             buyer_request.finished = True
+#             buyer_request.time_stamp = datetime.datetime.now()
+#             db.session.commit()
+#             return {'result': True, 'info': 'Seller reject your purchasing'}
+#         elif buyer_request.status == 'approve':
+#             buyer_request.finished = True
+#             buyer_request.time_stamp = datetime.datetime.now()
+#             db.session.commit()
+#             return {'result': True, 'info': 'Seller approve your purchasing'}
+#     elif seller_request and not seller_request.finished:
+#         if seller_request.status == 'processing':
+#             seller_email = seller_request.seller_email
+#             item_name = seller_request.item_name
+#             purchase_amount = seller_request.purchase_amount
+#             return {'result': True, 'info': f'{seller_email} want to buy {purchase_amount} {item_name}'}
+#         else:
+#             return {'result': False, 'info': ''}
+#     else:
+#         return {'result': False, 'info': 'No new message'}
+def handle_purchase_request(email, **kwargs):
+    item_id = int(kwargs['item_id'])
+    action = kwargs['action']
+    item_request = Purchase.query.filter_by(seller_email=email, item_id=item_id).first()
+    if item_request:
         if action:
-            seller_request.status = 'approve'
-            # update the Item table, update the item amount
-            item_id = seller_request.item_id
-            item_name = seller_request.item_name
-            selling_amount = seller_request.purchase_amount
-            item = Item.query.filter_by(id=item_id).first()
-            new_item_amount = item.item_num - selling_amount
-            if new_item_amount:
-                item.item_num = item.item_num - selling_amount
-                item.time_stamp = datetime.datetime.now()
-                db.session.commit()
-                db.session.commit()
-                return {'result': True, 'info': f'you sold {selling_amount} {item_name}'}
-            else:
-                db.session.delete(item)
-                db.session.commit()
-                db.session.commit()
-                return {'result': True, 'info': f'you sold {selling_amount} {item_name}, and this item is out'}
-        else:
-            seller_request.status = 'reject'
-            seller_request.time_stamp = datetime.datetime.now()
+            # 同意购买物品
+            item_request.finished = True
+            item_request.status = 'approved'
+            item_request.time_stamp = datetime.datetime.now()
+            selling_amount = item_request.purchase_amount
             db.session.commit()
-            return {'result': True, 'info': f'you reject the purchase request'}
-
+            # 更新Item表数据
+            item = Item.query.filter_by(id=item_id).first()
+            item.item_num -= selling_amount
+            item.item_sold_num += selling_amount
+            if item.item_num == 0:
+                db.session.delete(item)
+            db.session.commit()
+        else:
+            # 不同意购买物品
+            item_request.status = 'reject'
+            item_request.finished = True
+            item_request.time_stamp = datetime.datetime.now()
+            db.session.commit()
+        return {'result': True, 'info': 'you have handle the selling request'}
     else:
-        return {'result': False, 'info': ''}
+        return {'result': False, 'info': 'no this item'}
+
+# def selling_request(email, action):
+#     seller_request = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).first()
+#     if seller_request and not seller_request.finished:
+#         if action:
+#             seller_request.status = 'approve'
+#             # update the Item table, update the item amount
+#             item_id = seller_request.item_id
+#             item_name = seller_request.item_name
+#             selling_amount = seller_request.purchase_amount
+#             item = Item.query.filter_by(id=item_id).first()
+#             new_item_amount = item.item_num - selling_amount
+#             if new_item_amount:
+#                 item.item_num = item.item_num - selling_amount
+#                 item.time_stamp = datetime.datetime.now()
+#                 db.session.commit()
+#                 db.session.commit()
+#                 return {'result': True, 'info': f'you sold {selling_amount} {item_name}'}
+#             else:
+#                 db.session.delete(item)
+#                 db.session.commit()
+#                 db.session.commit()
+#                 return {'result': True, 'info': f'you sold {selling_amount} {item_name}, and this item is out'}
+#         else:
+#             seller_request.status = 'reject'
+#             seller_request.time_stamp = datetime.datetime.now()
+#             db.session.commit()
+#             return {'result': True, 'info': f'you reject the purchase request'}
+#
+#     else:
+#         return {'result': False, 'info': ''}
 
 @time_test
 def search_item(page, **kwargs):

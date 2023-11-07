@@ -14,6 +14,7 @@ import LoginPageHeader from './components/authentication/LoginPageHeader';
 import ForgetPasswordPage from './components/authentication/ForgetPasswordPage';
 
 import ActivityMainPag from './components/compaigns/MainPage';
+import UserCompaignMainPage from './components/user_compaigns/MainPage';
 import Comments from './components/comments'
 import MyEcharts from './components/echart'
 
@@ -21,6 +22,7 @@ import ShowImg from './components/admin/showImage'
 import Admin from './components/admin'
 import UserMgr from './components/admin/User'
 import Check from './components/admin/Check'
+import Post from  './components/post/index'
 
 import {
   experimental_extendTheme as materialExtendTheme,
@@ -158,7 +160,8 @@ export default function App() {
 										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
 										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
-									
+										<Route path="/user_compaigns" element={<UserCompaignMainPage />} token={token} />
+										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
 										<Route path="/comments" element={<Comments />} />
 										<Route path="/echarts" element={<MyEcharts />} />
@@ -167,6 +170,8 @@ export default function App() {
 										<Route path="/admin" element={<Admin />} />
 										<Route path="/user" element={<UserMgr />} />
 										<Route path="/check" element={<Check />} />
+										<Route path="/post" element={<Post />} />
+										
 									</Routes>
 								</BrowserRouter>
 

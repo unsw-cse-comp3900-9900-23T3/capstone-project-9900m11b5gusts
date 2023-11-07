@@ -47,3 +47,15 @@
 ### Week 7
 1. Cooperate with the front end and coordinate the admin user interface 
 2. Cooperate with the front end to coordinate the monitoring activity interface
+
+##### 
+
+### Week 8
+
+1. API(/Topic/commentTopic): All users can comment under all the topics.
+2. API(/Topic/createTopic): User can create topics under centain campaign.
+3. API(/Topic/deleteTopic): User can delete the topic they create.
+4. API(/Topic/editTopic): User can edit the topic they create.
+
+
+

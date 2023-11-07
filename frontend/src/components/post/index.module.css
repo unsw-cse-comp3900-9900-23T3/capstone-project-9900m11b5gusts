@@ -1,0 +1,19 @@
+.outerBox{
+    width:100%;
+}
+.showDetailTop{
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+.commentsBox{
+    margin: 1rem;
+    height: calc(100% - 300px);
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    display: flex;
+}
+.marginBtn{
+    margin: 1rem;
+   
+}
