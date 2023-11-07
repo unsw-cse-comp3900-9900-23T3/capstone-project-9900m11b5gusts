@@ -66,3 +66,5 @@ getSellingHistory API;
 purchaseItem API;
 handlePurchaseRequest API;
 These APIs can handle the purchase & purchase history function
+Add buyer_name & seller_name to the 4 histories;
+Add a getItemByID API that can search item by item_id

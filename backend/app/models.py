@@ -490,16 +490,48 @@ def purchase_request(email, **kwargs):
     # else:
     #     return {'result': False, 'info': 'this item is selling out'}
 
+def get_item_by_id(item_id):
+    item = Item.query.filter_by(id=item_id).first()
+    if item:
+        item_dict = {}
+        user = User.query.filter_by(email=item.email).first()
+        user_name = user.username
+        item_dict[item.id] = {
+            'owner_email': item.email,
+            'username': user_name,
+            'item_id': item.id,
+            'item_name': item.item_name,
+            'image': item.image,
+            'item_price': str(item.item_price),
+            'item_num': str(item.item_num),
+            'item_desc': item.item_desc,
+            'trading_method': item.trading_method,
+            'exchange_item': item.exchange_item,
+            'change': str(item.change),
+            'class1': item.class1,
+            'class2': item.class2,
+            'class3': item.class3,
+            # 将日期时间转换为字符串格式
+            'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        return {'result': True, 'info': item_dict}
+    else:
+        return {'result': True, 'info': {}}
+
 def selling_history(email):
     seller_history = Purchase.query.filter_by(seller_email=email).all()
     if seller_history:
         history = {}
         for h in seller_history:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
+                'buyer_name': buyer_name,
                 'seller_email': h.seller_email,
+                'seller_name': seller_name,
                 'purchase_amount': h.purchase_amount,
                 'status': h.status,
                 'finished': h.finished,
@@ -515,11 +547,15 @@ def buying_history(email):
     if buyer_history:
         history = {}
         for h in buyer_history:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
+                'buyer_name': buyer_name,
                 'seller_email': h.seller_email,
+                'seller_name': seller_name,
                 'purchase_amount': h.purchase_amount,
                 'status': h.status,
                 'finished': h.finished,
@@ -539,11 +575,15 @@ def buyer_process_request(email):
     if buyer_process_histories:
         history = {}
         for h in buyer_process_histories:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
+                'buyer_name': buyer_name,
                 'seller_email': h.seller_email,
+                'seller_name': seller_name,
                 'purchase_amount': h.purchase_amount,
                 'status': h.status,
                 'finished': h.finished,
@@ -559,11 +599,15 @@ def seller_process_request(email):
     if seller_process_histories:
         history = {}
         for h in seller_process_histories:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 "item_id": h.item_id,
                 "item_name": h.item_name,
                 "buyer_email": h.buyer_email,
+                "buyer_name": buyer_name,
                 "seller_email": h.seller_email,
+                "seller_name": seller_name,
                 "purchase_amount": h.purchase_amount,
                 "status": h.status,
                 "finished": h.finished,

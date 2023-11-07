@@ -6,7 +6,7 @@ from .api_models import login_model, register_model, changeProfile_model, insert
     delete_user_model, update_activity_permission_model, approve_activity_permission_model, \
     insert_wishlist_model, insert_inventory_model, get_wish_list_model, delete_wishList_model, update_wishList_model, \
     purchase_item_model, purchase_request_model, create_topic_model, update_topic_model, delete_topic_model, \
-    comment_topic_model
+    comment_topic_model, get_item_by_id_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
@@ -14,7 +14,8 @@ from .models import user_register, user_login, get_profile, update_profile, inse
     insert_inventory, \
     update_wish_list, delete_wish_list, check_wish_item, purchase_request, \
     create_topic, update_topic, delete_topic, comment_topic, buying_history, \
-    buyer_process_request, seller_process_request, selling_history, handle_purchase_request
+    buyer_process_request, seller_process_request, selling_history, handle_purchase_request, \
+    get_item_by_id
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
@@ -256,6 +257,15 @@ class PurchaseItem(Resource):
         else:
             return {'error': result['info']}, 400
 
+@Item.route('/getItemById')
+class GetItemById(Resource):
+    @Item.doc(description="get item info by item_id")
+    @Item.expect(get_item_by_id_model)
+    def post(self):
+        args = Item.payload
+        item_id = args['item_id']
+        result = get_item_by_id(item_id)
+        return {'success': result['info']}
 
 @Item.route('/getSellingHistory')
 class GetSellingHistory(Resource):
@@ -329,7 +339,6 @@ class HandlePurchaseRequest(Resource):
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
-
 
 
 @Item.route('/deleteWishList')
