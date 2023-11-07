@@ -11,7 +11,6 @@ import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 
 import LoginPageHeader from './components/authentication/LoginPageHeader';
-import MyPosts from './components/user_personal/MyPosts';
 import ForgetPasswordPage from './components/authentication/ForgetPasswordPage';
 
 import ActivityMainPag from './components/compaigns/MainPage';
@@ -48,6 +47,7 @@ import PostNewItemPage from './components/user_personal/PostNewItemPage';
 import EditItemPage from './components/user_personal/EditItemPage';
 import MarketHomePage from './components/user_market/MarketHomePage';
 import WishListPage from './components/user_personal/WishListPage';
+import Posts from './components/user_personal/Posts';
 
 export default function App() {
 	const [token, setToken] = React.useState(null)
@@ -152,9 +152,9 @@ export default function App() {
 							>
 								<BrowserRouter>
 									<Routes>
-										<Route path="/market" element={<MarketHomePage token={token} />} />
+										<Route path="/market" element={<MarketHomePage token={token} profileData={profileData}/>} />
 										<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
-										<Route path="/myposts" element={<MyPosts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
+										<Route path="/posts*" element={<Posts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
 										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
 										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />

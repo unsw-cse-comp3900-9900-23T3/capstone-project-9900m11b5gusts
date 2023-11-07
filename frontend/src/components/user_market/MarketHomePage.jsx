@@ -12,7 +12,7 @@ import Pagination from "../user_general/Pagination";
 import ItemCard from '../user_general/ItemCard';
 
 
-export default function MarketHomePage ({ token }) {
+export default function MarketHomePage ({ token, profileData }) {
   const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
   const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
   const [posts, setPosts] = React.useState([])
@@ -103,20 +103,14 @@ export default function MarketHomePage ({ token }) {
               if (item.item_id) {
                 return(
                   <ItemCard 
+                    token={token}
                     item = {item}
+                    current_user_email={profileData.email}
                   />
                   )  
               }
 
             })}
-
-            <ItemCard
-              title="Designer NY style loft"
-              category="Entire loft in central business district"
-              liked 
-              finished = {true}
-              image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
-            />
             
            
           </Stack>

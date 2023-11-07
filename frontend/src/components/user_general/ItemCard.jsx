@@ -21,7 +21,7 @@ import SeeItemDetail from "../user_market/SeeItemDetail"
 
 
 
-export default function ItemCard({ token, index, item, manageItemID, finished=false }) {
+export default function ItemCard({ token, index, item, manageItemID, current_user_email, finished=false }) {
 
   const handleEditButton = () => {
     manageItemID(index)
@@ -134,10 +134,10 @@ export default function ItemCard({ token, index, item, manageItemID, finished=fa
               
               </Typography>
               <Typography level="title-md">
-                <SeeItemDetail token={token} item={item} />
+                <SeeItemDetail token={token} item={item} current_user_email={current_user_email} />
               </Typography>
             </div>
-            {!window.location.href.includes('myposts') ? 
+            {!window.location.href.includes(current_user_email) ? 
               <UserInfoChip token={token} email={item.owner_email} name={item.username}/>
               :
               <Stack direction="column">
@@ -145,7 +145,7 @@ export default function ItemCard({ token, index, item, manageItemID, finished=fa
                   variant="plain"
                   size="sm"
                   color={"primary"}
-                  onClick={handleEditButton}
+                  // onClick={handleEditButton}
                   sx={{
                     borderRadius: "50%"
                   }}
