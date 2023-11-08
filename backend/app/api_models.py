@@ -150,6 +150,10 @@ search_items_model = api.model('search_items_data', {
         'change': fields.Boolean(example=False)
 })
 
+get_item_by_id_model = api.model('get_item_by_id_data', {
+        'item_id': fields.String(example='1')
+})
+
 search_items_by_category_model = api.model('search_items_by_category_data',{
       'class1': fields.String(example='Coles'),
       'class2': fields.String(example='Disney cards'),

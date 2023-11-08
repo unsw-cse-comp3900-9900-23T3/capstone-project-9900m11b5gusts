@@ -54,6 +54,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     topic_id = db.Column(db.Integer, db.ForeignKey('tb_topic.id'))
     comment = db.Column(db.String(1000), default='This is the comment')
+    email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
 
 class Item(db.Model):
     __tablename__ = 'tb_item'
@@ -440,7 +441,6 @@ def update_personal_item(email, **kwargs):
 def delete_personal_item(email, **kwargs):
     personal_item = Item.query.filter_by(
         email=email, id=int(kwargs['item_id'])).first()
-    print(personal_item)
     if personal_item:
         db.session.delete(personal_item)
         db.session.commit()
@@ -490,16 +490,48 @@ def purchase_request(email, **kwargs):
     # else:
     #     return {'result': False, 'info': 'this item is selling out'}
 
+def get_item_by_id(item_id):
+    item = Item.query.filter_by(id=item_id).first()
+    if item:
+        item_dict = {}
+        user = User.query.filter_by(email=item.email).first()
+        user_name = user.username
+        item_dict[item.id] = {
+            'owner_email': item.email,
+            'username': user_name,
+            'item_id': item.id,
+            'item_name': item.item_name,
+            'image': item.image,
+            'item_price': str(item.item_price),
+            'item_num': str(item.item_num),
+            'item_desc': item.item_desc,
+            'trading_method': item.trading_method,
+            'exchange_item': item.exchange_item,
+            'change': str(item.change),
+            'class1': item.class1,
+            'class2': item.class2,
+            'class3': item.class3,
+            # 将日期时间转换为字符串格式
+            'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        return {'result': True, 'info': item_dict}
+    else:
+        return {'result': True, 'info': {}}
+
 def selling_history(email):
     seller_history = Purchase.query.filter_by(seller_email=email).all()
     if seller_history:
         history = {}
         for h in seller_history:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
+                'buyer_name': buyer_name,
                 'seller_email': h.seller_email,
+                'seller_name': seller_name,
                 'purchase_amount': h.purchase_amount,
                 'status': h.status,
                 'finished': h.finished,
@@ -515,11 +547,15 @@ def buying_history(email):
     if buyer_history:
         history = {}
         for h in buyer_history:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
+                'buyer_name': buyer_name,
                 'seller_email': h.seller_email,
+                'seller_name': seller_name,
                 'purchase_amount': h.purchase_amount,
                 'status': h.status,
                 'finished': h.finished,
@@ -539,11 +575,15 @@ def buyer_process_request(email):
     if buyer_process_histories:
         history = {}
         for h in buyer_process_histories:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
+                'buyer_name': buyer_name,
                 'seller_email': h.seller_email,
+                'seller_name': seller_name,
                 'purchase_amount': h.purchase_amount,
                 'status': h.status,
                 'finished': h.finished,
@@ -559,11 +599,15 @@ def seller_process_request(email):
     if seller_process_histories:
         history = {}
         for h in seller_process_histories:
+            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
                 "item_id": h.item_id,
                 "item_name": h.item_name,
                 "buyer_email": h.buyer_email,
+                "buyer_name": buyer_name,
                 "seller_email": h.seller_email,
+                "seller_name": seller_name,
                 "purchase_amount": h.purchase_amount,
                 "status": h.status,
                 "finished": h.finished,
@@ -1001,9 +1045,18 @@ def delete_activity(email, **kwargs):
         activity_name=activity_name, category=category).first()
     email = get_jwt_identity()
     identity = get_user_identity(email)
-    if activity.email != email and identity != "administrator":
-        return {'result': False, 'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
     if activity:
+        if activity.email != email and identity != "administrator":
+            return {'result': False,
+                    'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
+        topics = Topic.query.filter_by(activity_id = activity.id).all()
+        if topics:
+            for topic in topics:
+                comments = Comment.query.filter_by(topic_id=topic.id).all()
+                if comments:
+                    for comment in comments:
+                        db.session.delete(comment)
+                db.session.delete(topic)
         db.session.delete(activity)
         db.session.commit()
         return {'result': True, 'info': 'delete success'}
@@ -1179,6 +1232,10 @@ def delete_topic(email,identity,**kwargs):
             id=topicId).first()
         topic_email = topic.email
         if topic_email == email or identity == "manager" or identity == "administrator":
+            comments = Comment.query.filter_by(topic_id=topicId).all()
+            if comments:
+                for comment in comments:
+                    db.session.delete(comment)
             db.session.delete(topic)
             db.session.commit()
             return {'result': True, 'info': f'Delete topic success'}
@@ -1191,9 +1248,65 @@ def comment_topic(email,**kwargs):
     topicId = kwargs['topicId']
     comment = kwargs['comment']
     try:
-        comment = Comment(topic_id=topicId, comment=comment)
+        comment = Comment(topic_id=topicId, comment=comment,email=email)
         db.session.add(comment)
         db.session.commit()
-        return {'result': True, 'info': 'Create the comment successfully'}
+        return {'result': True, 'info': 'Create the comment successfully','commentId':comment.id}
     except Exception as e:
         return {'result': False, 'info': f'Failed to create the topic'}
+
+def show_topic_detail(activity_id,page,page_size):
+    offset = (page - 1) * page_size
+
+    try:
+        activity = Activity.query.filter_by(id=activity_id).first()
+        activity_dict = {}
+        if activity:
+            topics_infor = Topic.query.filter_by(activity_id=activity.id)
+            total_rows = topics_infor.count()
+            topics = topics_infor.offset(offset).limit(page_size).all()
+            if topics:
+                comment_dict = {}
+                for topic in topics:
+                    topic_publisher = User.query.filter_by(email=topic.email).first()
+                    comments = Comment.query.filter_by(topic_id=topic.id).all()
+                    if comments:
+                        comments_infor = []
+                        for comment in comments:
+                            comment_user = User.query.filter_by(email=comment.email).first()
+                            inner_comment = {
+                                'id':comment.id,
+                                'email':comment.email,
+                                'avatar': comment_user.image,
+                                'comment':comment.comment
+                            }
+                            comments_infor.append(inner_comment)
+                        comment_dict[topic.id]=comments_infor
+
+                    activity_dict[topic.id] = {
+                        'email': topic.email,
+                        'user_avatar': topic_publisher.image,
+                        'detail':topic.detail,
+                        'image':topic.image,
+                        'comments':comment_dict[topic.id]
+                    }
+
+        return {'result': True, 'info': {'total_rows': total_rows, 'topic': activity_dict}}
+    except Exception as e:
+        return {'result': False, 'info': {'total_rows': 0}}
+
+def delete_comment(email,comment_id):
+    #Only users who comment, topic owner, manager owner and administrator can delete the comment
+    comment = Comment.query.filter_by(id=comment_id).first()
+    if comment :
+        topic = Topic.query.filter_by(id=comment.topic_id).first()
+        activity = Activity.query.filter_by(id=topic.activity_id).first()
+        user = User.query.filter_by(email=email).first()
+        if email != comment.email and email != topic.email and email != activity.email and user.identity != "manager" and user.identity != "administrator":
+            return {'result': False, 'info': "You don't have the privilege to delete the comment!"}
+    try:
+        db.session.delete(comment)
+        db.session.commit()
+        return {'result': True, 'info': f'Delete comment success'}
+    except Exception as e:
+        return {'result': False, 'info': f'Fail to delete the comment'}
