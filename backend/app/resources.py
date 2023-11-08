@@ -15,7 +15,7 @@ from .models import user_register, user_login, get_profile, update_profile, inse
     update_wish_list, delete_wish_list, check_wish_item, purchase_request, \
     create_topic, update_topic, delete_topic, comment_topic, buying_history, \
     buyer_process_request, seller_process_request, selling_history, handle_purchase_request, \
-    get_item_by_id
+    get_item_by_id, show_topic_detail, delete_comment
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
@@ -635,6 +635,37 @@ class CommentTopic(Resource):
         email = get_jwt_identity()
         result = comment_topic(email,**args)
         if result['result']:
+            return {'success': result['info'],'commentId':result['commentId']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+@Topic.route('/topicDetail/<int:activity_id>/<int:page>/<int:pagesize>')
+class TopicDetail(Resource):
+    @Topic.doc(description='Show all the information including topics and comments under the activity')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    def post(self, activity_id,page,pagesize):
+        email = get_jwt_identity()
+
+        result = show_topic_detail(activity_id,page,pagesize)
+        if result['result']:
+            return {'success': result['info']['topic'],'total_rows': result['info']['total_rows']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+@Topic.route('/deleteComment/<int:comment_id>')
+class CommentDelete(Resource):
+    @Topic.doc(description='Can delete comment')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect()
+    def delete(self,comment_id):
+        email = get_jwt_identity()
+
+        result = delete_comment(email,comment_id)
+        if result['result']:
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
+
+
