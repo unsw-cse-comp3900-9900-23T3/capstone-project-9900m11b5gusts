@@ -41,6 +41,7 @@ class Activity(db.Model):
     image = db.Column(db.String(1000), default='image of activity')
     email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
 
+
 class Topic(db.Model):
     __tablename__ = 'tb_topic'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -49,12 +50,14 @@ class Topic(db.Model):
     image = db.Column(db.String(1000), default='image of activity')
     detail = db.Column(db.String(1000), default='detail')
 
+
 class Comment(db.Model):
     __tablename__ = 'tb_comment'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     topic_id = db.Column(db.Integer, db.ForeignKey('tb_topic.id'))
     comment = db.Column(db.String(1000), default='This is the comment')
     email = db.Column(db.Integer, db.ForeignKey('tb_user.email'))
+
 
 class Item(db.Model):
     __tablename__ = 'tb_item'
@@ -81,8 +84,10 @@ class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     item_id = db.Column(db.Integer, db.ForeignKey('tb_item.id'), index=True)
     item_name = db.Column(db.String(30))
-    buyer_email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
-    seller_email = db.Column(db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    buyer_email = db.Column(
+        db.String(30), db.ForeignKey('tb_user.email'), index=True)
+    seller_email = db.Column(
+        db.String(30), db.ForeignKey('tb_user.email'), index=True)
     purchase_amount = db.Column(db.Integer, default=0)
     status = db.Column(db.String(30), default="processing")
     finished = db.Column(db.Boolean, default=False)
@@ -353,7 +358,8 @@ def insert_item(email, **kwargs):
     input_class3 = kwargs['class3']
     input_method = kwargs['trading_method']
     input_change = kwargs['change']
-    input_exchange_item = kwargs['exchange_item']  # if kwargs['trading_method'] != 'cash' else ''
+    # if kwargs['trading_method'] != 'cash' else ''
+    input_exchange_item = kwargs['exchange_item']
     try:
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
@@ -397,6 +403,8 @@ def get_personal_item(email):
         return {'result': True, 'info': 'no item'}
 
 # 修改的数量是哪一个？是剩余数量，还是卖出的数量，还是剩余数量+卖出的数量？
+
+
 def update_personal_item(email, **kwargs):
     personal_item = Item.query.filter_by(
         email=email, id=int(kwargs['item_id'])).first()
@@ -490,6 +498,7 @@ def purchase_request(email, **kwargs):
     # else:
     #     return {'result': False, 'info': 'this item is selling out'}
 
+
 def get_item_by_id(item_id):
     item = Item.query.filter_by(id=item_id).first()
     if item:
@@ -518,13 +527,16 @@ def get_item_by_id(item_id):
     else:
         return {'result': True, 'info': {}}
 
+
 def selling_history(email):
     seller_history = Purchase.query.filter_by(seller_email=email).all()
     if seller_history:
         history = {}
         for h in seller_history:
-            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
-            seller_name = User.query.filter_by(email=h.seller_email).first().username
+            buyer_name = User.query.filter_by(
+                email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(
+                email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
@@ -547,8 +559,10 @@ def buying_history(email):
     if buyer_history:
         history = {}
         for h in buyer_history:
-            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
-            seller_name = User.query.filter_by(email=h.seller_email).first().username
+            buyer_name = User.query.filter_by(
+                email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(
+                email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
@@ -571,12 +585,15 @@ def buying_history(email):
 
 
 def buyer_process_request(email):
-    buyer_process_histories = Purchase.query.filter_by(buyer_email=email, status='processing').all()
+    buyer_process_histories = Purchase.query.filter_by(
+        buyer_email=email, status='processing').all()
     if buyer_process_histories:
         history = {}
         for h in buyer_process_histories:
-            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
-            seller_name = User.query.filter_by(email=h.seller_email).first().username
+            buyer_name = User.query.filter_by(
+                email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(
+                email=h.seller_email).first().username
             history[h.id] = {
                 'item_id': h.item_id,
                 'item_name': h.item_name,
@@ -595,12 +612,15 @@ def buyer_process_request(email):
 
 
 def seller_process_request(email):
-    seller_process_histories = Purchase.query.filter_by(seller_email=email, status='processing').all()
+    seller_process_histories = Purchase.query.filter_by(
+        seller_email=email, status='processing').all()
     if seller_process_histories:
         history = {}
         for h in seller_process_histories:
-            buyer_name = User.query.filter_by(email=h.buyer_email).first().username
-            seller_name = User.query.filter_by(email=h.seller_email).first().username
+            buyer_name = User.query.filter_by(
+                email=h.buyer_email).first().username
+            seller_name = User.query.filter_by(
+                email=h.seller_email).first().username
             history[h.id] = {
                 "item_id": h.item_id,
                 "item_name": h.item_name,
@@ -643,10 +663,13 @@ def seller_process_request(email):
 #             return {'result': False, 'info': ''}
 #     else:
 #         return {'result': False, 'info': 'No new message'}
+
+
 def handle_purchase_request(email, **kwargs):
     item_id = int(kwargs['item_id'])
     action = kwargs['action']
-    item_request = Purchase.query.filter_by(seller_email=email, item_id=item_id).first()
+    item_request = Purchase.query.filter_by(
+        seller_email=email, item_id=item_id).first()
     if item_request:
         if action:
             # 同意购买物品
@@ -702,6 +725,7 @@ def handle_purchase_request(email, **kwargs):
 #
 #     else:
 #         return {'result': False, 'info': ''}
+
 
 @time_test
 def search_item(page, **kwargs):
@@ -868,7 +892,8 @@ def update_wish_list(email, **kwargs):
     input_change = kwargs['change']
     input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
     try:
-        wish_list_item = WishItem.query.filter_by(email=email, id=input_id).first()
+        wish_list_item = WishItem.query.filter_by(
+            email=email, id=input_id).first()
         if input_item_image:
             wish_list_item.image = input_item_image
         if input_item_name:
@@ -900,7 +925,8 @@ def update_wish_list(email, **kwargs):
 
 def delete_wish_list(email, **kwargs):
     input_id = kwargs['item_id']
-    wish_list_item = WishItem.query.filter_by(email=email, id=int(input_id)).first()
+    wish_list_item = WishItem.query.filter_by(
+        email=email, id=int(input_id)).first()
     if wish_list_item:
         db.session.delete(wish_list_item)
         db.session.commit()
@@ -935,7 +961,8 @@ def check_wish_item(email):
                     'class1': wish_item.class1,
                     'class2': wish_item.class2,
                     'class3': wish_item.class3,
-                    'time_stamp': wish_item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')  # 将日期时间转换为字符串格式
+                    # 将日期时间转换为字符串格式
+                    'time_stamp': wish_item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                 }
             return {'result': True, 'info': item_dict}
         else:
@@ -1049,7 +1076,7 @@ def delete_activity(email, **kwargs):
         if activity.email != email and identity != "administrator":
             return {'result': False,
                     'info': 'You don\'t have the permission to delete the activity which is not created by you!'}
-        topics = Topic.query.filter_by(activity_id = activity.id).all()
+        topics = Topic.query.filter_by(activity_id=activity.id).all()
         if topics:
             for topic in topics:
                 comments = Comment.query.filter_by(topic_id=topic.id).all()
@@ -1094,7 +1121,8 @@ def update_activity(email, **kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update activity'}
 
-def show_activities_infor(page,page_size):
+
+def show_activities_infor(page, page_size):
     activity_infor = Activity.query.filter()
     # page_size = 10
     offset = (page - 1) * page_size
@@ -1114,8 +1142,10 @@ def show_activities_infor(page,page_size):
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
-        return {'result': True, 'info': {'activities':'','total_rows':0}}
-def show_user_identity(page,page_size):
+        return {'result': True, 'info': {'activities': '', 'total_rows': 0}}
+
+
+def show_user_identity(page, page_size):
     user_infor = User.query.filter()
     # page_size = 10
     offset = (page - 1) * page_size
@@ -1132,7 +1162,7 @@ def show_user_identity(page,page_size):
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'users': r}}
     else:
-        return {'result': True, 'info': {'users':'','total_rows':0}}
+        return {'result': True, 'info': {'users': '', 'total_rows': 0}}
 
 
 def delete_user(**kwargs):
@@ -1195,20 +1225,23 @@ def approve_activity(**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to approve the activity'}
 
-def create_topic(email,**kwargs):
+
+def create_topic(email, **kwargs):
     try:
         activityId = kwargs['activityId']
         detail = kwargs['detail']
         image = kwargs['image']
-        topic = Topic(activity_id=activityId,email=email, detail=detail, image=image)
+        topic = Topic(activity_id=activityId, email=email,
+                      detail=detail, image=image)
         db.session.add(topic)
         db.session.commit()
         topicId = topic.id
-        return {'result': True, 'info': 'Create the topic successfully','topicId':topicId}
+        return {'result': True, 'info': 'Create the topic successfully', 'topicId': topicId}
     except Exception as e:
         return {'result': False, 'info': f'Failed to create the topic'}
 
-def update_topic(email,**kwargs):
+
+def update_topic(email, **kwargs):
     # topic update
     topicId = kwargs['topicId']
     detail = kwargs['detail']
@@ -1225,7 +1258,8 @@ def update_topic(email,**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update topic'}
 
-def delete_topic(email,identity,**kwargs):
+
+def delete_topic(email, identity, **kwargs):
     topicId = kwargs['topicId']
     try:
         topic = Topic.query.filter_by(
@@ -1244,18 +1278,20 @@ def delete_topic(email,identity,**kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to delete topic'}
 
-def comment_topic(email,**kwargs):
+
+def comment_topic(email, **kwargs):
     topicId = kwargs['topicId']
     comment = kwargs['comment']
     try:
-        comment = Comment(topic_id=topicId, comment=comment,email=email)
+        comment = Comment(topic_id=topicId, comment=comment, email=email)
         db.session.add(comment)
         db.session.commit()
-        return {'result': True, 'info': 'Create the comment successfully','commentId':comment.id}
+        return {'result': True, 'info': 'Create the comment successfully', 'commentId': comment.id}
     except Exception as e:
         return {'result': False, 'info': f'Failed to create the topic'}
 
-def show_topic_detail(activity_id,page,page_size):
+
+def show_topic_detail(activity_id, page, page_size):
     offset = (page - 1) * page_size
 
     try:
@@ -1268,37 +1304,40 @@ def show_topic_detail(activity_id,page,page_size):
             if topics:
                 comment_dict = {}
                 for topic in topics:
-                    topic_publisher = User.query.filter_by(email=topic.email).first()
+                    topic_publisher = User.query.filter_by(
+                        email=topic.email).first()
                     comments = Comment.query.filter_by(topic_id=topic.id).all()
                     if comments:
                         comments_infor = []
                         for comment in comments:
-                            comment_user = User.query.filter_by(email=comment.email).first()
+                            comment_user = User.query.filter_by(
+                                email=comment.email).first()
                             inner_comment = {
-                                'id':comment.id,
-                                'email':comment.email,
+                                'id': comment.id,
+                                'email': comment.email,
                                 'avatar': comment_user.image,
-                                'comment':comment.comment
+                                'comment': comment.comment
                             }
                             comments_infor.append(inner_comment)
-                        comment_dict[topic.id]=comments_infor
+                        comment_dict[topic.id] = comments_infor
 
                     activity_dict[topic.id] = {
                         'email': topic.email,
                         'user_avatar': topic_publisher.image,
-                        'detail':topic.detail,
-                        'image':topic.image,
-                        'comments':comment_dict[topic.id]
+                        'detail': topic.detail,
+                        'image': topic.image,
+                        'comments': comment_dict[topic.id]
                     }
 
         return {'result': True, 'info': {'total_rows': total_rows, 'topic': activity_dict}}
     except Exception as e:
         return {'result': False, 'info': {'total_rows': 0}}
 
-def delete_comment(email,comment_id):
-    #Only users who comment, topic owner, manager owner and administrator can delete the comment
+
+def delete_comment(email, comment_id):
+    # Only users who comment, topic owner, manager owner and administrator can delete the comment
     comment = Comment.query.filter_by(id=comment_id).first()
-    if comment :
+    if comment:
         topic = Topic.query.filter_by(id=comment.topic_id).first()
         activity = Activity.query.filter_by(id=topic.activity_id).first()
         user = User.query.filter_by(email=email).first()

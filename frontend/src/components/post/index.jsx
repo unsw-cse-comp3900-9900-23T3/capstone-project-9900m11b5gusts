@@ -29,6 +29,9 @@ import img from '../../assets/GuiyangMoon.jpg'
 import styles from './index.module.css';
 import { useNavigate } from 'react-router-dom';
 
+
+import UploadImage from './UploadImage'
+
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -52,42 +55,66 @@ const style = {
     p: 4,
 };
 
+const baseUrl = "http://127.0.0.1:5000/";
+
+const urls = {
+  postTopic: baseUrl + "Topic/createTopic",
+}
 
 
 export default function Posts() {
-   const navigate = useNavigate();
-    const [expanded, setExpanded] = React.useState(false);
-    const [listData, setListData] = React.useState([{ id: 1, name: "zhangsan", open: false, children: [{ id: 4, name: "lisi", open: false, children: [] }] }, { id: 2, name: "zhangsan1", open: false, children: [{ id: 5, name: "lisi1", open: false, children: [] }] }, { id: 3, open: false, name: "zhangsan3", children: [] }]);
 
-    const [dense, setDense] = React.useState(false);
-    const [secondary, setSecondary] = React.useState(false);
+    const token = localStorage.getItem("token");
+    const navigate = useNavigate();
     const [openModal, setOpenModal] = React.useState(false);
+    const [imgUrlArr, setImgUrlArr] = React.useState([]);
+    const [addDetail, setAddDetail] = React.useState('');
+    
+    const [listData, setListData] = React.useState([{
+            "activityId": "2",
+            "detail": "Happy to help with cards your missing but you will need to send a returned stamped envelope.Or lm located in Berwick.Woolworths cards heaps off and about 15 to card of the Coles",
+        }
+    ]);
 
-    const handleClose = () => setOpenModal(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
-    const handleClick = (item) => {
-
-
-    };
-    const clickMore = (item) => {
-        setOpenModal(true)
+    const handleClose = () => {
+        setAddDetail('')
+        setImgUrlArr([])
+        setOpenModal(false)
     }
-    const deleteClick = () => {
-        
-    }
+
     const addPost = () => {
         setOpenModal(true)
     }
     const savePost = () => {
+        
+        postTopicApi()
+        
         setOpenModal(false)
+
     }
     const goComments = () => {
         navigate("/comments")
     }
+
+
+    const postTopicApi = async () => {
+        const res = await fetch(urls.postTopic, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(
+                {
+                    "activityId": "2",
+                    "detail": addDetail,
+                    'image': ''
+                }
+            )
+        })
+        const { success, total } = await res.json();
+    }
+
 
     return (
         <div className={styles.outerBox}>
@@ -130,44 +157,24 @@ export default function Posts() {
 
 
              {
-                [1,2,3,4,5,6,9,8,9].map(item=> <Card onClick={goComments} className={styles.marginBtn}>
+                listData.map(item=> <Card onClick={goComments} className={styles.marginBtn}>
                         <CardContent style={{backgroundColor:'aliceblue'}}>
-                        <Typography  variant="body2" color="text.secondary">
-                            <h3>{ item}</h3>
-                            This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like.
+                        <Typography variant="body2" color="text.secondary">
+                            <div className={styles.imgbox}>
+                                <div className={styles.imgItem}><img src={img} alt="" /></div>
+                                <div className={styles.imgItem}><img src={img} alt="" /></div>
+                                <div className={styles.imgItem}><img src={img} alt="" /></div>
+                                <div className={styles.imgItem}><img src={img} alt="" /></div>
+                            </div>
+                            {item.detail}
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing style={{ justifyContent: "center"}}>
                         <IconButton aria-label="show chats">
                             <ChatIcon style={{ color:"rgb(8 98 246 / 77%)"}} />
                         </IconButton>
-                        {/* <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                        </IconButton>
-                        <IconButton aria-label="share">
-                        <ShareIcon />
-                        </IconButton>
-                        <ExpandMore
-                        expand={expanded}
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                        >
-                        <ExpandMoreIcon />
-                        </ExpandMore> */}
-
                     </CardActions>
-                </Card>)
-                    
-                   
+                </Card>)      
             }
             
 
@@ -177,9 +184,19 @@ export default function Posts() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
-                    <List>
-                        <Input style={{width: '100%'}} multiline placeholder="please add your views" ></Input>
+                    <Box sx={style} style={{overflow:"scroll",maxHeight:"80vh"}}>
+                    <List >
+                        {
+                            imgUrlArr.map((e, idx) => {
+                                console.log(idx)
+                                return <UploadImage setImgUrl={setImgUrlArr} imgUrl={ imgUrlArr } idx={idx} />
+                            })
+                        }
+                        <UploadImage setImgUrl={setImgUrlArr} imgUrl={imgUrlArr} idx={imgUrlArr.length}/>
+                        <Input style={{ width: '100%' }}
+                            multiline placeholder="please add your views" onChange={(e) => {
+                                setAddDetail(e.target.value)
+                            }}></Input>
                       
                         <div style={{display: 'flex', justifyContent: 'space-evenly', paddingTop: '2rem'}}>
                         <Button variant="contained" size="medium" onClick={savePost}>ok</Button>

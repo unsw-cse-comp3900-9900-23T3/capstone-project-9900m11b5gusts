@@ -21,6 +21,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 // assets
 import styles from "./mainPage.module.css"
+
 const baseUrl = "http://127.0.0.1:5000/";
 const urls = {
   createActivity: baseUrl + "Activity/createActivity",
@@ -29,9 +30,6 @@ const urls = {
   showActivity: baseUrl + "Activity/showActivity/",
   editActivity: baseUrl + "Activity/editActivity",
 }
-
-
-
 
 export default function MainPage() {
   const token = localStorage.getItem("token");

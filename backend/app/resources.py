@@ -257,6 +257,7 @@ class PurchaseItem(Resource):
         else:
             return {'error': result['info']}, 400
 
+
 @Item.route('/getItemById')
 class GetItemById(Resource):
     @Item.doc(description="get item info by item_id")
@@ -266,6 +267,7 @@ class GetItemById(Resource):
         item_id = args['item_id']
         result = get_item_by_id(item_id)
         return {'success': result['info']}
+
 
 @Item.route('/getSellingHistory')
 class GetSellingHistory(Resource):
@@ -576,6 +578,7 @@ class ApproveActivity(Resource):
 
 Topic = Namespace('Topic', authorizations=authorizations)
 
+
 @Topic.route('/createTopic')
 class CreateTopic(Resource):
     @Topic.doc(description='User can create topics under the activity')
@@ -583,14 +586,16 @@ class CreateTopic(Resource):
     @jwt_required()
     @Topic.expect(create_topic_model)
     def post(self):
+        print(1111111111111111111111111111111111111111111111)
         args = Topic.payload
         email = get_jwt_identity()
-        result = create_topic(email,**args)
+        result = create_topic(email, **args)
 
         if result['result']:
-            return {'success': result['info'],'topicId':result['topicId']}, 200
+            return {'success': result['info'], 'topicId': result['topicId']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Topic.route('/editTopic')
 class EditTopic(Resource):
@@ -602,11 +607,12 @@ class EditTopic(Resource):
     def post(self):
         args = Topic.payload
         email = get_jwt_identity()
-        update_topic_result = update_topic(email,**args)
+        update_topic_result = update_topic(email, **args)
         if update_topic_result['result']:
             return {'success': update_topic_result['info']}, 200
         else:
             return {'error': update_topic_result['info']}, 400
+
 
 @Topic.route('/deleteTopic')
 class DeleteTopic(Resource):
@@ -618,11 +624,12 @@ class DeleteTopic(Resource):
         args = Admin.payload
         email = get_jwt_identity()
         identity = get_user_identity(email)
-        result = delete_topic(email,identity,**args)
+        result = delete_topic(email, identity, **args)
         if result['result']:
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Topic.route('/commentTopic')
 class CommentTopic(Resource):
@@ -633,25 +640,27 @@ class CommentTopic(Resource):
     def post(self):
         args = Admin.payload
         email = get_jwt_identity()
-        result = comment_topic(email,**args)
+        result = comment_topic(email, **args)
         if result['result']:
-            return {'success': result['info'],'commentId':result['commentId']}, 200
+            return {'success': result['info'], 'commentId': result['commentId']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Topic.route('/topicDetail/<int:activity_id>/<int:page>/<int:pagesize>')
 class TopicDetail(Resource):
     @Topic.doc(description='Show all the information including topics and comments under the activity')
     @Topic.doc(security='jsonWebToken')
     @jwt_required()
-    def post(self, activity_id,page,pagesize):
+    def post(self, activity_id, page, pagesize):
         email = get_jwt_identity()
 
-        result = show_topic_detail(activity_id,page,pagesize)
+        result = show_topic_detail(activity_id, page, pagesize)
         if result['result']:
-            return {'success': result['info']['topic'],'total_rows': result['info']['total_rows']}, 200
+            return {'success': result['info']['topic'], 'total_rows': result['info']['total_rows']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Topic.route('/deleteComment/<int:comment_id>')
 class CommentDelete(Resource):
@@ -659,13 +668,11 @@ class CommentDelete(Resource):
     @Topic.doc(security='jsonWebToken')
     @jwt_required()
     @Topic.expect()
-    def delete(self,comment_id):
+    def delete(self, comment_id):
         email = get_jwt_identity()
 
-        result = delete_comment(email,comment_id)
+        result = delete_comment(email, comment_id)
         if result['result']:
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
-
-
