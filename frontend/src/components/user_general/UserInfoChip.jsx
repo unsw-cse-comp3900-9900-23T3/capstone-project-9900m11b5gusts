@@ -24,13 +24,13 @@ export default function UserInfoChip({ token, email, name }) {
 
 	const handleChipClick = () => {
 		// console.log(token, email)
-		// fetchUserInfoByEmail()
+		fetchUserInfoByEmail()
 		setOpen(true)
 	}
 
-	React.useEffect(() => {
-		fetchUserInfoByEmail()
-	},[])
+	// React.useEffect(() => {
+	// 	fetchUserInfoByEmail()
+	// },[])
 
 
 	function handleSeePosts() {

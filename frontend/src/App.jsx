@@ -50,6 +50,8 @@ import EditItemPage from './components/user_personal/EditItemPage';
 import MarketHomePage from './components/user_market/MarketHomePage';
 import WishListPage from './components/user_personal/WishListPage';
 import Posts from './components/user_personal/Posts';
+import MessagePage from './components/user_market/MessagePage';
+
 
 export default function App() {
 	const [token, setToken] = React.useState(null)
@@ -161,6 +163,7 @@ export default function App() {
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
 										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
 										<Route path="/user_compaigns" element={<UserCompaignMainPage />} token={token} />
+										<Route path="/message" element={<MessagePage token={token} />} />
 										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
 										<Route path="/comments" element={<Comments />} />

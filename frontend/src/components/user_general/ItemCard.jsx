@@ -145,7 +145,7 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
                   variant="plain"
                   size="sm"
                   color={"primary"}
-                  // onClick={handleEditButton}
+                  onClick={handleEditButton}
                   sx={{
                     borderRadius: "50%"
                   }}
@@ -156,7 +156,6 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
                   variant="plain"
                   size="sm"
                   color={"danger"}
-                  // onClick={handleEditButton}
                   sx={{
                     borderRadius: "50%"
                   }}

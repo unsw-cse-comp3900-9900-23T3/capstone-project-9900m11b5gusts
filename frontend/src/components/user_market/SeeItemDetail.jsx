@@ -21,40 +21,11 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import Chip from '@mui/joy/Chip';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import UserInfoChip from '../user_general/UserInfoChip';
+import BuyNowButton from './BuyNowButton';
 
 
 export default function SeeItemDetail({ token, item, current_user_email }) {
   const [layout, setLayout] = React.useState(undefined);
-
-  const handleBuyNowButton = () => {
-    const isConfirmed = window.confirm("Please contact the seller before purchase.\nAre you sure you want to buy it? ");
-
-    if (isConfirmed) {
-      buyingRequest()
-    }
-  }
-
-  async function buyingRequest () {
-    const response = await fetch('http://127.0.0.1:5000/Items/purchaseItem', {
-      method:'POST',
-      headers:{
-        'Content-type': 'application/json',
-        'Authorization' : `Bearer ${token}`,
-      },
-      body:JSON.stringify({
-        "item_id": item.item_id,
-        "purchase_amount": item.item_num
-      })
-    });
-    if (response.status===200){
-      alert('Transaction request has been sent to the seller. ')
-      window.location.href='/market'
-    }else{
-      const data = await response.json();
-      console.log(data)
-      alert('error: ', data.error)
-    }
-  }
 
 
   return (
@@ -149,13 +120,9 @@ export default function SeeItemDetail({ token, item, current_user_email }) {
 
           {item.owner_email !== current_user_email &&
             <CardOverflow>
-              <Button variant="solid" color="primary" size="lg"
-                onClick={handleBuyNowButton}
-              >
-                      Buy now
-              </Button>
+              <BuyNowButton token={token} item={item} />
             </CardOverflow>
-
+          
           }
 
 
