@@ -490,6 +490,7 @@ def purchase_request(email, **kwargs):
     # else:
     #     return {'result': False, 'info': 'this item is selling out'}
 
+
 def get_item_by_id(item_id):
     item = Item.query.filter_by(id=item_id).first()
     if item:
@@ -518,6 +519,7 @@ def get_item_by_id(item_id):
     else:
         return {'result': True, 'info': {}}
 
+
 def selling_history(email):
     seller_history = Purchase.query.filter_by(seller_email=email).all()
     if seller_history:
@@ -526,6 +528,7 @@ def selling_history(email):
             buyer_name = User.query.filter_by(email=h.buyer_email).first().username
             seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
+                "history_id": h.id,
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
@@ -550,6 +553,7 @@ def buying_history(email):
             buyer_name = User.query.filter_by(email=h.buyer_email).first().username
             seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
+                "history_id": h.id,
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
@@ -578,6 +582,7 @@ def buyer_process_request(email):
             buyer_name = User.query.filter_by(email=h.buyer_email).first().username
             seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
+                "history_id": h.id,
                 'item_id': h.item_id,
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
@@ -602,6 +607,7 @@ def seller_process_request(email):
             buyer_name = User.query.filter_by(email=h.buyer_email).first().username
             seller_name = User.query.filter_by(email=h.seller_email).first().username
             history[h.id] = {
+                "history_id": h.id,
                 "item_id": h.item_id,
                 "item_name": h.item_name,
                 "buyer_email": h.buyer_email,
@@ -644,10 +650,11 @@ def seller_process_request(email):
 #     else:
 #         return {'result': False, 'info': 'No new message'}
 def handle_purchase_request(email, **kwargs):
-    item_id = int(kwargs['item_id'])
+    history_id = int(kwargs['history_id'])
     action = kwargs['action']
-    item_request = Purchase.query.filter_by(seller_email=email, item_id=item_id).first()
+    item_request = Purchase.query.filter_by(seller_email=email, id=history_id).first()
     if item_request:
+        item_id = int(item_request.item_id)
         if action:
             # 同意购买物品
             item_request.finished = True

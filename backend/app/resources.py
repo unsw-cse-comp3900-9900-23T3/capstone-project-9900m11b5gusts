@@ -257,6 +257,7 @@ class PurchaseItem(Resource):
         else:
             return {'error': result['info']}, 400
 
+
 @Item.route('/getItemById')
 class GetItemById(Resource):
     @Item.doc(description="get item info by item_id")
@@ -266,6 +267,7 @@ class GetItemById(Resource):
         item_id = args['item_id']
         result = get_item_by_id(item_id)
         return {'success': result['info']}
+
 
 @Item.route('/getSellingHistory')
 class GetSellingHistory(Resource):

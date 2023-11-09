@@ -132,7 +132,7 @@ purchase_item_model = api.model('purchase_item_data', {
 
 
 purchase_request_model = api.model('purchase_request', {
-        'item_id': fields.String(example='1'),
+        'history_id': fields.String(example='1'),
         'action': fields.Boolean(example=True)
 })
 
