@@ -70,14 +70,15 @@ export default function MainPage() {
   })
 
   useEffect(() => {
-    showActivity()
+    // showActivity()
+    searchActivity()
   }, [paginationObj.count])
 
   const handleChange = (v) => {
     setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
     initQueryData()
-    showActivity()
-    // searchActivity()
+    // showActivity()
+    searchActivity()
 
   }
   const initQueryData = () => {
@@ -181,6 +182,7 @@ export default function MainPage() {
 
   const searchActivity = async () => {
     setPaginationObj(Object.assign(paginationObj, { currentPage: 1 }))
+    queryData['category'] = '1'
     const res = await fetch(urls.searchActivity + paginationObj.currentPage, {
       method: 'POST',
       body: JSON.stringify(queryData),
@@ -233,13 +235,6 @@ export default function MainPage() {
             detail:{activityObj.detail}
           </Typography>
         </CardContent>
-        {/* <CardActions>
-          <div className={styles.buttonRight}>
-            <Button size="small" variant="outlined" onClick={() => handleBtnDelClick(activityObj)}>Delete</Button>
-
-            <Button size="small" variant="outlined" onClick={() => handleBtnClick(activityObj)}>Edit</Button>
-          </div>
-        </CardActions> */}
       </Card>
     );
   }
@@ -260,12 +255,6 @@ export default function MainPage() {
           <SearchItem showInfo={{ label: 'Status', type: "status", defaultValue: queryData.status }} />
         </div>
 
-        {/* <div className={styles.btnBox}>
-          <Button variant="outlined" size="medium" onClick={handlerNewClick} >New</Button>
-          <div style={{ padding: '10px' }}></div>
-          <Button variant="outlined" size="medium" onClick={searchActivity}>Search</Button>
-        </div> */}
-
         <div className={styles.MediaCardBox}>
           {
             activityData.map(
@@ -278,7 +267,6 @@ export default function MainPage() {
           }
         </div>
         <div className={styles.paginationBox}>
-          {/* defaultPage={paginationObj.pageSize} */}
           <Pagination count={paginationObj.count} page={paginationObj.currentPage} variant="outlined" color="primary" onChange={changePagination} />
           <Select
             labelId="demo-simple-select-standard-label"
