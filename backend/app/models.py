@@ -672,12 +672,9 @@ def seller_process_request(email):
 def handle_purchase_request(email, **kwargs):
     history_id = int(kwargs['history_id'])
     action = kwargs['action']
-<<<<<<< HEAD
+
     item_request = Purchase.query.filter_by(seller_email=email, id=history_id).first()
-=======
-    item_request = Purchase.query.filter_by(
-        seller_email=email, item_id=item_id).first()
->>>>>>> f4bf8e7da3a9976882f073dd2fd4b11ab7c6f9f6
+
     if item_request:
         item_id = int(item_request.item_id)
         if action:
