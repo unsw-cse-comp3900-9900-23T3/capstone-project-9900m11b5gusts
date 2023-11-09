@@ -51,6 +51,13 @@ insertItem_model = api.model('insertItem_data', {
         'change': fields.Boolean(example=False)
 })
 
+get_buying_history_model = api.model('get_buying_history_data', {
+      'email': fields.String(example="root@qq.com")
+})
+
+get_selling_history_model = api.model('get_selling_history_data', {
+      'email': fields.String(example='root@qq.com')
+})
 
 insert_wishlist_model = api.model('wishlist_data', {
         'item_name': fields.String(example='pen'),
