@@ -26,26 +26,29 @@ export default function MessageCard({ token, index, item, finished=false }) {
 
 	console.log(index, item)
 
-  const handleEditButton = () => {
+  const handleAcceptButton = () => {
+    answerRequest(true)
+    window.location.href='/message'
   }
 
-  const handleDeleteButton = () => {
-    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
-
-    if (isConfirmed) {
-      confirmDelete()
-    }
+  const handleRejectButton = () => {
+    answerRequest(false)
+    window.location.href='/message'
   }
 
-  async function confirmDelete(){
-    const response = await fetch('http://127.0.0.1:5000/Items/deleteItem', {
-      method:'DELETE',
+
+
+  async function answerRequest( answer ){
+    console.log('answering')
+    const response = await fetch('http://127.0.0.1:5000/Items/handlePurchaseRequest', {
+      method:'POST',
       headers:{
         'Content-type': 'application/json',
         'Authorization' : `Bearer ${token}`,
       },
       body:JSON.stringify({
-        // "item_id": item.item_id
+        "item_id": item.item_id,
+        "action": answer
       })
     });
     if (response.status===200){
@@ -74,52 +77,68 @@ export default function MessageCard({ token, index, item, finished=false }) {
         }}
       >
 
-
         <CardContent>
           <Stack
-            spacing={1}
+            spacing={2}
             direction="row"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             alignItems="flex-start"
+            sx={{width: '600px'}}
           >
 
-						Your item 
+            <Typography level="title-lg">
+              <SeeItemDetail token={token} item={item} current_user_email={item.seller_email} />
+            </Typography>
 
-            <div>
-              <Typography level="title-lg">
-                <SeeItemDetail token={token} item={item} current_user_email={item.seller_email} />
-              </Typography>
-            </div>
-
-						has a new exchange request from
-
-						<UserInfoChip token={token} email={item.buyer_email} name={item.buyer_email}/>
-						
-
-            
-
+            <Typography level="title-md">
+              × {item.purchase_amount}
+            </Typography>
             
           </Stack>
-					<Stack direction="row"  sx={{display:'flex', justifyContent:'flex-end'}}>
-						<Button
-							variant="outlined"
-							size="sm"
-							color={"primary"}
-							onClick={handleEditButton}
-							sx={{margin:'5px'}}
-						>
-							<EditNoteIcon />Accept
-						</Button>
-						<Button
-							variant="outlined"
-							size="sm"
-							color={"danger"}
-							onClick={handleDeleteButton}
-							sx={{margin:'5px'}}
-						>
-							<CancelOutlinedIcon />Rejcet
-						</Button>
-					</Stack>
+
+          <br /><br /><br /><br /><br /><br />
+
+          <Stack
+            spacing={2}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{width: '600px'}}
+          >
+            <Typography level="title-md">
+              Received an exchange request from 
+            </Typography>
+            <UserInfoChip token={token} email={item.buyer_email} name={item.buyer_name}/>
+
+
+          </Stack>
+
+
+          <Typography level="title-md">
+            &nbsp;&nbsp;&nbsp;&nbsp;{item.time_stamp}
+          </Typography>
+
+          <Stack direction="row"  sx={{display:'flex', justifyContent:'flex-end'}}>
+            <Button
+              variant="outlined"
+              size="sm"
+              color={"primary"}
+              onClick={handleAcceptButton}
+              sx={{margin:'5px'}}
+            >
+              <EditNoteIcon />Accept
+            </Button>
+            <Button
+              variant="outlined"
+              size="sm"
+              color={"danger"}
+              onClick={handleRejectButton}
+              sx={{margin:'5px'}}
+            >
+              <CancelOutlinedIcon />Rejcet
+            </Button>
+          </Stack>
+
 
         </CardContent>
       </Card>

@@ -51,6 +51,7 @@ import MarketHomePage from './components/user_market/MarketHomePage';
 import WishListPage from './components/user_personal/WishListPage';
 import Posts from './components/user_personal/Posts';
 import MessagePage from './components/user_market/MessagePage';
+import ExchangeHistoryPage from './components/user_market/ExchangeHistoryPage';
 
 
 export default function App() {
@@ -164,6 +165,7 @@ export default function App() {
 										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
 										<Route path="/user_compaigns" element={<UserCompaignMainPage />} token={token} />
 										<Route path="/message" element={<MessagePage token={token} />} />
+										<Route path="/exchangehistory*" element={<ExchangeHistoryPage token={token} />} />
 										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
 										<Route path="/comments" element={<Comments />} />
