@@ -527,6 +527,32 @@ def get_item_by_id(item_id):
     else:
         return {'result': True, 'info': {}}
 
+def get_item(item_id):
+    item = Item.query.filter_by(id=item_id).first()
+    if item:
+        item_dict = {}
+        user = User.query.filter_by(email=item.email).first()
+        user_name = user.username
+        item_dict[item.id] = {
+            'owner_email': item.email,
+            'username': user_name,
+            'item_id': item.id,
+            'item_name': item.item_name,
+            'image': item.image,
+            'item_price': str(item.item_price),
+            'item_num': str(item.item_num),
+            'item_desc': item.item_desc,
+            'trading_method': item.trading_method,
+            'exchange_item': item.exchange_item,
+            'change': str(item.change),
+            'class1': item.class1,
+            'class2': item.class2,
+            'class3': item.class3,
+            # 将日期时间转换为字符串格式
+            'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        return item_dict
+
 
 def selling_history(email):
     seller_history = Purchase.query.filter_by(seller_email=email).all()
@@ -540,6 +566,7 @@ def selling_history(email):
             history[h.id] = {
                 "history_id": h.id,
                 'item_id': h.item_id,
+                'item_detail': get_item(h.item_id),
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
                 'buyer_name': buyer_name,
@@ -567,6 +594,7 @@ def buying_history(email):
             history[h.id] = {
                 "history_id": h.id,
                 'item_id': h.item_id,
+                'item_detail': get_item(h.item_id),
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
                 'buyer_name': buyer_name,
@@ -599,6 +627,7 @@ def buyer_process_request(email):
             history[h.id] = {
                 "history_id": h.id,
                 'item_id': h.item_id,
+                'item_detail': get_item(h.item_id),
                 'item_name': h.item_name,
                 'buyer_email': h.buyer_email,
                 'buyer_name': buyer_name,
@@ -627,6 +656,7 @@ def seller_process_request(email):
             history[h.id] = {
                 "history_id": h.id,
                 "item_id": h.item_id,
+                'item_detail': get_item(h.item_id),
                 "item_name": h.item_name,
                 "buyer_email": h.buyer_email,
                 "buyer_name": buyer_name,
