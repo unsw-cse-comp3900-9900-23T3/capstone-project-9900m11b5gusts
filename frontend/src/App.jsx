@@ -160,7 +160,7 @@ export default function App() {
 										<Route path="/market" element={<MarketHomePage token={token} profileData={profileData}/>} />
 										<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
 										<Route path="/posts*" element={<Posts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
-										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} />} />
+										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} profileData={profileData}/>} />
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
 										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
 										<Route path="/user_compaigns" element={<UserCompaignMainPage />} token={token} />
