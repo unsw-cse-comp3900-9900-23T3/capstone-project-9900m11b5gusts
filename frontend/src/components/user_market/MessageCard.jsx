@@ -28,12 +28,12 @@ export default function MessageCard({ token, index, item, finished=false }) {
 
   const handleAcceptButton = () => {
     answerRequest(true)
-    window.location.href='/message'
+    // window.location.href='/message'
   }
 
   const handleRejectButton = () => {
     answerRequest(false)
-    window.location.href='/message'
+    // window.location.href='/message'
   }
 
 
@@ -47,7 +47,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
         'Authorization' : `Bearer ${token}`,
       },
       body:JSON.stringify({
-        "item_id": item.item_id,
+        "history_id": item.history_id,
         "action": answer
       })
     });

@@ -80,6 +80,7 @@ export default function ExchangeHistoryPage ({ token, profileData }) {
 						orientation="horizontal"
 						variant="plain"
 						sx={{
+							backgroundColor: "background.surface",
 							flexGrow: 0,
 							mx: 'auto',
 							'--ListItemDecorator-size': '40px',

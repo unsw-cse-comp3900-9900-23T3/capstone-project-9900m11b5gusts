@@ -104,7 +104,7 @@ export default function PostNewItemPage({ token, profileData }) {
       });
       if (response.status===200){
         alert('Success')
-        window.location.href='/myposts'
+        window.location.href=`/posts#${profileData.email}`
       }else{
         const data = await response.json();
         alert(data)
@@ -119,7 +119,7 @@ export default function PostNewItemPage({ token, profileData }) {
 
       <Stack sx={{ mb: 2 }}>
         <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Button style={{margin:'15px', width:'100px'}} startDecorator={<ArrowBackIosIcon/>} component="a" href="/myposts" variant="soft" size="sm" >
+          <Button style={{margin:'15px', width:'100px'}} startDecorator={<ArrowBackIosIcon/>} component="a" href={`/posts#${profileData.email}`} variant="soft" size="sm" >
             Back
           </Button>
 
