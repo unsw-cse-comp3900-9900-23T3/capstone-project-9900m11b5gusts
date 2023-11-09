@@ -10,11 +10,18 @@ import AddIcon from '@mui/icons-material/Add';
 import ItemCard from "../user_general/ItemCard";
 import { useLocation } from 'react-router-dom';
 import MessageCard from "./MessageCard";
+import Avatar from '@mui/joy/Avatar';
+import List from '@mui/joy/List';
+import ListDivider from '@mui/joy/ListDivider';
+import ListItem from '@mui/joy/ListItem';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import ListItemButton from '@mui/joy/ListItemButton';
 
 
 
-export default function MessagePage ({ token, profileData }) {
+export default function ExchangeHistoryPage ({ token, profileData }) {
   const [posts, setPosts] = React.useState([])
+	const [selectedTab, setSelectedTab] = React.useState('Undecided')
 
 
   React.useEffect(()=>{
@@ -46,46 +53,97 @@ export default function MessagePage ({ token, profileData }) {
   }
   	return(
 			<CssVarsProvider disableTransitionOnChange>
-      <CssBaseline />
-      <Box>
-        <Stack
-          sx={{
-            backgroundColor: "background.surface",
-            px: { xs: 2, md: 4 },
-            py: 2,
-            borderBottom: "1px solid",
-            borderColor: "divider"
-          }}
-        >
-					<Stack sx={{ mb: 2 }}>
-						<Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
+				<CssBaseline />
+				<Box>
+					<Stack
+						sx={{
+							backgroundColor: "background.surface",
+							px: { xs: 2, md: 4 },
+							py: 2,
+							borderBottom: "1px solid",
+							borderColor: "divider"
+						}}
+					>
+						<Stack sx={{ mb: 2 }}>
+							<Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
 
-              <Typography level="h2">Message</Typography>
-							
-							
+								<Typography level="h2">Exchange History</Typography>
+								
+								
+							</Stack>
 						</Stack>
 					</Stack>
-        </Stack>
 
-        <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
-          <Stack spacing={2} sx={{ overflow: "auto" }}>
 
-            {posts.map((item, index) => {
-              return(
-                <MessageCard key={index} 
-                  token={token}
-                  index={index}
-                  item={item}
-                />
-                )  
-              })
-            }
-            
-           
-          </Stack>
-        </Stack>
 
-      </Box>
-    </CssVarsProvider>
+					<List
+						orientation="horizontal"
+						variant="plain"
+						sx={{
+							flexGrow: 0,
+							mx: 'auto',
+							'--ListItemDecorator-size': '40px',
+							'--ListItem-paddingY': '0.6rem',
+							borderRadius: 'sm',
+							justifyContent:'center'
+						}}
+					>
+						<ListDivider inset="gutter" />
+						<ListItemButton 
+							sx={{width:'100px', justifyContent:'center', margin:'4px', height:'20px',  borderRadius:'8px 8px 8px 8px'}}
+							selected={selectedTab==='Undecided'}
+							onClick={()=>{
+								setSelectedTab('Undecided')
+							}}
+						>
+							Undecided
+						</ListItemButton>
+						<ListDivider inset="gutter" />
+						<ListItemButton 
+							sx={{width:'100px', justifyContent:'center', margin:'4px', height:'20px',  borderRadius:'8px 8px 8px 8px'}}
+							selected={selectedTab==='Bought'}
+							onClick={()=>{
+								setSelectedTab('Bought')
+							}}
+						>
+							Bought
+						</ListItemButton>
+						<ListDivider inset="gutter" />
+						<ListItemButton 
+							sx={{width:'100px', justifyContent:'center', margin:'4px', height:'20px',  borderRadius:'8px 8px 8px 8px'}}
+							selected={selectedTab==='Sold'}
+							onClick={()=>{
+								setSelectedTab('Sold')
+							}}
+						>
+							Sold
+						</ListItemButton>
+						<ListDivider inset="gutter" />
+						
+					</List>
+					<ListDivider/>
+
+
+
+					<Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
+						<Stack spacing={2} sx={{ overflow: "auto" }}>
+
+							{posts.map((item, index) => {
+								return(
+									<MessageCard key={index} 
+										token={token}
+										index={index}
+										item={item}
+									/>
+									)  
+								})
+							}
+							
+						
+						</Stack>
+					</Stack>
+
+				</Box>
+			</CssVarsProvider>
     )
 }

@@ -68,10 +68,15 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
     if (classes.c2) {
       return Object.entries(obj[classes.c1]).map(([key, value]) => (
         <>
-          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: key}))}} key={key} selected={classes.c2===key}>
+          <ListItemButton 
+            onClick={()=>{setClasses((p) => ({...p, c2: key}))}} 
+            key={key} 
+            selected={classes.c2===key}
+            sx={{borderRadius:'5px 5px 5px 5px'}}
+          >
             {key}
             {classes.c2===key && <KeyboardArrowRight/>}
-              
+            
           </ListItemButton>
           <ListDivider />
         
@@ -81,14 +86,16 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
     } else {
       return (
         <>
-          <ListItemButton onClick={handleClearCategory} selected={!classes.c1}>
+          <ListItemButton onClick={handleClearCategory} selected={!classes.c1} sx={{borderRadius:'5px 5px 5px 5px'}}>
             ALL
           </ListItemButton>
           <ListDivider />
           {Object.entries(obj).map(([key, value]) => (
           <>
 
-            <ListItemButton onClick={()=>{setClasses((p) => ({...p, c1: key}))}} key={key} selected={classes.c1===key}>
+            <ListItemButton onClick={()=>{setClasses((p) => ({...p, c1: key}))}} key={key} selected={classes.c1===key}
+              sx={{borderRadius:'5px 5px 5px 5px'}}
+            >
               {key}
               {classes.c1===key && <KeyboardArrowRight/>}
             </ListItemButton>
@@ -107,12 +114,16 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
     if (classes.c2) {
       return (
         <>
-          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: ''}))}} >
+          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: ''}))}} 
+            sx={{borderRadius:'5px 5px 5px 5px'}}
+          >
             <ArrowBackIosIcon/>
              Back
           </ListItemButton>
           <ListDivider />
-          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c3: ''}))}} selected={!classes.c3}>
+          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c3: ''}))}} selected={!classes.c3}
+            sx={{borderRadius:'5px 5px 5px 5px'}}
+          >
             ALL
           </ListItemButton>
           <ListDivider />
@@ -121,6 +132,7 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
               <ListItemButton key={key}
                 onClick={()=>{setClasses((p) => ({...p, c3: key}))}}
                 selected={classes.c3===key}
+                sx={{borderRadius:'5px 5px 5px 5px'}}
               >{key}</ListItemButton>
               <ListDivider />
             </>
@@ -130,12 +142,14 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
     } else if (classes.c1) {
       return (
         <>
-          <ListItemButton onClick={handleClearCategory} >
+          <ListItemButton onClick={handleClearCategory} sx={{borderRadius:'5px 5px 5px 5px'}}>
             <ArrowBackIosIcon/>
              Back
           </ListItemButton>
           <ListDivider />
-          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: ''}))}} selected={!classes.c2}>
+          <ListItemButton onClick={()=>{setClasses((p) => ({...p, c2: ''}))}} selected={!classes.c2} 
+            sx={{borderRadius:'5px 5px 5px 5px'}}
+          >
             ALL
           </ListItemButton>
           <ListDivider />
@@ -143,6 +157,7 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
             <>
               <ListItemButton key={key}
                 onClick={()=>{setClasses((p) => ({...p, c2: key}))}}
+                sx={{borderRadius:'5px 5px 5px 5px'}}
               >{key}</ListItemButton>
               <ListDivider />
             </>
@@ -152,7 +167,7 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
     } else {
       return (
         <>
-          <ListItemButton onClick={handleClearCategory}>
+          <ListItemButton onClick={handleClearCategory} sx={{borderRadius:'5px 5px 5px 5px'}}>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

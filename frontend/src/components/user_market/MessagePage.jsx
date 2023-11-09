@@ -45,47 +45,47 @@ export default function MessagePage ({ token, profileData }) {
       }
   }
   	return(
-			<CssVarsProvider disableTransitionOnChange>
-      <CssBaseline />
-      <Box>
-        <Stack
-          sx={{
-            backgroundColor: "background.surface",
-            px: { xs: 2, md: 4 },
-            py: 2,
-            borderBottom: "1px solid",
-            borderColor: "divider"
-          }}
-        >
-					<Stack sx={{ mb: 2 }}>
-						<Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
+      <CssVarsProvider disableTransitionOnChange>
+        <CssBaseline />
+        <Box>
+          <Stack
+            sx={{
+              backgroundColor: "background.surface",
+              px: { xs: 2, md: 4 },
+              py: 2,
+              borderBottom: "1px solid",
+              borderColor: "divider"
+            }}
+          >
+            <Stack sx={{ mb: 2 }}>
+              <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
 
-              <Typography level="h2">Message</Typography>
-							
-							
-						</Stack>
-					</Stack>
-        </Stack>
-
-        <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
-          <Stack spacing={2} sx={{ overflow: "auto" }}>
-
-            {posts.map((item, index) => {
-              return(
-                <MessageCard key={index} 
-                  token={token}
-                  index={index}
-                  item={item}
-                />
-                )  
-              })
-            }
-            
-           
+                <Typography level="h2">Message</Typography>
+                
+                
+              </Stack>
+            </Stack>
           </Stack>
-        </Stack>
 
-      </Box>
-    </CssVarsProvider>
+          <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
+            <Stack spacing={2} sx={{ overflow: "auto" }}>
+
+              {posts.map((item, index) => {
+                return(
+                  <MessageCard key={index} 
+                    token={token}
+                    index={index}
+                    item={item}
+                  />
+                  )  
+                })
+              }
+              
+            
+            </Stack>
+          </Stack>
+
+        </Box>
+      </CssVarsProvider>
     )
 }
