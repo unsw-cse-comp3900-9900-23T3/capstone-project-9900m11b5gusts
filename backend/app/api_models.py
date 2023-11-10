@@ -213,13 +213,13 @@ approve_activity_permission_model = api.model('approve_activity_permission_model
 create_topic_model = api.model('create_topic_model',{
         'activityId': fields.String(example='1'),
         'detail': fields.String(example='detail'),
-        'image': fields.String(example='a new image')
+        'image': fields.String(example='[new image1,new image2,new image3]')
 })
 
 update_topic_model = api.model('update_topic_model',{
         'topicId': fields.String(example='3'),
         'detail': fields.String(example='detail'),
-        'image': fields.String(example='a new image')
+        'image': fields.String(example='[new image1,new image2,new image3]')
 })
 
 delete_topic_model = api.model('delete_topic_model',{
