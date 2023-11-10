@@ -1067,11 +1067,12 @@ def search_activity(page, **kwargs):
                 'status': activity.status,
                 'category': activity.category,
                 'overview': activity.overview,
-                'detail': activity.detail
+                'detail': activity.detail,
+                'image': activity.image
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
-        return {'result': True, 'info': {}}
+        return {'result': True, 'info': {'total_rows': total_rows, 'activities': ''}}
 
 
 def create_activity(email, **kwargs):
@@ -1385,3 +1386,41 @@ def delete_comment(email, comment_id):
         return {'result': True, 'info': f'Delete comment success'}
     except Exception as e:
         return {'result': False, 'info': f'Fail to delete the comment'}
+
+def get_top10_activities():
+    topics = Topic.query.filter().all()
+    activities = []
+    for topic in topics:
+        infor = {}
+        flag = False
+        for activity in activities:
+            if topic.activity_id == activity['activityId']:
+                activity['count'] += 1
+                flag = True
+        if flag == False:
+            activity = Activity.query.filter_by(id=topic.activity_id).first()
+            infor['activityId'] = activity.id
+            infor['count'] = 0
+            infor['activity_name'] = activity.activity_name
+        if infor.size() != 0:
+            activities.append(infor)
+        if len(activities) == 10:
+            break
+    print(activities)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
