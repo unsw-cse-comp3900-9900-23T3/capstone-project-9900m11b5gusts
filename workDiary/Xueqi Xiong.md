@@ -59,3 +59,11 @@
 
 
 
+### Week 9
+
+1. API(/Topic/deleteComment/{comment_id}): Only certain people can delete the comments.
+2. API(/Topic/getTop10Activities): User can get top 10 activities in which have the most people publish the topic.
+3. API(/Topic/getTop10CommentsActivities): User can get top 10 activities in which have the most people comment.
+4. API(/Topic/getTop10CommentsTopics): User can get top 10 topics in which have the most people comment.
+5. API(/Topic/topicDetail/{activity_id}/{page}/{pagesize}): User can get the detail of the topic.
+6. Prepare for the final demo presentation.
