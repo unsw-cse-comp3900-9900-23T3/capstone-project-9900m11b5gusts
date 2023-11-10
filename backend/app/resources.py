@@ -6,7 +6,7 @@ from .api_models import login_model, register_model, changeProfile_model, insert
     delete_user_model, update_activity_permission_model, approve_activity_permission_model, \
     insert_wishlist_model, insert_inventory_model, get_wish_list_model, delete_wishList_model, update_wishList_model, \
     purchase_item_model, purchase_request_model, create_topic_model, update_topic_model, delete_topic_model, \
-    comment_topic_model, get_item_by_id_model
+    comment_topic_model, get_item_by_id_model, get_buying_history_model, get_selling_history_model
 from .models import user_register, user_login, get_profile, update_profile, insert_item, get_personal_item, \
     update_personal_item, search_item, forget_pass, reset_password, delete_personal_item, search_activity, \
     get_user_identity, create_activity, delete_activity, update_activity, search_item_by_category, show_user_identity, \
@@ -272,10 +272,12 @@ class GetItemById(Resource):
 @Item.route('/getSellingHistory')
 class GetSellingHistory(Resource):
     @Item.doc(description='Get Personal Selling History')
-    @Item.doc(security='jsonWebToken')
-    @jwt_required()
-    def get(self):
-        email = get_jwt_identity()
+    # @Item.doc(security='jsonWebToken')
+    # @jwt_required()
+    @Item.expect(get_selling_history_model)
+    def post(self):
+        # email = get_jwt_identity()
+        email = Item.payload['email']
         result = selling_history(email)
         return {'success': result['info']}, 200
 
@@ -283,10 +285,12 @@ class GetSellingHistory(Resource):
 @Item.route('/getBuyingHistory')
 class GetBuyingHistory(Resource):
     @Item.doc('Get Personal Buying history')
-    @Item.doc(security="jsonWebToken")
-    @jwt_required()
-    def get(self):
-        email = get_jwt_identity()
+    # @Item.doc(security="jsonWebToken")
+    # @jwt_required()
+    @Item.expect(get_buying_history_model)
+    def post(self):
+        # email = get_jwt_identity()
+        email = Item.payload['email']
         result = buying_history(email)
         return {'success': result['info']}, 200
 
