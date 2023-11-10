@@ -1450,16 +1450,19 @@ def get_top10_comments_activities():
         activityId = topicInfor.activity_id
         activityInfor = Activity.query.filter_by(id=activityId).first()
         activity = {}
+        flag = False
         for activity_infor in activities:
-            if activityId in activity:
-                activity["count"] += topic[index]
-            else:
-                activity["count"] = topic[index]
-        activity["email"] = activityInfor.email
-        activity["activityId"] = activityId
-        activity["activity_name"] = activityInfor.activity_name
-        activities.append(activity)
-    return {'result': True, 'info': activity}
+            if activityId == activity_infor["activityId"]:
+                activity_infor["count"] += topic[index]
+                flag = True
+        if flag == False:
+            activity["count"] = topic[index]
+            activity["email"] = activityInfor.email
+            activity["activityId"] = activityId
+            activity["activity_name"] = activityInfor.activity_name
+        if len(activity) != 0:
+            activities.append(activity)
+    return {'result': True, 'info': activities}
 
 
 
