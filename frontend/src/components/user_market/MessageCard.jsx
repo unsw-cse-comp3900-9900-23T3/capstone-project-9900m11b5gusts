@@ -31,12 +31,10 @@ export default function MessageCard({ token, index, item, finished=false }) {
 
   const handleAcceptButton = () => {
     answerRequest(true)
-    // window.location.href='/message'
   }
 
   const handleRejectButton = () => {
     answerRequest(false)
-    // window.location.href='/message'
   }
 
 
@@ -56,7 +54,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
     });
     if (response.status===200){
       alert('Success')
-      window.location.href='/myposts'
+      window.location.href='/message'
     }else{
       const data = await response.json();
       console.log(data)
@@ -144,7 +142,6 @@ export default function MessageCard({ token, index, item, finished=false }) {
             
           </Stack>
 
-          <br /><br /><br /><br /><br /><br />
 
           <Stack
             spacing={2}

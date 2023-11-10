@@ -95,7 +95,7 @@ export default function WishListCard( {token, item} ) {
     });
     if (response.status===200){
       alert('Success')
-      window.location.href='/wishlist'
+      window.location.reload()
     }else{
       const data = await response.json();
       console.log(data)
