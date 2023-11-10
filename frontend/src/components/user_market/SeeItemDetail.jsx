@@ -85,7 +85,7 @@ export default function SeeItemDetail({ token, item, current_user_email }) {
                   {item.item_name}
                 </DialogTitle>
                 <Typography level="body-sm" sx={{marginLeft:'15px'}}>
-                  (Amount: <b>{item.item_num}</b>)
+                  (Amount left: <b>{item.item_num}</b>)
                 </Typography>
 
                 <Typography

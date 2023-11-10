@@ -1,10 +1,5 @@
 import React from 'react'
 import Box from '@mui/joy/Box';
-import List from '@mui/joy/List';
-import ListDivider from '@mui/joy/ListDivider';
-import ListItem from '@mui/joy/ListItem';
-import ListItemButton from '@mui/joy/ListItemButton';
-import Home from '@mui/icons-material/Home';
 
 import AboutUs from './components/authentication/Aboutus';
 import Login from './components/authentication/Login';
@@ -34,9 +29,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
-  // useParams,
-  // Outlet
 } from 'react-router-dom'
 
 
@@ -58,6 +50,7 @@ export default function App() {
 	const [token, setToken] = React.useState(null)
 	const [profileData, setProfileData] = React.useState('')
 	const [itemIndex, setItemIndex]= React.useState(-1)
+	const [messages, setMessages] = React.useState([])
 
 	//Fetch user profile if got a token
   React.useEffect(()=>{
@@ -131,7 +124,7 @@ export default function App() {
 				<CssVarsProvider disableTransitionOnChange>
 						<CssBaseline />
 						<Box sx={{ display: 'flex', minHeight: '100dvh' }}>
-							<Sidebar logout={logout} profileData={profileData} />
+							<Sidebar logout={logout} profileData={profileData} token={token} posts={messages} setPosts={setMessages} />
 							<Header />
 							<Box
 								component="main"
@@ -159,13 +152,13 @@ export default function App() {
 									<Routes>
 										<Route path="/market" element={<MarketHomePage token={token} profileData={profileData}/>} />
 										<Route path="/myprofile" element={<MyProfileContent token={token} profileData={profileData} />} />
-										<Route path="/posts*" element={<Posts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
+										<Route path="/posts/*" element={<Posts token={token} profileData={profileData} manageItemID={manageItemIndex} />} />
 										<Route path="/myposts/postnewitem" element={<PostNewItemPage token={token} profileData={profileData}/>} />
 										<Route path="/myposts/edititem" element={<EditItemPage token={token} index={itemIndex} profileData={profileData} />} />
-										<Route path="/wishlist" element={<WishListPage token={token} profileData={profileData} />} />
+										<Route path="/wishlist/*" element={<WishListPage token={token} profileData={profileData} />} />
 										<Route path="/user_compaigns" element={<UserCompaignMainPage />} token={token} />
-										<Route path="/message" element={<MessagePage token={token} />} />
-										<Route path="/exchangehistory*" element={<ExchangeHistoryPage token={token} />} />
+										<Route path="/message" element={<MessagePage token={token} posts={messages} setPosts={setMessages}/>} />
+										<Route path="/exchangehistory*" element={<ExchangeHistoryPage token={token} profileData={profileData}/>} />
 										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
 										<Route path="/comments" element={<Comments />} />

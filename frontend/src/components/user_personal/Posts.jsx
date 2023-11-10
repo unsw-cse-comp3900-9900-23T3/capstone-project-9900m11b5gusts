@@ -24,7 +24,6 @@ export default function Posts({ token, profileData, manageItemID }) {
   React.useEffect(() => {
 
       if (window.location.hash.slice(1)){
-        
         setEmail(window.location.hash.slice(1))
       } else {
         setEmail(profileData.email)
@@ -35,7 +34,7 @@ export default function Posts({ token, profileData, manageItemID }) {
   React.useEffect(() => {
     
     if (email !== null && email !== undefined){
-      window.location.href=`/posts#${email}`
+      window.location.href=`/posts/#${email}`
       checkPersonalItem()
     }
   },[email])

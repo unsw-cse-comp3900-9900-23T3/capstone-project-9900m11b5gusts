@@ -15,6 +15,7 @@ import Sheet from '@mui/joy/Sheet';
 import Chip from '@mui/joy/Chip';
 import Grid from '@mui/joy/Grid';
 import ListDivider from '@mui/joy/ListDivider';
+import Stack from '@mui/joy/Stack';
 
 
 
@@ -34,9 +35,16 @@ export default function UserInfoChip({ token, email, name }) {
 
 
 	function handleSeePosts() {
-		window.open(`/posts#${email}`, "_blank");
+		window.open(`/posts/#${email}`, "_blank");
+	}
+ 
+	function handleSeeHistory() {
+		window.open(`/exchangehistory/#${email}`, "_blank");
 	}
 
+	function handleSeeWishList() {
+		window.open(`/wishlist/#${email}`, "_blank");
+	}
 
 
 	async function fetchUserInfoByEmail(){
@@ -144,12 +152,29 @@ export default function UserInfoChip({ token, email, name }) {
 
 									<br />
 
-									<Button 
-										variant='outlined'
-										onClick={handleSeePosts}
-									>
-										See His/Her Posts
-									</Button>
+
+										<Button 
+											variant='outlined'
+											onClick={handleSeePosts}
+										>
+											View his/ her posts
+										</Button>
+
+										<Button 
+											variant='outlined'
+											onClick={handleSeeWishList}
+										>
+											View his/her wish list
+										</Button>
+
+										<Button 
+											variant='outlined'
+											onClick={handleSeeHistory}
+										>
+											View his/her exchange history
+										</Button>
+										
+
 
 								</CardContent>
 

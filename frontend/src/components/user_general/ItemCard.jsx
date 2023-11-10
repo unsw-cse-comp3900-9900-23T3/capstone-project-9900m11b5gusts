@@ -187,16 +187,16 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
               // startDecorator
               sx={{ display: "flex", gap: 1 }}
             >
-              Amount: {item.item_num}
+              Amount left: {item.item_num}
             </Typography>
             {item.trading_method === 'cash' 
             ?
               <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
-                <strong>${item.item_price}</strong> <Typography level="body-md">total</Typography>
+                <strong>${item.item_price}</strong> <Typography level="body-md">each</Typography>
               </Typography>
             :
               <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: "right" }}>
-                <Typography level="body-md">Exchange: {item.exchange_item.length > 20 ? item.exchange_item.slice(0, 20) + '...' : item.exchange_item}</Typography>
+                <Typography level="body-md">Exchange for: {item.exchange_item.length > 20 ? item.exchange_item.slice(0, 20) + '...' : item.exchange_item}</Typography>
               </Typography>
             }
 
