@@ -15,7 +15,8 @@ from .models import user_register, user_login, get_profile, update_profile, inse
     update_wish_list, delete_wish_list, check_wish_item, purchase_request, \
     create_topic, update_topic, delete_topic, comment_topic, buying_history, \
     buyer_process_request, seller_process_request, selling_history, handle_purchase_request, \
-    get_item_by_id, show_topic_detail, delete_comment, get_top10_activities
+    get_item_by_id, show_topic_detail, delete_comment, get_top10_activities, get_top10_comments_topics, \
+    get_top10_comments_activities
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
@@ -697,7 +698,40 @@ class getTop10Activities(Resource):
             else:
                 return {'error': result['info']}, 400
 
+@Topic.route('/getTop10CommentsTopics')
+class getTop10CommentsTopics(Resource):
+    @Topic.doc(description='Get the top 10 comments topics')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect()
+    def get(self):
+        # 获取用户个人信息
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        if identity == "administrator" or identity == "manager":
+            result = get_top10_comments_topics()
+            if result['result']:
+                return {'success': result['info']}, 200
+            else:
+                return {'error': result['info']}, 400
 
+
+@Topic.route('/getTop10CommentsActivities')
+class getTop10CommentsActivities(Resource):
+    @Topic.doc(description='Get the top 10 comments activities')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    @Topic.expect()
+    def get(self):
+        # 获取用户个人信息
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        if identity == "administrator" or identity == "manager":
+            result = get_top10_comments_activities()
+            if result['result']:
+                return {'success': result['info']}, 200
+            else:
+                return {'error': result['info']}, 400
 
 
 
