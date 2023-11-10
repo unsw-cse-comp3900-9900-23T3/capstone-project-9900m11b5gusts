@@ -31,25 +31,25 @@ export default function ExchangeHistoryPage ({ token, profileData }) {
   async function checkMessage(){
     
     const response = await fetch('http://127.0.0.1:5000/Items/getSellerProcessHistory', {
-        method:'GET',
-        headers:{
-          'Content-type': 'application/json',
-          'Authorization' : `Bearer ${token}`,
-        }
-      });
-      if (response.status===200){
-        const data = await response.json();
-        console.log('posts: ', data.success)
-        if (data.success){
-            setPosts([])
-            Object.entries(data.success).map((item) => {
-            setPosts(prev => [...prev, item[1]])
-          })
-        }
-      }else{
-        const data = await response.json();
-        alert(data)
-      }
+			method:'GET',
+			headers:{
+				'Content-type': 'application/json',
+				'Authorization' : `Bearer ${token}`,
+			}
+		});
+		if (response.status===200){
+			const data = await response.json();
+			console.log('posts: ', data.success)
+			if (data.success){
+					setPosts([])
+					Object.entries(data.success).map((item) => {
+					setPosts(prev => [...prev, item[1]])
+				})
+			}
+		}else{
+			const data = await response.json();
+			alert(data)
+		}
   }
   	return(
 			<CssVarsProvider disableTransitionOnChange>

@@ -25,6 +25,9 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 export default function MessageCard({ token, index, item, finished=false }) {
 
 	console.log(index, item)
+  // console.log(item.item_detail)
+
+  console.log(item.item_detail[item.item_id])
 
   const handleAcceptButton = () => {
     answerRequest(true)
@@ -76,6 +79,51 @@ export default function MessageCard({ token, index, item, finished=false }) {
           }
         }}
       >
+                <CardOverflow
+          sx={{
+            mr: { xs: "var(--CardOverflow-offset)", sm: 0 },
+            mb: { xs: 0, sm: "var(--CardOverflow-offset)" },
+            "--AspectRatio-radius": {
+              xs:
+                "calc(var(--CardOverflow-radius) - var(--variant-borderWidth, 0px)) calc(var(--CardOverflow-radius) - var(--variant-borderWidth, 0px)) 0 0",
+              sm:
+                "calc(var(--CardOverflow-radius) - var(--variant-borderWidth, 0px)) 0 0 calc(var(--CardOverflow-radius) - var(--variant-borderWidth, 0px))"
+            }
+          }}
+        >
+          <AspectRatio
+            ratio="1"
+            flex
+            sx={{
+              minWidth: { sm: 120, md: 160 },
+              "--AspectRatio-maxHeight": { xs: "160px", sm: "9999px" }
+            }}
+          >
+            {item.item_detail[item.item_id].image && <img alt="" src={item.item_detail[item.item_id].image} />}
+            <Stack
+              alignItems="center"
+              direction="row"
+              sx={{ position: "absolute", top: 0, width: "100%", p: 1 }}
+            >
+              {finished && (
+                <Chip
+                  variant="soft"
+                  color="success"
+                  startDecorator={<VerifiedIcon />}
+                  size="md"
+                >
+                  Finished
+                </Chip>
+              )}
+              {}
+
+
+
+            </Stack>
+            
+          </AspectRatio>
+          
+        </CardOverflow>
 
         <CardContent>
           <Stack
@@ -83,11 +131,11 @@ export default function MessageCard({ token, index, item, finished=false }) {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{width: '600px'}}
+            sx={{width: '400px'}}
           >
 
             <Typography level="title-lg">
-              <SeeItemDetail token={token} item={item} current_user_email={item.seller_email} />
+              <SeeItemDetail token={token} item={item.item_detail[item.item_id]} current_user_email={item.seller_email} />
             </Typography>
 
             <Typography level="title-md">
@@ -103,7 +151,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{width: '600px'}}
+            sx={{width: '400px'}}
           >
             <Typography level="title-md">
               Received an exchange request from 
@@ -115,7 +163,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
 
 
           <Typography level="title-md">
-            &nbsp;&nbsp;&nbsp;&nbsp;{item.time_stamp}
+            {item.time_stamp}
           </Typography>
 
           <Stack direction="row"  sx={{display:'flex', justifyContent:'flex-end'}}>
