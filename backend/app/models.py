@@ -1143,7 +1143,6 @@ def search_activity(page, **kwargs):
             )
         )
 
-
     page_size = 10
     offset = (page - 1) * page_size
     total_rows = activity_infor.count()
@@ -1162,7 +1161,6 @@ def search_activity(page, **kwargs):
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': ''}}
-
 
 
 def create_activity(email, **kwargs):
@@ -1420,9 +1418,23 @@ def comment_topic(email, **kwargs):
 
 def show_topic_comment(topic_id):
     try:
+        comment_dict = []
         comments = Comment.query.filter_by(topic_id=topic_id).all()
+        if comments:
+            comments_infor = []
+            for comment in comments:
+                comment_user = User.query.filter_by(
+                    email=comment.email).first()
+                inner_comment = {
+                    'id': comment.id,
+                    'email': comment.email,
+                    'avatar': comment_user.image,
+                    'comment': comment.comment
+                }
+                comments_infor.append(inner_comment)
+            comment_dict = comments_infor
 
-        return {'result': True, 'info': {'comments': comments}}
+        return {'result': True, 'info': {'comments': comment_dict}}
     except Exception as e:
         import traceback
         traceback.print_exc()
