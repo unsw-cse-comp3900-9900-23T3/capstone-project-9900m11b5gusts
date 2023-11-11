@@ -197,103 +197,103 @@ export default function WishListPage({ token, profileData, manageItemID }) {
 
           <List sx={{ maxWidth: 500 }}>
 
-          <React.Fragment>
+            <React.Fragment>
 
-            {`${window.location.hash.slice(1)}` === profileData.email &&
-              <>
-                <ListDivider />
-                <ListItem
-                  // startAction={
-                  //   <IconButton aria-label="Add" size="sm" variant="plain" color="neutral">
-                  //     <Add />
-                  //   </IconButton>
-                  // }
-                >
-                  <ListItemButton
-                    onClick={() => setOpenNewItem(true)}
+              {`${window.location.hash.slice(1)}` === profileData.email &&
+                <>
+                  <ListDivider />
+                  <ListItem
+                    // startAction={
+                    //   <IconButton aria-label="Add" size="sm" variant="plain" color="neutral">
+                    //     <Add />
+                    //   </IconButton>
+                    // }
                   >
-                    <Add />
-                    New Item
-                  </ListItemButton>
-                </ListItem>
-                <ListDivider />
-              </>
-            }
-
-            <Modal
-              aria-labelledby="modal-title"
-              aria-describedby="modal-desc"
-              open={openNewItem}
-              onClose={() => setOpenNewItem(false)}
-              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position:'absolute', left:'220px' }}
-            >
-              <Sheet
-                variant="outlined"
-                sx={{
-                  width: 500,
-                  borderRadius: 'md',
-                  p: 3,
-                  boxShadow: 'lg',
-                }}
-              >
-                <ModalClose variant="plain" sx={{ m: 1 }} />
-                <Typography
-                  component="h2"
-                  id="modal-title"
-                  level="h4"
-                  textColor="inherit"
-                  fontWeight="lg"
-                  mb={1}
-                >
-                  Add New Item
-                </Typography>
-
-                <br />
-
-
-                <FormControl >
-                  <FormLabel>Select a category</FormLabel>
-                  <Stack direction="row" spacing={1}>
-                    <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
-                    <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
-                  </Stack>
-                </FormControl>
-
-                <br />
-
-                <FormControl >
-                  <FormLabel>Supplementary Information</FormLabel>
-                  <Stack direction="row" spacing={1}>
-                    <Input placeholder='Optional' style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
-                  </Stack>
-                </FormControl>
-
-                <br />
-
-
-                <FormControl>
-                  <FormLabel>Amount of the item</FormLabel>
-                  <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
-                </FormControl>
-
-
-
-
-                <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-                  <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                    <Button style={{margin:'15px', marginLeft:'320px', width:'100px'}} startDecorator={<CheckIcon/>} variant="soft" size="sm" 
-                      onClick={postNewItem}
+                    <ListItemButton
+                      onClick={() => setOpenNewItem(true)}
                     >
-                      Confirm
-                    </Button>
-                  </CardActions>
-                </CardOverflow>
+                      <Add />
+                      New Item
+                    </ListItemButton>
+                  </ListItem>
+                  <ListDivider />
+                </>
+              }
+
+              <Modal
+                aria-labelledby="modal-title"
+                aria-describedby="modal-desc"
+                open={openNewItem}
+                onClose={() => setOpenNewItem(false)}
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position:'absolute', left:'220px' }}
+              >
+                <Sheet
+                  variant="outlined"
+                  sx={{
+                    width: 500,
+                    borderRadius: 'md',
+                    p: 3,
+                    boxShadow: 'lg',
+                  }}
+                >
+                  <ModalClose variant="plain" sx={{ m: 1 }} />
+                  <Typography
+                    component="h2"
+                    id="modal-title"
+                    level="h4"
+                    textColor="inherit"
+                    fontWeight="lg"
+                    mb={1}
+                  >
+                    Add New Item
+                  </Typography>
+
+                  <br />
+
+
+                  <FormControl >
+                    <FormLabel>Select a category</FormLabel>
+                    <Stack direction="row" spacing={1}>
+                      <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
+                      <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
+                    </Stack>
+                  </FormControl>
+
+                  <br />
+
+                  <FormControl >
+                    <FormLabel>Supplementary Information</FormLabel>
+                    <Stack direction="row" spacing={1}>
+                      <Input placeholder='Optional' style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+                    </Stack>
+                  </FormControl>
+
+                  <br />
+
+
+                  <FormControl>
+                    <FormLabel>Amount of the item</FormLabel>
+                    <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
+                  </FormControl>
 
 
 
-              </Sheet>
-            </Modal>
-          </React.Fragment>
+
+                  <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
+                    <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
+                      <Button style={{margin:'15px', marginLeft:'320px', width:'100px'}} startDecorator={<CheckIcon/>} variant="soft" size="sm" 
+                        onClick={postNewItem}
+                      >
+                        Confirm
+                      </Button>
+                    </CardActions>
+                  </CardOverflow>
+
+
+
+                </Sheet>
+              </Modal>
+            </React.Fragment>
 
 
             {posts.map((item, index) => {

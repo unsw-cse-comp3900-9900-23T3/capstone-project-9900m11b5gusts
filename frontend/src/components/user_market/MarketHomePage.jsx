@@ -58,6 +58,7 @@ export default function MarketHomePage ({ token, profileData }) {
         if (data.success !== 'no item'){
             setPosts([])
             Object.entries(data.success).map((item) => {
+            // console.log('item: ', item)
             setPosts(prev => [...prev, item[1]])
           })
         }
