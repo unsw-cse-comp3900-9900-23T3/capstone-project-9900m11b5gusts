@@ -17,50 +17,13 @@ import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserInfoChip from "../user_general/UserInfoChip"
-import SeeItemDetail from "../user_market/SeeItemDetail"
+import SeeItemDetail from "./SeeItemDetail"
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import PendingIcon from '@mui/icons-material/Pending';
 
 
 
-export default function MessageCard({ token, index, item, finished=false }) {
-
-	console.log(index, item)
-  // console.log(item.item_detail)
-
-  console.log(item.item_detail[item.item_id])
-
-  const handleAcceptButton = () => {
-    answerRequest(true)
-  }
-
-  const handleRejectButton = () => {
-    answerRequest(false)
-  }
-
-
-
-  async function answerRequest( answer ){
-    console.log('answering')
-    const response = await fetch('http://127.0.0.1:5000/Items/handlePurchaseRequest', {
-      method:'POST',
-      headers:{
-        'Content-type': 'application/json',
-        'Authorization' : `Bearer ${token}`,
-      },
-      body:JSON.stringify({
-        "history_id": item.history_id,
-        "action": answer
-      })
-    });
-    if (response.status===200){
-      alert('Success')
-      window.location.href='/message'
-    }else{
-      const data = await response.json();
-      console.log(data)
-      alert('error: ', data.error)
-    }
-  }
+export default function HistoryCard({ token, item, finished=false, selectedTab }) {
 
   if (item){
     return (
@@ -103,17 +66,38 @@ export default function MessageCard({ token, index, item, finished=false }) {
               direction="row"
               sx={{ position: "absolute", top: 0, width: "100%", p: 1 }}
             >
-              {finished && (
+              {finished ? 
+                ( item.status ==='approved'?
+                    <Chip
+                      variant="soft"
+                      color="success"
+                      startDecorator={<VerifiedIcon />}
+                      size="md"
+                    >
+                      Completed
+                    </Chip>
+                  :
+                    <Chip
+                      variant="soft"
+                      color="danger"
+                      startDecorator={<CancelOutlinedIcon />}
+                      size="md"
+                    >
+                      Failed
+                    </Chip>
+                )
+              :
                 <Chip
                   variant="soft"
-                  color="success"
-                  startDecorator={<VerifiedIcon />}
+                  color="primary"
+                  startDecorator={<PendingIcon />}
                   size="md"
                 >
-                  Finished
+                  Pending
                 </Chip>
-              )}
-              {}
+              }
+
+              
 
 
 
@@ -151,7 +135,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
             sx={{width: '400px'}}
           >
             <Typography level="title-md">
-              Received an exchange request from 
+              {selectedTab === 'Bought'? 'Seller: ' : 'Buyer: ' }  
             </Typography>
             <UserInfoChip token={token} email={item.buyer_email} name={item.buyer_name}/>
 
@@ -163,26 +147,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
             {item.time_stamp}
           </Typography>
 
-          <Stack direction="row"  sx={{display:'flex', justifyContent:'flex-end'}}>
-            <Button
-              variant="outlined"
-              size="sm"
-              color={"primary"}
-              onClick={handleAcceptButton}
-              sx={{margin:'5px'}}
-            >
-              <EditNoteIcon />Accept
-            </Button>
-            <Button
-              variant="outlined"
-              size="sm"
-              color={"danger"}
-              onClick={handleRejectButton}
-              sx={{margin:'5px'}}
-            >
-              <CancelOutlinedIcon />Rejcet
-            </Button>
-          </Stack>
+
 
 
         </CardContent>

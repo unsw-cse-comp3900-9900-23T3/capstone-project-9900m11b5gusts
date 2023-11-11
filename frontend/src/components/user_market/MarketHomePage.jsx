@@ -35,7 +35,7 @@ export default function MarketHomePage ({ token, profileData }) {
   }
 
   async function search(pageNumber){
-    console.log('ppp:', pageNumber)
+
     const response = await fetch(`http://127.0.0.1:5000/Items/searchItem/${pageNumber}`, {
         method:'POST',
         headers:{

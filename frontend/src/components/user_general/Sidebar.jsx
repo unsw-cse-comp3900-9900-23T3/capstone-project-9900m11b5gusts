@@ -35,7 +35,7 @@ import FeedbackIcon from '@mui/icons-material/Feedback';
 
 import ColorSchemeToggle from '../blocks/ColorSchemeToggle';
 import { CssVarsProvider } from '@mui/joy/styles';
-// import { closeSidebar } from '../utils';
+
 
 
 
@@ -72,15 +72,52 @@ function Toggler({
   );
 }
 
-export default function Sidebar({ logout, profileData }) {
+export default function Sidebar({ logout, profileData, token, posts, setPosts}) {
   const [showADFlag, setShowADFlag] = React.useState(true)
 
-  const url = window.location.href.split('/')
+  const url = window.location.href.split(':')
   const [currentURL, setCurrentURL] = React.useState(url[url.length - 1])
-
 
   const handleCloseAD = () => {
     setShowADFlag(false)
+  }
+
+  React.useState(() => {
+    console.log('currentURL: ', currentURL)
+  }, [currentURL])
+
+
+  React.useState(() => {
+    checkMessage()
+    const refreshInterval = setInterval(() =>{
+      checkMessage()
+    }, 3000)
+
+    return () => clearInterval(refreshInterval);
+  }, [])
+
+  async function checkMessage(){
+    
+    const response = await fetch('http://127.0.0.1:5000/Items/getSellerProcessHistory', {
+        method:'GET',
+        headers:{
+          'Content-type': 'application/json',
+          'Authorization' : `Bearer ${token}`,
+        }
+      });
+      if (response.status===200){
+        const data = await response.json();
+        // console.log('posts: ', data.success)
+        if (data.success){
+            setPosts([])
+            Object.entries(data.success).map((item) => {
+            setPosts(prev => [...prev, item[1]])
+          })
+        }
+      }else{
+        const data = await response.json();
+        console.log(data)
+      }
   }
 
 
@@ -169,9 +206,9 @@ export default function Sidebar({ logout, profileData }) {
         >
           <ListItem>
             <ListItemButton
-              selected={currentURL === 'market'}
+              selected={currentURL.includes('market')}
               role="menuitem"
-              component={currentURL === 'market' ? undefined : 'a'}
+              component={currentURL.includes('market') ? undefined : 'a'}
               href='/market'
               onClick={()=>{setCurrentURL('market')}}
             >
@@ -201,19 +238,19 @@ export default function Sidebar({ logout, profileData }) {
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton 
                     selected={currentURL.includes('posts') || currentURL ==='postnewitem'}
-                    onClick={()=>{setCurrentURL(`/posts#${profileData.email}`)}}
+                    onClick={()=>{setCurrentURL(`/posts/#${profileData.email}`)}}
                     component={'a'}
-                    href={`/posts`}
+                    href={`/posts/#${profileData.email}`}
                   >
                     Posts
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
-                    selected={currentURL === 'wishlist'}
-                    onClick={()=>{setCurrentURL('wishlist')}}
-                    component={currentURL === 'wishlist' ? undefined : 'a'}
-                    href='/wishlist'
+                    selected={currentURL.includes('wishlist')}
+                    onClick={()=>{setCurrentURL(`/wishlist/#${profileData.email}`)}}
+                    component={currentURL.includes('wishlist') ? undefined : 'a'}
+                    href={`/wishlist/#${profileData.email}`}
                   >
                     Wish List
                   </ListItemButton>
@@ -276,9 +313,9 @@ export default function Sidebar({ logout, profileData }) {
 
           <ListItem>
           <ListItemButton
-              selected={currentURL === 'message'}
+              selected={currentURL.includes('message')}
               role="menuitem"
-              component={currentURL === 'message' ? undefined : 'a'}
+              component='a'
               href='/message'
               onClick={()=>{setCurrentURL('message')}}
             >
@@ -286,19 +323,25 @@ export default function Sidebar({ logout, profileData }) {
               <ListItemContent>
                 <Typography level="title-sm">Messages</Typography>
               </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip>
+
+              {posts.length>0 &&
+                
+                <Chip size="sm" color="primary" variant="solid">
+                  {posts.length}
+                </Chip>
+              }
+
+
             </ListItemButton>
           </ListItem>
           
           <ListItem>
             <ListItemButton
-              selected={currentURL === 'exchangehistory'}
+              selected={currentURL.includes('exchangehistory')}
               role="menuitem"
-              component={currentURL === 'exchangehistory' ? undefined : 'a'}
-              href='/exchangehistory'
-              onClick={()=>{setCurrentURL('exchangehistory')}}
+              component='a'
+              href={`/exchangehistory/#${profileData.email}`}
+              onClick={()=>{setCurrentURL(`/exchangehistory/#${profileData.email}`)}}
             >
               <HistoryIcon />
               <ListItemContent>

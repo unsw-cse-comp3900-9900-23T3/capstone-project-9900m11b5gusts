@@ -111,7 +111,7 @@ export default function WishListPage({ token, profileData, manageItemID }) {
             'Authorization' : `Bearer ${token}`,
           },
           body:JSON.stringify({
-            'email': email
+            'email': `${window.location.hash.slice(1)}`
           })
         });
         if (response.status===200){
@@ -159,7 +159,7 @@ export default function WishListPage({ token, profileData, manageItemID }) {
       });
       if (response.status===200){
         alert('Success')
-        window.location.href='/wishlist'
+        window.location.reload()
       }else{
         const data = await response.json();
         alert(data)
@@ -198,22 +198,27 @@ export default function WishListPage({ token, profileData, manageItemID }) {
           <List sx={{ maxWidth: 500 }}>
 
           <React.Fragment>
-            <ListDivider />
-            <ListItem
-              // startAction={
-              //   <IconButton aria-label="Add" size="sm" variant="plain" color="neutral">
-              //     <Add />
-              //   </IconButton>
-              // }
-            >
-              <ListItemButton
-                onClick={() => setOpenNewItem(true)}
-              >
-                <Add />
-                New Item
-              </ListItemButton>
-            </ListItem>
-            <ListDivider />
+
+            {`${window.location.hash.slice(1)}` === profileData.email &&
+              <>
+                <ListDivider />
+                <ListItem
+                  // startAction={
+                  //   <IconButton aria-label="Add" size="sm" variant="plain" color="neutral">
+                  //     <Add />
+                  //   </IconButton>
+                  // }
+                >
+                  <ListItemButton
+                    onClick={() => setOpenNewItem(true)}
+                  >
+                    <Add />
+                    New Item
+                  </ListItemButton>
+                </ListItem>
+                <ListDivider />
+              </>
+            }
 
             <Modal
               aria-labelledby="modal-title"

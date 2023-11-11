@@ -1104,11 +1104,12 @@ def search_activity(page, **kwargs):
                 'status': activity.status,
                 'category': activity.category,
                 'overview': activity.overview,
-                'detail': activity.detail
+                'detail': activity.detail,
+                'image': activity.image
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
-        return {'result': True, 'info': {}}
+        return {'result': True, 'info': {'total_rows': total_rows, 'activities': ''}}
 
 
 def create_activity(email, **kwargs):
@@ -1422,3 +1423,91 @@ def delete_comment(email, comment_id):
         return {'result': True, 'info': f'Delete comment success'}
     except Exception as e:
         return {'result': False, 'info': f'Fail to delete the comment'}
+
+def get_top10_activities():
+    topics = Topic.query.filter().all()
+    activities = []
+    for topic in topics:
+        infor = {}
+        flag = False
+        for activity in activities:
+            if topic.activity_id == activity['activityId']:
+                activity['count'] += 1
+                flag = True
+        if flag == False:
+            activity = Activity.query.filter_by(id=topic.activity_id).first()
+            infor['activityId'] = activity.id
+            infor['count'] = 1
+            infor['activity_name'] = activity.activity_name
+        if len(infor) != 0:
+            activities.append(infor)
+        if len(activities) == 10:
+            break
+    return {'result': True, 'info': activities}
+
+
+def get_top10_comments_topics():
+    comments = Comment.query.filter().all()
+    topics = []
+    for comment in comments:
+        infor = {}
+        flag = False
+        for topic in topics:
+            if comment.topic_id == topic['topicId']:
+                topic['count'] += 1
+                flag = True
+        if flag == False:
+            topic = Topic.query.filter_by(id=comment.topic_id).first()
+            infor['topicId'] = topic.id
+            infor['activityId'] = topic.activity_id
+            infor['count'] = 1
+            infor['email'] = topic.email
+            activity = Activity.query.filter_by(id=topic.activity_id).first()
+            infor['activity_name'] = activity.activity_name
+        if len(infor) !=0 :
+            topics.append(infor)
+        if len(topics) == 10:
+            break
+    return {'result': True, 'info': topics}
+
+
+def get_top10_comments_activities():
+    comments = Comment.query.filter().all()
+    topic = {}
+    for comment in comments:
+        if comment.topic_id in topic:
+            topic[comment.topic_id] += 1
+        else:
+            topic[comment.topic_id] = 1
+
+    activities = []
+    for index in topic:
+        topicId = index
+        topicInfor = Topic.query.filter_by(id=topicId).first()
+        activityId = topicInfor.activity_id
+        activityInfor = Activity.query.filter_by(id=activityId).first()
+        activity = {}
+        flag = False
+        for activity_infor in activities:
+            if activityId == activity_infor["activityId"]:
+                activity_infor["count"] += topic[index]
+                flag = True
+        if flag == False:
+            activity["count"] = topic[index]
+            activity["email"] = activityInfor.email
+            activity["activityId"] = activityId
+            activity["activity_name"] = activityInfor.activity_name
+        if len(activity) != 0:
+            activities.append(activity)
+    return {'result': True, 'info': activities}
+
+
+
+
+
+
+
+
+
+
+

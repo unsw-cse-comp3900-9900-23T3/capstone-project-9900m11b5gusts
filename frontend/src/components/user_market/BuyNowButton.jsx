@@ -48,7 +48,7 @@ export default function BuyNowButton({ token, item, current_user_email }) {
 
 	function handleConfirmButton () {
 		if (buyNum <= item.item_num  && buyNum > 0) {
-			const isConfirmed = window.confirm("Please contact the seller before purchase.\nAre you sure you want to buy it? ");
+			const isConfirmed = window.confirm(`You are buying ${buyNum} item(s). Are you sure about that? `);
 			if (isConfirmed) {
 				buyingRequest()
 			}
@@ -90,60 +90,69 @@ export default function BuyNowButton({ token, item, current_user_email }) {
 						</DialogTitle>
 						<br />
 						<Typography level="body-lg" sx={{margin:'5px'}}>
-							How many would you want?
+							How many do you want?
 						</Typography>
-						<Input
-							sx={{marginTop:'20px', marginLeft: '40px', width: '150px'}}
-							value={buyNum} 
-							onChange={(e)=>{
-								if (e.target.value){
-									setBuyNum(parseInt(e.target.value))
-								} else {
-									setBuyNum('')
-								}
-							}}
-							endDecorator={
-								<>
-									<Button 
-										variant="outlined"
-										color="primary"
-										type="submit"
-										sx={{ marginRight: '3px',  width:'20px'}}
-										onClick={()=>{
-											if (buyNum>1){
-												setBuyNum(n=>(n-1))
-											}
-										}}
-										
-									>
-										<RemoveIcon sx={{ fontSize: 20 }}/>
-									</Button>
-									<Button 
-										variant="outlined"
-										color="primary"
-										type="submit"
-										sx={{ marginLeft: '3px', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, width:'20px'}}
-										onClick={()=>{
-											if (buyNum<item.item_num){
-												setBuyNum(n=>(n+1))
-											}
-										}}
-									>
-										<AddIcon sx={{ fontSize: 20 }}/>
-									</Button>
-								</>
-							}
-						>  
 						
-						</Input>
-						<Typography level="body-sm" sx={{ marginLeft: '40px' }}>
-							Maximum amount: {item.item_num}
-						</Typography>
-						<br />
+
+						<Box sx={{display:'flex', justifyContent:'center'}}>
+
+							<Stack >
+
+								<Input
+									sx={{marginTop:'40px', width: '150px'}}
+									value={buyNum} 
+									onChange={(e)=>{
+										if (e.target.value){
+											setBuyNum(parseInt(e.target.value))
+										} else {
+											setBuyNum('')
+										}
+									}}
+									endDecorator={
+										<>
+											<Button 
+												variant="outlined"
+												color="primary"
+												type="submit"
+												sx={{ marginRight: '3px',  width:'20px'}}
+												onClick={()=>{
+													if (buyNum>1){
+														setBuyNum(n=>(n-1))
+													}
+												}}
+												
+											>
+												<RemoveIcon sx={{ fontSize: 20 }}/>
+											</Button>
+											<Button 
+												variant="outlined"
+												color="primary"
+												type="submit"
+												sx={{ marginLeft: '3px', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, width:'20px'}}
+												onClick={()=>{
+													if (buyNum<item.item_num){
+														setBuyNum(n=>(n+1))
+													}
+												}}
+											>
+												<AddIcon sx={{ fontSize: 20 }}/>
+											</Button>
+										</>
+									}
+								>  
+								
+								</Input>
+								<Typography level="body-sm" >
+									Maximum amount: {item.item_num}
+								</Typography>
+								<br />
+							</Stack>
+
+						</Box>
 
 						<Button 
 							variant='outlined' 
-							sx={{width:'100px', position: 'absolute', bottom:'20px', left:'200px'}}
+							sx={{width:'100px', position: 'absolute', bottom:'20px', right:'140px'}}
 							onClick={() => {
 								setLayout(undefined);
 							}}
@@ -152,7 +161,7 @@ export default function BuyNowButton({ token, item, current_user_email }) {
 						</Button>
 						
 						<Button 
-							sx={{width:'100px', position: 'absolute', bottom:'20px', left:'320px'}}
+							sx={{width:'100px', position: 'absolute', bottom:'20px', right:'20px'}}
 							onClick={handleConfirmButton}
 						>
 							Confirm 
