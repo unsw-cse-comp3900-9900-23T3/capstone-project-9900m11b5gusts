@@ -1,11 +1,16 @@
 from flask_jwt_extended import get_jwt_identity
-
 from .extensions import db, mail
 from sqlalchemy import or_
 from flask import current_app
 from flask_mail import Message
 import random
 import datetime
+from PIL import Image
+from io import BytesIO
+import base64
+from ultralytics import YOLO
+import os
+from sqlalchemy import desc, asc
 
 
 class User(db.Model):
@@ -159,10 +164,32 @@ def time_test(fn):
     return wrapper
 
 
-'''------func----'''
+def base64_to_image(base64_string):
+    # 从Base64字符串解码为图像
+    base64_data = base64_string.split(",")[1]
+    image_data = base64.b64decode(base64_data)
+    image = Image.open(BytesIO(image_data))
+    return image
 
 
 @time_test
+def predict(image):
+    app_root = os.path.dirname(os.path.abspath(__file__))
+
+    # 构建 'best.pt' 文件的相对路径
+    model_path = os.path.join(app_root, 'best.pt')
+    model = YOLO(model_path)
+
+    result = model.predict(image)
+    class_dict = {0: 'Dumbledore', 1: 'Harry', 2: 'Lucius', 3: 'Luna'}
+    predict_class = result[0].boxes.cls[0].cpu().numpy()
+    predict_label = class_dict[int(predict_class)]
+    print(f'predict class{predict_label}')
+
+
+'''------func----'''
+
+
 def send_email(email, content, code):
     with current_app.app_context():
         mail.connect()
@@ -360,6 +387,9 @@ def insert_item(email, **kwargs):
     input_change = kwargs['change']
     # if kwargs['trading_method'] != 'cash' else ''
     input_exchange_item = kwargs['exchange_item']
+    # predict
+    # img = base64_to_image(input_item_image)
+    # predict(img)
     try:
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
@@ -373,13 +403,17 @@ def insert_item(email, **kwargs):
 
 
 def get_personal_item(email):
-    personal_items = Item.query.filter_by(email=email).all()
+    personal_items = Item.query.filter_by(email=email).order_by(Item.time_stamp.desc()).all()
+
+
+
     if personal_items:
         temp_dict = {}
         user = User.query.filter_by(email=email).first()
         user_name = user.username
-        for item in personal_items:
-            temp_dict[item.id] = {
+
+        for i, item in enumerate(personal_items):
+            temp_dict[i] = {
                 'item_id': item.id,
                 'owner_email': email,
                 'username': user_name,
@@ -527,6 +561,7 @@ def get_item_by_id(item_id):
     else:
         return {'result': True, 'info': {}}
 
+
 def get_item(item_id):
     item = Item.query.filter_by(id=item_id).first()
     if item:
@@ -555,15 +590,15 @@ def get_item(item_id):
 
 
 def selling_history(email):
-    seller_history = Purchase.query.filter_by(seller_email=email).all()
+    seller_history = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).all()
     if seller_history:
         history = {}
-        for h in seller_history:
+        for i, h in enumerate(seller_history):
             buyer_name = User.query.filter_by(
                 email=h.buyer_email).first().username
             seller_name = User.query.filter_by(
                 email=h.seller_email).first().username
-            history[h.id] = {
+            history[i] = {
                 "history_id": h.id,
                 'item_id': h.item_id,
                 'item_detail': get_item(h.item_id),
@@ -583,15 +618,15 @@ def selling_history(email):
 
 
 def buying_history(email):
-    buyer_history = Purchase.query.filter_by(buyer_email=email).all()
+    buyer_history = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).all()
     if buyer_history:
         history = {}
-        for h in buyer_history:
+        for i, h in enumerate(buyer_history):
             buyer_name = User.query.filter_by(
                 email=h.buyer_email).first().username
             seller_name = User.query.filter_by(
                 email=h.seller_email).first().username
-            history[h.id] = {
+            history[i] = {
                 "history_id": h.id,
                 'item_id': h.item_id,
                 'item_detail': get_item(h.item_id),
@@ -616,15 +651,15 @@ def buying_history(email):
 
 def buyer_process_request(email):
     buyer_process_histories = Purchase.query.filter_by(
-        buyer_email=email, status='processing').all()
+        buyer_email=email, status='processing').order_by(Purchase.time_stamp.desc()).all()
     if buyer_process_histories:
         history = {}
-        for h in buyer_process_histories:
+        for i, h in enumerate(buyer_process_histories):
             buyer_name = User.query.filter_by(
                 email=h.buyer_email).first().username
             seller_name = User.query.filter_by(
                 email=h.seller_email).first().username
-            history[h.id] = {
+            history[i] = {
                 "history_id": h.id,
                 'item_id': h.item_id,
                 'item_detail': get_item(h.item_id),
@@ -645,15 +680,15 @@ def buyer_process_request(email):
 
 def seller_process_request(email):
     seller_process_histories = Purchase.query.filter_by(
-        seller_email=email, status='processing').all()
+        seller_email=email, status='processing').order_by(Purchase.time_stamp.desc()).all()
     if seller_process_histories:
         history = {}
-        for h in seller_process_histories:
+        for i, h in enumerate(seller_process_histories):
             buyer_name = User.query.filter_by(
                 email=h.buyer_email).first().username
             seller_name = User.query.filter_by(
                 email=h.seller_email).first().username
-            history[h.id] = {
+            history[i] = {
                 "history_id": h.id,
                 "item_id": h.item_id,
                 'item_detail': get_item(h.item_id),
@@ -816,11 +851,11 @@ def search_item(page, **kwargs):
 
         if s_items:
             item_dict = {'total_rows': total_rows}
-            for item in s_items:
+            for i, item in enumerate(s_items):
                 # print(item, item.item_price)
                 user = User.query.filter_by(email=item.email).first()
                 user_name = user.username
-                item_dict[item.id] = {
+                item_dict[i] = {
                     'owner_email': item.email,
                     'username': user_name,
                     'item_id': item.id,
@@ -861,12 +896,13 @@ def search_item_by_category(page, **kwargs):
         items = items.filter(Item.class3 == cls3)
     page_size = 10
     total_rows = items.count()
+
     offset = (page - 1) * page_size
-    s_items = items.offset(offset).limit(page_size).all()
+    s_items = items.order_by(Item.time_stamp.desc()).offset(offset).limit(page_size).all()
     if s_items:
         r = {}
-        for item in s_items:
-            r[item.id] = {
+        for i, item in enumerate(s_items):
+            r[i] = {
                 'owner_email': item.email,
                 'item_id': item.id,
                 'item_name': item.item_name,
@@ -901,6 +937,7 @@ def insert_wish_list(email, **kwargs):
     input_method = kwargs['trading_method']
     input_change = kwargs['change']
     input_exchange_item = kwargs['exchange_item'] if kwargs['trading_method'] != 'cash' else ''
+
     print('wishlist')
     try:
         event = WishItem(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
@@ -973,16 +1010,16 @@ def delete_wish_list(email, **kwargs):
 
 def check_wish_item(email):
     if email:
-        wish_list_items = WishItem.query.filter_by(email=email).all()
+        wish_list_items = WishItem.query.filter_by(email=email).order_by(WishItem.time_stamp.desc()).all()
     else:
         wish_list_items = WishItem.query.all()
     try:
         if wish_list_items:
             item_dict = {}
-            for wish_item in wish_list_items:
+            for i, wish_item in enumerate(wish_list_items):
                 user = User.query.filter_by(email=wish_item.email).first()
                 user_name = user.username
-                item_dict[wish_item.id] = {
+                item_dict[i] = {
                     'owner_email': wish_item.email,
                     'username': user_name,
                     'item_id': str(wish_item.id),

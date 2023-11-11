@@ -71,3 +71,4 @@ Add a getItemByID API that can search item by item_id
 Fix the multiple item purchase request, using purchase history primary key to identify the specific purchase history
 Add item detail to 4 histories API
 Get Selling and Buying history for all users
+all the item getting method is return item by time_stamp desc 

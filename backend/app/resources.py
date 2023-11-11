@@ -19,6 +19,7 @@ from .models import user_register, user_login, get_profile, update_profile, inse
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from collections import OrderedDict
+from flask import jsonify
 
 authorizations = {
     'jsonWebToken': {
@@ -178,6 +179,7 @@ class CheckPersonalItem(Resource):
         args = Item.payload
         email = args['user_email']
         get_personal_item_result = get_personal_item(email)
+
         return {'success': get_personal_item_result['info']}, 200
 
 
@@ -373,6 +375,7 @@ class InsertWishList(Resource):
         args = Item.payload
         email = get_jwt_identity()
         result = insert_wish_list(email, **args)
+
         if result['info']:
             return {'success': result['info']}, 200
         else:
