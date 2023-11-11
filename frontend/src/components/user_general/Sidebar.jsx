@@ -75,12 +75,16 @@ function Toggler({
 export default function Sidebar({ logout, profileData, token, posts, setPosts}) {
   const [showADFlag, setShowADFlag] = React.useState(true)
 
-  const url = window.location.href.split('/')
+  const url = window.location.href.split(':')
   const [currentURL, setCurrentURL] = React.useState(url[url.length - 1])
 
   const handleCloseAD = () => {
     setShowADFlag(false)
   }
+
+  React.useState(() => {
+    console.log('currentURL: ', currentURL)
+  }, [currentURL])
 
 
   React.useState(() => {
@@ -202,9 +206,9 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
         >
           <ListItem>
             <ListItemButton
-              selected={currentURL === 'market'}
+              selected={currentURL.includes('market')}
               role="menuitem"
-              component={currentURL === 'market' ? undefined : 'a'}
+              component={currentURL.includes('market') ? undefined : 'a'}
               href='/market'
               onClick={()=>{setCurrentURL('market')}}
             >
@@ -309,10 +313,10 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
 
           <ListItem>
           <ListItemButton
-              selected={currentURL === 'message'}
+              selected={currentURL.includes('message')}
               role="menuitem"
               component='a'
-              href={currentURL === 'message'? undefined:'a'}
+              href='/message'
               onClick={()=>{setCurrentURL('message')}}
             >
               <QuestionAnswerRoundedIcon />
