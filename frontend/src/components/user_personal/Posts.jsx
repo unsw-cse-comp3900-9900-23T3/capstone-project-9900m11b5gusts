@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import ItemCard from "../user_general/ItemCard";
 import { useLocation } from 'react-router-dom';
+import PostNewItemPage from "./PostNewItemPage";
 
 
 export default function Posts({ token, profileData, manageItemID }) {
@@ -66,6 +67,7 @@ export default function Posts({ token, profileData, manageItemID }) {
           if (data.success !== 'no item'){
               setPosts([])
               Object.entries(data.success).map((item) => {
+              console.log('item: ', item)
               setPosts(prev => [...prev, item[1]])
             })
           }
@@ -93,16 +95,20 @@ export default function Posts({ token, profileData, manageItemID }) {
 						<Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
               {email === profileData.email
                 ?
-                <Typography level="h2">My Posts</Typography>
+                <>
+                  <Typography level="h2">My Posts</Typography>
+                  <PostNewItemPage token={token} profileData={profileData}/>
+                </>
                 :
                 <Typography level="h2">Post of {window.location.hash.slice(1)}</Typography>
               }
 							
 
 
-							<Button component="a" href="/myposts/postnewitem" variant="soft" size="sm" startDecorator={<AddIcon />}>
+							{/* <Button component="a" href="/myposts/postnewitem" variant="soft" size="sm" startDecorator={<AddIcon />}>
 								Post New Item
-							</Button>
+							</Button> */}
+              
 							
 						</Stack>
 					</Stack>

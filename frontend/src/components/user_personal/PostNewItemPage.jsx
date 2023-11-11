@@ -19,10 +19,14 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CheckIcon from '@mui/icons-material/Check';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
-
+import AddIcon from '@mui/icons-material/Add';
+import Modal from '@mui/joy/Modal';
+import ModalClose from '@mui/joy/ModalClose';
 
 import UploadFileButton from "../user_general/UploadFileButton.jsx"
 import SelectCategoryButton from "../user_general/SelectCategoryButton.jsx"
+
+
 
 
 
@@ -38,6 +42,8 @@ export default function PostNewItemPage({ token, profileData }) {
   const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
   const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
   const [classesString, setClassesString] = React.useState('')
+
+  const [openNewItem, setOpenNewItem] = React.useState(false);
 
   const handleClearCategory = () => {
     setClasses((p) => ({...p, c1: '', c2: '', c3: ''}))
@@ -79,8 +85,8 @@ export default function PostNewItemPage({ token, profileData }) {
 
 
   async function postNewItem(){
-    if (!(itemName && amount && tradeMethod && price && description)) {
-      alert('Please provide all information.')
+    if (!(itemName && amount>0 && tradeMethod && price && description)) {
+      alert('Please provide all information correctly.')
     } else {
       const response = await fetch('http://127.0.0.1:5000/Items/uploadPersonalItem', {
         method:'POST',
@@ -115,117 +121,114 @@ export default function PostNewItemPage({ token, profileData }) {
 
   return (
     
-    <Box sx={{ flex: 1, width: "100%", minWidth: '500px' }} >
+    <React.Fragment>
 
-      <Stack sx={{ mb: 2 }}>
-        <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Button style={{margin:'15px', width:'100px'}} startDecorator={<ArrowBackIosIcon/>} component="a" href={`/posts#${profileData.email}`} variant="soft" size="sm" >
-            Back
-          </Button>
+    {`${window.location.hash.slice(1)}` === profileData.email &&
+      <>
+        <Button component="a" variant="soft" size="sm" startDecorator={<AddIcon />}
+          onClick={() => setOpenNewItem(true)}
+        >
+          Post New Item
+        </Button>
+      </>
+    }
 
-        </Stack>
-      </Stack>
-
-      <Box sx={{ position: "sticky", top: { sm: -100, md: -110 }, bgcolor: "background.body" }} >
-        <Box sx={{ px: { xs: 2, md: 6 } }} >
-          <Typography
-            level="h2"
-            sx={{
-              mt: 1,
-              mb: 2
-            }}
-          >
-            Post new item
-          </Typography>
-        </Box>
-      </Box>
-
-      <Stack spacing={4} sx={{ display: "flex", maxWidth: "700px", mx: "auto", px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 } }} >
-        <Card>
+    <Modal
+      aria-labelledby="modal-title"
+      aria-describedby="modal-desc"
+      open={openNewItem}
+      onClose={() => setOpenNewItem(false)}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position:'absolute', left:'220px'}}
+    >
+      
+      <Stack spacing={4} sx={{ display: "flex", width:'80%',maxWidth:'700px', mx: "auto", px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 }, height:'90%'}} >
+      
+        <Card sx={{height:'100%'}}>
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <br />
 
           <Stack
             direction="column"
             spacing={2}
-            sx={{ my: 1 }}
+            sx={{ my: 1, overflow:'auto'}}
           >
-            {/* <Stack direction="row" spacing={2}> */}
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={400}
-                  sx={{ flex: 1, minWidth: 400, borderRadius: "3%" }}
-                >
-                  <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
-                    <CardCover>
-                      {picture && 
-                        <img
-                          src={picture}
-                          loading="lazy"
-                          alt="picture"
-                        />
-                      }
-                    </CardCover>
-                  </Card>
-                </AspectRatio>
-              </Stack>
+            <Stack direction="column" spacing={1}>
+              <AspectRatio
+                ratio="1"
+                maxHeight={400}
+                sx={{ flex: 1, minWidth: 400, borderRadius: "3%" }}
+              >
+                <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+                  <CardCover>
+                    {picture && 
+                      <img
+                        src={picture}
+                        loading="lazy"
+                        alt="picture"
+                      />
+                    }
+                  </CardCover>
+                </Card>
+              </AspectRatio>
+            </Stack>
 
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-            <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
-                              
-            <FormControl >
-              <FormLabel>Select a category</FormLabel>
-              <Stack direction="row" spacing={1}>
-                <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
-                <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
-              </Stack>
-            </FormControl>
+              <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
+                                
+              <FormControl >
+                <FormLabel>Select a category</FormLabel>
+                <Stack direction="row" spacing={1}>
+                  <SelectCategoryButton  token={token} classes={classes} setClasses={setClasses} handleClearCategory={handleClearCategory} setApplyClassesFlag={setApplyClassesFlag}/>
+                  <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
+                </Stack>
+              </FormControl>
 
-            <FormControl >
-              <FormLabel>Name of the item</FormLabel>
-              <Stack direction="row" spacing={1}>
-                <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
-              </Stack>
-            </FormControl>
+              <FormControl >
+                <FormLabel>Name of the item</FormLabel>
+                <Stack direction="row" spacing={1}>
+                  <Input style={{width: '100%'}} size="sm" value={itemName} onChange={handleItemNameChange}/>
+                </Stack>
+              </FormControl>
 
-            <FormControl>
-              <FormLabel>Amount of the item</FormLabel>
-              <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
-            </FormControl>
+              <FormControl>
+                <FormLabel>Amount of the item</FormLabel>
+                <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
+              </FormControl>
 
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Description</FormLabel>
-              <Textarea
-                minRows={3}
-                style={{width: '100%'}} 
-                size="sm"
-                sx={{ flexGrow: 1 }}
-                value={description}
-                onChange={handleDescriptionChange}
-                placeholder="Describe your item here..."
-              />
-            </FormControl>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Description</FormLabel>
+                <Textarea
+                  minRows={3}
+                  style={{width: '100%'}} 
+                  size="sm"
+                  sx={{ flexGrow: 1 }}
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  placeholder="Describe your item here..."
+                />
+              </FormControl>
 
-            <br />
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Exchange for cash or goods?</FormLabel>
-                <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
-                  <Option value='cash'>cash</Option>
-                  <Option value='goods'>goods</Option>
-                </Select>
-            </FormControl>
+              <br />
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Exchange for cash or goods?</FormLabel>
+                  <Select   onChange={(e)=>{setTradeMedod(e.target.innerText)}}>
+                    <Option value='cash'>cash</Option>
+                    <Option value='goods'>goods</Option>
+                  </Select>
+              </FormControl>
 
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>{tradeMethod === 'cash' ? 'Price ($AUD for each)': 'Describe the goods you want to exchange for' }</FormLabel>
-              <Input
-                style={{width: '100%'}} 
-                size="sm"
-                sx={{ flexGrow: 1 }}
-                value={price}
-                onChange={handlePriceChange}
-              />
-            </FormControl>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>{tradeMethod === 'cash' ? 'Price ($AUD for each)': 'Describe the goods you want to exchange for' }</FormLabel>
+                <Input
+                  style={{width: '100%'}} 
+                  size="sm"
+                  sx={{ flexGrow: 1 }}
+                  value={price}
+                  onChange={handlePriceChange}
+                />
+              </FormControl>
 
             </Stack>
           </Stack>
@@ -240,6 +243,7 @@ export default function PostNewItemPage({ token, profileData }) {
           </CardOverflow>
         </Card>
       </Stack>
-    </Box>
+    </Modal>
+  </React.Fragment>
   )
 }

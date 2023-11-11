@@ -87,14 +87,14 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
   }, [currentURL])
 
 
-  React.useState(() => {
-    checkMessage()
-    const refreshInterval = setInterval(() =>{
-      checkMessage()
-    }, 3000)
+  // React.useState(() => {
+  //   checkMessage()
+  //   const refreshInterval = setInterval(() =>{
+  //     checkMessage()
+  //   }, 3000)
 
-    return () => clearInterval(refreshInterval);
-  }, [])
+  //   return () => clearInterval(refreshInterval);
+  // }, [])
 
   async function checkMessage(){
     
@@ -352,10 +352,10 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
 
           <ListItem>
             <ListItemButton
-              selected={currentURL === 'myprofile'}
+              selected={currentURL.includes('myprofile')}
               onClick={()=>{setCurrentURL('myprofile')}}
               role="menuitem"
-              component={currentURL === 'myprofile' ? undefined : 'a'}
+              component={currentURL.includes('myprofile') ? undefined : 'a'}
               href='/myprofile'
               
             >
@@ -392,7 +392,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
           </ListItem>
         </List>
         
-        {showADFlag && 
+        {/* {showADFlag && 
           <Card invertedColors variant="soft" color="warning" size="sm" sx={{ boxShadow: 'none' }} >
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography level="title-sm">AD TITLE</Typography>
@@ -408,7 +408,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
               button
             </Button>
           </Card>
-        }
+        } */}
 
 
       </Box>
