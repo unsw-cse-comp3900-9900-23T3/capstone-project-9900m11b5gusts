@@ -12,7 +12,6 @@ from ultralytics import YOLO
 import os
 
 
-
 class User(db.Model):
     __tablename__ = 'tb_user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -187,16 +186,16 @@ def predict(image):
         predict_label = class_dict[int(predict_class)]
         print(f'predict class {predict_label}')
         return {'predict':
-                    {'class1': 'Coles',
-                     'class2': 'Harry porter series cards',
-                     'class3': f'{predict_label}'}
+                {'class1': 'Coles',
+                 'class2': 'Harry porter series cards',
+                 'class3': f'{predict_label}'}
                 }
     else:
         print('predict None')
         return {'predict':
-                    {'class1': '',
-                     'class2': '',
-                     'class3': ''}
+                {'class1': '',
+                 'class2': '',
+                 'class3': ''}
                 }
 
 
@@ -416,9 +415,8 @@ def insert_item(email, **kwargs):
 
 
 def get_personal_item(email):
-    personal_items = Item.query.filter_by(email=email).order_by(Item.time_stamp.desc()).all()
-
-
+    personal_items = Item.query.filter_by(
+        email=email).order_by(Item.time_stamp.desc()).all()
 
     if personal_items:
         temp_dict = {}
@@ -603,7 +601,8 @@ def get_item(item_id):
 
 
 def selling_history(email):
-    seller_history = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).all()
+    seller_history = Purchase.query.filter_by(
+        seller_email=email).order_by(Purchase.time_stamp.desc()).all()
     if seller_history:
         history = {}
         for i, h in enumerate(seller_history):
@@ -631,7 +630,8 @@ def selling_history(email):
 
 
 def buying_history(email):
-    buyer_history = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).all()
+    buyer_history = Purchase.query.filter_by(
+        buyer_email=email).order_by(Purchase.time_stamp.desc()).all()
     if buyer_history:
         history = {}
         for i, h in enumerate(buyer_history):
@@ -751,7 +751,8 @@ def handle_purchase_request(email, **kwargs):
     history_id = int(kwargs['history_id'])
     action = kwargs['action']
 
-    item_request = Purchase.query.filter_by(seller_email=email, id=history_id).first()
+    item_request = Purchase.query.filter_by(
+        seller_email=email, id=history_id).first()
 
     if item_request:
         item_id = int(item_request.item_id)
@@ -827,7 +828,8 @@ def search_item(email, page, **kwargs):
     }
     # 如果类别和keyword全为空，则按照wishlist的标签返回物品
     if not cls1 and not cls2 and not cls3 and not keyword:
-        wish_item = WishItem.query.filter_by(email=email).order_by(WishItem.time_stamp.desc()).all()
+        wish_item = WishItem.query.filter_by(
+            email=email).order_by(WishItem.time_stamp.desc()).all()
 
         if wish_item:
             recommend_items = {}
@@ -948,7 +950,8 @@ def search_item_by_category(page, **kwargs):
     total_rows = items.count()
 
     offset = (page - 1) * page_size
-    s_items = items.order_by(Item.time_stamp.desc()).offset(offset).limit(page_size).all()
+    s_items = items.order_by(Item.time_stamp.desc()).offset(
+        offset).limit(page_size).all()
     if s_items:
         r = {}
         for i, item in enumerate(s_items):
@@ -1060,7 +1063,8 @@ def delete_wish_list(email, **kwargs):
 
 def check_wish_item(email):
     if email:
-        wish_list_items = WishItem.query.filter_by(email=email).order_by(WishItem.time_stamp.desc()).all()
+        wish_list_items = WishItem.query.filter_by(
+            email=email).order_by(WishItem.time_stamp.desc()).all()
     else:
         wish_list_items = WishItem.query.all()
     try:
@@ -1450,11 +1454,13 @@ def show_topic_detail(activity_id, page, page_size):
                         'user_avatar': topic_publisher.image,
                         'detail': topic.detail,
                         'image': topic.image,
-                        'comments': comment_dict[topic.id]
+                        'comments': comment_dict.get(topic.id, [])
                     }
 
         return {'result': True, 'info': {'total_rows': total_rows, 'topic': activity_dict}}
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return {'result': False, 'info': {'total_rows': 0}}
 
 
@@ -1473,6 +1479,7 @@ def delete_comment(email, comment_id):
         return {'result': True, 'info': f'Delete comment success'}
     except Exception as e:
         return {'result': False, 'info': f'Fail to delete the comment'}
+
 
 def get_top10_activities():
     topics = Topic.query.filter().all()
@@ -1514,7 +1521,7 @@ def get_top10_comments_topics():
             infor['email'] = topic.email
             activity = Activity.query.filter_by(id=topic.activity_id).first()
             infor['activity_name'] = activity.activity_name
-        if len(infor) !=0 :
+        if len(infor) != 0:
             topics.append(infor)
         if len(topics) == 10:
             break
@@ -1550,14 +1557,3 @@ def get_top10_comments_activities():
         if len(activity) != 0:
             activities.append(activity)
     return {'result': True, 'info': activities}
-
-
-
-
-
-
-
-
-
-
-
