@@ -185,11 +185,19 @@ def predict(image):
     if result[0]:
         predict_class = result[0].boxes.cls[0].cpu().numpy()
         predict_label = class_dict[int(predict_class)]
-        print(f'predict class{predict_label}')
-        return {'predict': predict_label}
+        print(f'predict class {predict_label}')
+        return {'predict':
+                    {'class1': 'Coles',
+                     'class2': 'Harry porter series cards',
+                     'class3': f'{predict_label}'}
+                }
     else:
         print('predict None')
-        return {'predict': ''}
+        return {'predict':
+                    {'class1': '',
+                     'class2': '',
+                     'class3': ''}
+                }
 
 
 '''------func----'''
