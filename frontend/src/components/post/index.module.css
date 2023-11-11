@@ -4,7 +4,7 @@
 .showDetailTop{
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 .commentsBox{
     margin: 1rem;
@@ -29,4 +29,11 @@ justify-content: center;
 .imgItem img{
     width: 100%;
     height: 100%;
+}
+
+.paginationBox{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
+    align-items: center;
 }

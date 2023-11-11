@@ -258,17 +258,16 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                 {/* <ListItem>
                   <ListItemButton>Inventory</ListItemButton>
                 </ListItem> */}
-                {profileData.identity == 'User'?
-                  <div>
-                    <ListItem>
-                      <ListItemButton
-                        selected={currentURL === '/user_compaigns'}
-                        onClick={()=>{setCurrentURL('/user_compaigns')}}
-                        component={currentURL === '/user_compaigns' ? undefined : 'a'}
-                        href='/user_compaigns'
-                        >User Compaigns</ListItemButton>
-                    </ListItem>
-                    </div> : ""}
+                <div>
+                  <ListItem>
+                    <ListItemButton
+                      selected={currentURL === '/user_compaigns'}
+                      onClick={()=>{setCurrentURL('/user_compaigns')}}
+                      component={currentURL === '/user_compaigns' ? undefined : 'a'}
+                      href='/user_compaigns'
+                      >User Compaigns</ListItemButton>
+                  </ListItem>
+                  </div>
                 {profileData.identity == 'administrator'?
                   <div>
                       <ListItem>

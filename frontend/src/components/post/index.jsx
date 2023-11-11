@@ -25,6 +25,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ChatIcon from '@mui/icons-material/Chat';
+import EditIcon from '@mui/icons-material/Edit';
+import Pagination from '@mui/material/Pagination';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import img from '../../assets/GuiyangMoon.jpg'
 import styles from './index.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -60,39 +64,40 @@ const baseUrl = "http://127.0.0.1:5000/";
 
 const urls = {
   postTopic: baseUrl + "Topic/createTopic",
-  topicDetail: baseUrl + "Topic/topicDetail/",
-  
+    topicDetail: baseUrl + "Topic/topicDetail/",
+    deleteTopic: baseUrl + "Topic/deleteTopic",
+    editTopic: baseUrl + "Topic/editTopic",
 }
 
 
-export default function Posts() {
-
+export default function Posts({ profileData }) {
     let location = useLocation();
-    const { activityId } = location.state
-    
-    console.log(activityId)
-
+    const { activityId,activity} = location.state
     const token = localStorage.getItem("token");
+    console.log(activity)
     const navigate = useNavigate();
     const [openModal, setOpenModal] = React.useState(false);
     const [imgUrlArr, setImgUrlArr] = React.useState([]);
     const [addDetail, setAddDetail] = React.useState('');
+    const [paginationObj, setPaginationObj] = React.useState({
+    currentPage: 1,
+    pageSize: 10,
+    count: 0,
+    })
     
-    const [listData, setListData] = React.useState([{
-            "activityId": "2",
-            "detail": "Happy to help with cards your missing but you will need to send a returned stamped envelope.Or lm located in Berwick.Woolworths cards heaps off and about 15 to card of the Coles",
-        }
-    ]);
+    const [editTopicId, setEditTopicId] = React.useState()
+    const [listData, setListData] = React.useState([]);
 
     React.useEffect(() => {
 
-        GetTopicDetailApi(activityId)
+        GetTopicDetailApi()
 
-    }, [])
+    }, [paginationObj.count, paginationObj.pageSize, paginationObj.currentPage])
 
     const handleClose = () => {
         setAddDetail('')
         setImgUrlArr([])
+        setEditTopicId("");
         setOpenModal(false)
     }
 
@@ -100,14 +105,42 @@ export default function Posts() {
         setOpenModal(true)
     }
     const savePost = () => {
+        if (editTopicId) {
+            editTopic()
+        } else {
+            postTopicApi()
+        }
+
         
-        postTopicApi()
+        
         
         setOpenModal(false)
 
     }
-    const goComments = () => {
-        navigate("/comments")
+    const goComments = (item) => {
+        navigate("/comments",{state:{topicObj:item}})
+    }
+      const changePagination = (e, value) => {
+        setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
+        GetTopicDetailApi()
+    }
+    
+
+
+      const  deleteTopic= async (topicId) => {
+        const res = await fetch(urls.deleteTopic, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(
+                {
+                   topicId,
+                }
+            )
+        })
+        await  GetTopicDetailApi()
     }
 
     const postTopicApi = async () => {
@@ -119,24 +152,90 @@ export default function Posts() {
             },
             body: JSON.stringify(
                 {
-                    "activityId": "2",
+                    "activityId": activityId,
                     "detail": addDetail,
                     'image': JSON.stringify(imgUrlArr)
                 }
             )
         })
+        handleClose()
         const { success, total } = await res.json();
+        await  GetTopicDetailApi()
     }
 
-    const GetTopicDetailApi = async (activityId) => {
-        const res = await fetch(urls.topicDetail+`${activityId}/1/10`, {
+    const editTopic = async () => {
+            const res = await fetch(urls.editTopic, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(
+                {
+                    topicId: editTopicId,
+                    detail: addDetail,
+                    image:JSON.stringify(imgUrlArr)
+                }
+    
+            )
+        })
+        handleClose()
+        const { success, total } = await res.json();
+        await  GetTopicDetailApi()
+        
+    }
+
+    const GetTopicDetailApi = async () => {
+        const res = await fetch(urls.topicDetail+`${activityId}/${paginationObj.currentPage}/${paginationObj.pageSize}`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
         })
-        const { success, total } = await res.json();
+        const { success, total_rows } = await res.json();
+        setPaginationObj(Object.assign(paginationObj, { count: Math.ceil(total_rows / paginationObj.pageSize) }))
+        setListData(formatData(success))
+    }
+  const formatData = (data) => {
+    let arr = []
+    for (let k in data) {
+      arr.push({ id: k, ...data[k]})
+    }
+    return arr;
+
+    }
+    const handleChange = (v) => {
+        setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value,currentPage:1 }))
+        GetTopicDetailApi()
+    }
+    
+    const formatImg = (item) => {
+        let res = null
+        try {
+            res = JSON.parse(item.image).map(item => 
+                                <div className={styles.imgItem}><img src={item} alt="" /></div>
+                                )        
+        } catch (e) {
+            console.log(e)
+        }
+        return res
+
+    }
+    const clickEdit = (item) => {
+        
+         
+        let res = []
+         try {
+            res = JSON.parse(item.image)
+        } catch (e) {
+            console.log(e)
+        }
+        setImgUrlArr(res)
+        setAddDetail(item.detail)
+        setEditTopicId(item.id)
+        setOpenModal(true)
+
     }
 
     return (
@@ -146,31 +245,15 @@ export default function Posts() {
                     <CardMedia
                         component="img"
                         height="194"
-                        image={img}
+                        image={activity.image}
                         alt="Paella dish"
                     />
                 </Card>
-                <Card sx={{ maxWidth: '70%' }}>
+                <Card sx={{ maxWidth: '69%' }}>
                     <CardContent>
+                        <h1>{ activity.activity_name}</h1>
                         <Typography variant="body2" color="text.secondary">
-                            This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like.
-                            This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like. This impressive paella is a perfect party dish and a fun meal to cook
-                            together with your guests. Add 1 cup of frozen peas along with the mussels,
-                            if you like.
+                            {activity.detail}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -180,25 +263,70 @@ export default function Posts() {
 
 
              {
-                listData.map(item=> <Card onClick={goComments} className={styles.marginBtn}>
+                listData.map(item=> <Card onClick={()=>goComments(item)} className={styles.marginBtn}>
                         <CardContent style={{backgroundColor:'aliceblue'}}>
                         <Typography variant="body2" color="text.secondary">
                             <div className={styles.imgbox}>
-                                <div className={styles.imgItem}><img src={img} alt="" /></div>
-                                <div className={styles.imgItem}><img src={img} alt="" /></div>
-                                <div className={styles.imgItem}><img src={img} alt="" /></div>
-                                <div className={styles.imgItem}><img src={img} alt="" /></div>
+                                {
+                                    formatImg(item)
+                                }
                             </div>
                             {item.detail}
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing style={{ justifyContent: "center"}}>
                         <IconButton aria-label="show chats">
-                            <ChatIcon style={{ color:"rgb(8 98 246 / 77%)"}} />
+                            <ChatIcon style={{ color: "rgb(8 98 246 / 77%)" }} />
+                           
+                            
                         </IconButton>
+                        {profileData.identity != 'User' ?
+                            <IconButton aria-label="show chats" >
+                                <DeleteIcon onClick={(e) => {
+                                    deleteTopic(item.id)
+                                    e.stopPropagation()
+                                    return false
+                                }} style={{ color: "red" }}></DeleteIcon>
+                            </IconButton>:""
+                        }
+                        {
+                            profileData.email === item.email?<IconButton aria-label="show chats">
+                            <EditIcon style={{ color: "rgb(8 98 246 / 77%)" }} onClick={(e) => {
+                                clickEdit(item)
+                                 e.stopPropagation()
+                                    return false
+                            }} />
+                            </IconButton>:""
+                        
+                        }
+                            
+                        
+                        
+                         
+
                     </CardActions>
-                </Card>)      
+                </Card>) 
+                
+                
             }
+             <div className={styles.paginationBox}>
+          <Pagination count={paginationObj.count} page={paginationObj.currentPage} variant="outlined" color="primary" onChange={changePagination} />
+          <Select
+            labelId="demo-simple-select-standard-label"
+            className={styles.select}
+            // value={age}
+            onChange={handleChange}
+            defaultValue={10}
+            size='small'
+            label="pageSize"
+          >
+            <MenuItem value={10} defaultOpen={true}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={30}>30</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+            <MenuItem value={100}>100</MenuItem>
+          </Select>
+        </div>
             
 
             <Modal
@@ -216,7 +344,7 @@ export default function Posts() {
                             })
                         }
                         <UploadImage setImgUrl={setImgUrlArr} imgUrl={imgUrlArr} idx={imgUrlArr.length}/>
-                        <Input style={{ width: '100%' }}
+                        <Input defaultValue={addDetail} style={{ width: '100%' }}
                             multiline placeholder="please add your views" onChange={(e) => {
                                 setAddDetail(e.target.value)
                             }}></Input>

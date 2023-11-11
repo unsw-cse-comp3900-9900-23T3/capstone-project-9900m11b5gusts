@@ -29,6 +29,15 @@ import styles from './index.module.css';
 
 import CheckIcon from '@mui/icons-material/Check'; 
 import CloseIcon from '@mui/icons-material/Close';
+import { useLocation } from 'react-router-dom';
+
+const baseUrl = "http://127.0.0.1:5000/";
+
+const urls = {
+    commentTopic: baseUrl + "Topic/commentTopic",
+    deleteComment: baseUrl + "Topic/deleteComment",
+    topicComment: baseUrl + "Topic/topicComment",
+}
 
 
 const ExpandMore = styled((props) => {
@@ -56,68 +65,140 @@ const style = {
 
 
 
-export default function Comments() {
+export default function Comments({profileData}) {
+
+    const token = localStorage.getItem("token");
+    let location = useLocation();
+    const { topicObj } = location.state
+
+    const comments = topicObj?.comments
+
+    const [topicData,setTopicData] = React.useState({})
     const [expanded, setExpanded] = React.useState(false);
-    const [listData, setListData] = React.useState([
-        {
-            id: 1, pid: null, name: "Hello", open: false, user: 'aaa', children: [
-                {
-                    id: 4, pid: 1, name: "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文v", open: false, user: 'bbb', children: []
-                },
-                                {
-                    id: 4, pid: 1, name: "NiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNiceNice", open: false, user: 'bbb', children: []
-                },                {
-                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
-                },                {
-                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
-                },                {
-                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
-                },                {
-                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
-                },                {
-                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
-                },                {
-                    id: 4, pid: 1, name: "Nice", open: false, user: 'bbb', children: []
-                },
-            ]
-        },
-        {
-            id: 2, pid: null, name: "heheh", open: false, user: 'ccc', children: [
-                {
-                    id: 5, pid: 2, name: "hahah", open: false, user: 'bbb', children: []
-                }
-            ]
-        },
-        {
-            id: 3, pid: null, open: false, name: " heihei", user: 'ddd', children: []
-        }
-    ]);
+    const [listData, setListData] = React.useState([])
+
 
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
     const [openModal, setOpenModal] = React.useState(false);
+    const [comment, setComment] = React.useState('');
 
-    const handleClose = () => setOpenModal(false);
+    const handleClose = () => {
+        setOpenModal(false);
+        setComment('');
+    }
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+    React.useEffect(() => {
+        setTopicData(topicObj)
 
-    const clickMore = (item) => {
+        setListData(comments.map(e => {
+            return {
+                id: e.id,
+                pid: null,
+                name: e.comment,
+                open: false,
+                user: e.email,
+                avatar: e.avatar,
+                children: []
+            }
+        }))
+
+    }, [])
+
+    const createCommentApi = async () => {
+        const res = await fetch(urls.commentTopic, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(
+                {
+                    "topicId": topicObj.id,
+                    "comment": comment
+                }
+            )
+        })
+        handleClose()
+        const { success, total } = await res.json();
+
+        await getCommentApi()
+    }
+
+    const getCommentApi = async () => {
+        const res = await fetch(urls.topicComment+`/${topicObj.id}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+        const { success, total } = await res.json();
+        console.log(success)
+        setListData(success.comments.map(e => {
+            return {
+                id: e.id,
+                pid: null,
+                name: e.comment,
+                open: false,
+                user: e.email,
+                avatar: e.avatar,
+                children: []
+            }
+        }))
+    }
+
+    const delCommentApi = async (commentId) => {
+        const res = await fetch(urls.deleteComment+`/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+        handleClose()
+        const { success, total } = await res.json();
+        await getCommentApi()
+    }
+
+    const clickMore = () => {
         setOpenModal(true)
     }
     const deleteClick = () => {
         
+    }
+   
+    const formatImg = (item) => {
+        let res = null
+        try {
+            res = JSON.parse(item.image).map(item => 
+                                <div className={styles.imgItem}><img src={item} alt="" /></div>
+                                )        
+        } catch (e) {
+            console.log(e)
+        }
+        return res
+
     }
 
     return (
         <div className={styles.outerBox}>
             <div className={styles.showDetailTop}>
                 <Card sx={{ maxWidth: '100%' }}>
-                    <CardContent>
+                    <CardContent onClick={() => {
+                                    clickMore()
+                                }}>
                         <Typography variant="body2" color="text.secondary">
-                            My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer
-                            ,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer,My Answer
+                            <div className={styles.imgbox}>
+                                {
+                                    formatImg(topicData)
+                                }
+                                {topicData.detail}
+                            </div>
+                            
                         </Typography>
                     </CardContent>
                 </Card>
@@ -128,21 +209,28 @@ export default function Comments() {
                     <List dense={dense}>
                         {listData.map(item => (
                             <>
-                                <ListItemButton onClick={() => {
-                                    clickMore(item)
-                                }}>
+                                <ListItemButton>
                                     <ListItemIcon>
                                         <AccountCircle />
                                     </ListItemIcon>
                                     <Card style={{marginRight: '3rem'}}>{ item.user }</Card>
                                     <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all'}} primary={item.name}/>
+                                {profileData.email === item.user ?
+                                        <IconButton aria-label="show chats" >
+                                            <DeleteIcon onClick={(e) => {
+                                                delCommentApi(item.id)
+                                                e.stopPropagation()
+                                                return false
+                                            }} style={{ color: "red" }}></DeleteIcon>
+                                        </IconButton>:""
+                                    }
                                 </ListItemButton>
                                 <Collapse in={item.children.length > 0} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         {
                                             item.children.map(child => (
                                                 <>
-                                                    <ListItemButton sx={{ pl: 4 }} onClick={()=>{ clickMore(child) }}>
+                                                    <ListItemButton sx={{ pl: 4 }}>
                                                         <ListItemIcon>
                                                             <AccountCircle />
                                                         </ListItemIcon>
@@ -155,6 +243,7 @@ export default function Comments() {
 
                                     </List>
                                 </Collapse>
+                                
 
                             </>))}
                     </List>
@@ -172,34 +261,18 @@ export default function Comments() {
                         Comment
                     </Typography>
                     <List>
-                        <Input style={{width: '100%'}} multiline placeholder="Good criticism starts civilization" ></Input>
-                        {/* {[1, 2, 3, 4, 5, 6, 7].map(item => <>
-                            <ListItem
-                                secondaryAction={
-                                    <IconButton edge="end" aria-label="delete" onClick={deleteClick}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <AccountCircle />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Single-line item"
-                                    secondary={secondary ? 'Secondary text' : null}
-                                />
-                            </ListItem>
-                        </>)} */}
+                        <Input style={{ width: '100%' }} onChange={(e) => {
+                            setComment(e.target.value)
+                        }} multiline placeholder="Good criticism starts civilization" ></Input>
+
                         <div style={{display: 'flex', justifyContent: 'space-evenly', paddingTop: '2rem'}}>
                             <IconButton color="primary" onClick={() => {
-                                setOpenModal(false)
+                                createCommentApi()
                             }}>
                                 <CheckIcon />
                             </IconButton>
                             <IconButton color="secondary" onClick={() => {
-                                setOpenModal(false)
+                                handleClose()
                             }}>
                                 <CloseIcon />
                             </IconButton>

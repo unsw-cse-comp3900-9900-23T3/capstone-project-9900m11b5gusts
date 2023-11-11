@@ -164,14 +164,14 @@ export default function App() {
 										<Route path="/exchangehistory*" element={<ExchangeHistoryPage token={token} profileData={profileData}/>} />
 										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
-										<Route path="/comments" element={<Comments />} />
+										<Route path="/comments" element={<Comments profileData={profileData} />} />
 										<Route path="/echarts" element={<MyEcharts />} />
 					
 										<Route path="/showImg" element={<ShowImg />} />
 										<Route path="/admin" element={<Admin />} />
 										<Route path="/user" element={<UserMgr />} />
 										<Route path="/check" element={<Check />} />
-										<Route path="/post" element={<Post />} />
+										<Route path="/post" element={<Post  profileData={profileData} />}  />
 										
 									</Routes>
 								</BrowserRouter>

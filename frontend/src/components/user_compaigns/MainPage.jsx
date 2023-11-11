@@ -75,7 +75,7 @@ export default function MainPage() {
   }, [paginationObj.count])
 
   const handleChange = (v) => {
-    setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+    setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value,currentPage:1 }))
     initQueryData()
     // showActivity()
     searchActivity()
@@ -182,7 +182,6 @@ export default function MainPage() {
 
   const searchActivity = async () => {
     setPaginationObj(Object.assign(paginationObj, { currentPage: 1 }))
-    queryData['category'] = 'Art'
     const res = await fetch(urls.searchActivity + paginationObj.currentPage, {
       method: 'POST',
       body: JSON.stringify(queryData),
@@ -240,9 +239,7 @@ export default function MainPage() {
   }
 
   const userActivityBtn = (item, idx) => {
-    const activity_name = item.activity_name;
-    // navigate("/post", { state: { activity_name} });
-    navigate("/post", { state: { activity_name: "我是标题", activityId: item.id } });
+    navigate("/post", { state: { activityId: item.id, activity: item } });
   }
 
   return (

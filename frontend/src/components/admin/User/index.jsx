@@ -114,7 +114,7 @@ export default function UserMgr() {
     }, [paginationObj.count])
 
     const handleChange = (v) => {
-        setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+        setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value,currentPage:1 }))
         getUserData()
     }
     const changePagination = (e, value) => {

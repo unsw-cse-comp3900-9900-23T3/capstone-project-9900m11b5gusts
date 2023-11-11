@@ -108,7 +108,7 @@ export default function Admin() {
 
 
  const handleChange = (v) => {
-    setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value }))
+    setPaginationObj(Object.assign(paginationObj, { pageSize: v.target.value,currentPage:1}))
     initQueryData()
     showActivity()
     // searchActivity()
