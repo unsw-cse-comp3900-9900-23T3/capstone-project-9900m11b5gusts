@@ -18,9 +18,13 @@ import Option from '@mui/joy/Option';
 import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
+import CloseIcon from '@mui/icons-material/Close';
 
 import UploadFileButton from "../user_general/UploadFileButton.jsx"
 import SelectCategoryButton from "../user_general/SelectCategoryButton.jsx"
+import { IconButton } from "@mui/joy"
+
+
 
 
 
@@ -35,11 +39,13 @@ export default function PostNewItemPage({ token, profileData }) {
   const [picture, setPicture] = React.useState('')
   const [tradeMethod, setTradeMedod] = React.useState('')
 
-  const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' });
+  const [classes, setClasses] = React.useState({ c1: '', c2: '', c3: '' })
   const [applyClassesFlag, setApplyClassesFlag] = React.useState(false)
   const [classesString, setClassesString] = React.useState('')
 
-  const [openNewItem, setOpenNewItem] = React.useState(false);
+  const [openNewItem, setOpenNewItem] = React.useState(false)
+
+  const [predictedCategory, setPredictedCategory] = React.useState({ c1: '', c2: '', c3: '' })
 
   const handleClearCategory = () => {
     setClasses((p) => ({...p, c1: '', c2: '', c3: ''}))
@@ -171,7 +177,7 @@ export default function PostNewItemPage({ token, profileData }) {
 						<Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
 
-              <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
+              <UploadFileButton setPicture={setPicture} words='Upload a picture' setPredictedCategory={setPredictedCategory}/>
                                 
               <FormControl >
                 <FormLabel>Select a category</FormLabel>
@@ -180,6 +186,24 @@ export default function PostNewItemPage({ token, profileData }) {
                   <Input style={{width: '100%'}} size="sm" value={classesString} placeholder="Choose a category" disabled/>
                 </Stack>
               </FormControl>
+              
+              {predictedCategory.c1 && 
+                <>
+                  The item in your picture seems to be under category: <br /> 
+                  {predictedCategory.c1}<br />
+                  <span>
+                    Do you want to apply it?
+                    <IconButton variant="soft" color="success" sx={{marginLeft:'15px'}}>
+                      <CheckIcon />
+                    </IconButton>
+                    <IconButton variant="soft" color="warning" sx={{marginLeft:'10px'}}>
+                      <CloseIcon />
+                    </IconButton>
+
+                  </span>
+
+                </>
+              }
 
               <FormControl >
                 <FormLabel>Name of the item</FormLabel>
