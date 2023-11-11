@@ -2,6 +2,10 @@ from flask_restx import fields
 from .extensions import api
 
 
+img_predict_model = api.model('predict_data', {
+        'img': fields.String(example='123dfsthtuy5')
+})
+
 login_model = api.model('login_data', {
         'user_email': fields.String(example='root@qq.com'),
         'password': fields.String(example='123456')

@@ -72,3 +72,5 @@ Fix the multiple item purchase request, using purchase history primary key to id
 Add item detail to 4 histories API
 Get Selling and Buying history for all users
 all the item getting method is return item by time_stamp desc 
+YOLOv8:add an API can predict image class(Luna, Harry, Lucius, Dumbledore),the model is training by custom dataset
+The training detail see in 'https://drive.google.com/file/d/1HG50UD_VzIx8RAixuehCxzCZ6nIqkriC/view?usp=sharing'
