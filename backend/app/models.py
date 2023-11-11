@@ -388,8 +388,8 @@ def insert_item(email, **kwargs):
     # if kwargs['trading_method'] != 'cash' else ''
     input_exchange_item = kwargs['exchange_item']
     # predict
-    # img = base64_to_image(input_item_image)
-    # predict(img)
+    img = base64_to_image(input_item_image)
+    predict(img)
     try:
         event = Item(email=input_email, image=input_item_image, item_name=input_item_name, item_desc=input_item_desc,
                      item_price=input_item_price, item_num=input_item_num, class1=input_class1, class2=input_class2,
@@ -799,7 +799,7 @@ def handle_purchase_request(email, **kwargs):
 
 
 @time_test
-def search_item(page, **kwargs):
+def search_item(email, page, **kwargs):
     keyword = kwargs['keyword']
     price_sorted = kwargs['price_sorted']
     trading_method = kwargs['trading_method']
@@ -812,6 +812,33 @@ def search_item(page, **kwargs):
         'asc': Item.item_price.asc(),
         'desc': Item.item_price.desc()
     }
+    # 如果类别和keyword全为空，则按照wishlist的标签返回物品
+    if not cls1 and not cls2 and not cls3 and not keyword:
+        wish_item = WishItem.query.filter_by(email=email).order_by(WishItem.time_stamp.desc()).all()
+        if wish_item:
+            recommend_items = {}
+            category1 = [item.class1 for item in wish_item]
+            for c in category1:
+                items = Item.query.filter_by(class1=c).all()
+                for i, item in enumerate(items):
+                    recommend_items[i] = {
+                        'owner_email': item.email,
+                        'username': user_name,
+                        'item_id': item.id,
+                        'item_name': item.item_name,
+                        'image': item.image,
+                        'item_price': str(item.item_price),
+                        'item_num': str(item.item_num),
+                        'item_desc': item.item_desc,
+                        'trading_method': item.trading_method,
+                        'exchange_item': item.exchange_item,
+                        'change': str(item.change),
+                        'class1': item.class1,
+                        'class2': item.class2,
+                        'class3': item.class3,
+                        # 将日期时间转换为字符串格式
+                        'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+                    }
 
     try:
         items = Item.query
@@ -846,7 +873,7 @@ def search_item(page, **kwargs):
         page_size = 10
         offset = (page - 1) * page_size
         total_rows = query.count()
-        s_items = query.order_by(sort_condition).offset(
+        s_items = query.order_by(Item.time_stamp.desc(), sort_condition).offset(
             offset).limit(page_size).all()
 
         if s_items:
@@ -856,22 +883,22 @@ def search_item(page, **kwargs):
                 user = User.query.filter_by(email=item.email).first()
                 user_name = user.username
                 item_dict[i] = {
-                    'owner_email': item.email,
-                    'username': user_name,
-                    'item_id': item.id,
-                    'item_name': item.item_name,
-                    'image': item.image,
-                    'item_price': str(item.item_price),
-                    'item_num': str(item.item_num),
-                    'item_desc': item.item_desc,
-                    'trading_method': item.trading_method,
-                    'exchange_item': item.exchange_item,
-                    'change': str(item.change),
-                    'class1': item.class1,
-                    'class2': item.class2,
-                    'class3': item.class3,
-                    # 将日期时间转换为字符串格式
-                    'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+                    # 'owner_email': item.email,
+                    # 'username': user_name,
+                    # 'item_id': item.id,
+                    # 'item_name': item.item_name,
+                    # 'image': item.image,
+                    # 'item_price': str(item.item_price),
+                    # 'item_num': str(item.item_num),
+                    # 'item_desc': item.item_desc,
+                    # 'trading_method': item.trading_method,
+                    # 'exchange_item': item.exchange_item,
+                    # 'change': str(item.change),
+                    # 'class1': item.class1,
+                    # 'class2': item.class2,
+                    # 'class3': item.class3,
+                    # # 将日期时间转换为字符串格式
+                    # 'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                 }
             # print(item_dict)
             return {'result': True, 'info': item_dict}
