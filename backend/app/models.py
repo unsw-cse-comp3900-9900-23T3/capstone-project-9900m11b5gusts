@@ -8,7 +8,6 @@ import datetime
 from PIL import Image
 from io import BytesIO
 import base64
-from ultralytics import YOLO
 import os
 
 
@@ -1132,19 +1131,18 @@ def search_activity(page, **kwargs):
     activity_name = kwargs['activity_name']
     category = kwargs['category']
     status = kwargs['status']
-    if len(activity_name) == 0:
-        activity_name = "*****"
-    if len(category) == 0:
-        category = "*****"
-    if len(status) == 0:
-        status = "*****"
-    activity_infor = Activity.query.filter(
-        or_(
-            Activity.activity_name.ilike(f'{activity_name}'),
-            Activity.category.ilike(f'{category}'),
-            Activity.status.ilike(f'{status}')
+
+    if not activity_name and not category and not status:
+        activity_infor = Activity.query.filter()
+    else:
+        activity_infor = Activity.query.filter(
+            or_(
+                Activity.activity_name.ilike(f'{activity_name}'),
+                Activity.category.ilike(f'{category}'),
+                Activity.status.ilike(f'{status}')
+            )
         )
-    )
+
 
     page_size = 10
     offset = (page - 1) * page_size
@@ -1164,6 +1162,7 @@ def search_activity(page, **kwargs):
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': ''}}
+
 
 
 def create_activity(email, **kwargs):
