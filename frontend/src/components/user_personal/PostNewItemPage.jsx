@@ -19,6 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import CloseIcon from '@mui/icons-material/Close';
+import Typography from '@mui/joy/Typography';
 
 import UploadFileButton from "../user_general/UploadFileButton.jsx"
 import SelectCategoryButton from "../user_general/SelectCategoryButton.jsx"
@@ -46,6 +47,8 @@ export default function PostNewItemPage({ token, profileData }) {
   const [openNewItem, setOpenNewItem] = React.useState(false)
 
   const [predictedCategory, setPredictedCategory] = React.useState({ c1: '', c2: '', c3: '' })
+  const [showPredicted, setShowPredicted] = React.useState(false)
+
 
   const handleClearCategory = () => {
     setClasses((p) => ({...p, c1: '', c2: '', c3: ''}))
@@ -84,6 +87,10 @@ export default function PostNewItemPage({ token, profileData }) {
     }
 
   }, [classes, applyClassesFlag])
+
+  React.useEffect(()=>{
+    setShowPredicted(true)
+  }, [predictedCategory])
 
 
   async function postNewItem(){
@@ -187,22 +194,40 @@ export default function PostNewItemPage({ token, profileData }) {
                 </Stack>
               </FormControl>
               
-              {predictedCategory.c1 && 
-                <>
-                  The item in your picture seems to be under category: <br /> 
-                  {predictedCategory.c1}<br />
-                  <span>
+              {predictedCategory.c1  && showPredicted &&
+                <Card>
+                  <Typography level="body-md" sx={{margin:'5px'}}>
+                    The item in your picture seems to be under category: <br /> 
+                  </Typography>
+                
+                  <Typography level="title-md" sx={{margin:'5px'}}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    {predictedCategory.c1 ? predictedCategory.c1 : 'Others'}
+                    {predictedCategory.c2 && (' 》' + predictedCategory.c2)}
+                    {predictedCategory.c3 && (' 》' + predictedCategory.c3)} 
+                  </Typography>
+
+                  <Typography level="body-md" sx={{margin:'5px', display:'flex', alignContent:'center'}}>
+                    &nbsp;&nbsp;&nbsp;  
                     Do you want to apply it?
-                    <IconButton variant="soft" color="success" sx={{marginLeft:'15px'}}>
+                    <IconButton size="sm" variant="soft" color="success" sx={{marginLeft:'50px'}}
+                      onClick={()=>{
+                        setClasses(predictedCategory)
+                        setApplyClassesFlag(true)
+                        setShowPredicted(false)
+                      }}
+                    >
                       <CheckIcon />
                     </IconButton>
-                    <IconButton variant="soft" color="warning" sx={{marginLeft:'10px'}}>
+                    <IconButton size="sm" variant="soft" color="warning" sx={{marginLeft:'10px'}}
+                      onClick={()=>{setShowPredicted(false)}}
+                    >
                       <CloseIcon />
                     </IconButton>
 
-                  </span>
+                  </Typography>
 
-                </>
+                </Card>
               }
 
               <FormControl >

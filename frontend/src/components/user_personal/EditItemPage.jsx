@@ -23,6 +23,8 @@ import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import IconButton from "@mui/joy/IconButton"
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import CloseIcon from '@mui/icons-material/Close';
+import Typography from '@mui/joy/Typography';
 
 
 export default function EditItemPage({ token, index, profileData, item }) {
@@ -44,6 +46,9 @@ export default function EditItemPage({ token, index, profileData, item }) {
   const [classesString, setClassesString] = React.useState('')
 
   const [openNewItem, setOpenNewItem] = React.useState(false);
+
+  const [predictedCategory, setPredictedCategory] = React.useState({ c1: '', c2: '', c3: '' })
+  const [showPredicted, setShowPredicted] = React.useState(false)
 
 
   const handleClearCategory = () => {
@@ -73,6 +78,11 @@ export default function EditItemPage({ token, index, profileData, item }) {
       setEmail(profileData.email)
     }
   }, [profileData])
+
+
+  React.useEffect(()=>{
+    setShowPredicted(true)
+  }, [predictedCategory])
 
 
   React.useEffect(() => {
@@ -191,8 +201,43 @@ export default function EditItemPage({ token, index, profileData, item }) {
 
             <Stack spacing={1} sx={{ flexGrow: 1 }} direction='column'>
 
+              <UploadFileButton setPicture={setPicture} words='Upload a picture' setPredictedCategory={setPredictedCategory}  />
 
-              <UploadFileButton setPicture={setPicture} words='Upload a picture'/>
+              {predictedCategory.c1  && showPredicted &&
+                <Card>
+                  <Typography level="body-md" sx={{margin:'5px'}}>
+                    The item in your picture seems to be under category: <br /> 
+                  </Typography>
+                
+                  <Typography level="title-md" sx={{margin:'5px'}}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    {predictedCategory.c1 ? predictedCategory.c1 : 'Others'}
+                    {predictedCategory.c2 && (' 》' + predictedCategory.c2)}
+                    {predictedCategory.c3 && (' 》' + predictedCategory.c3)} 
+                  </Typography>
+
+                  <Typography level="body-md" sx={{margin:'5px', display:'flex', alignContent:'center'}}>
+                    &nbsp;&nbsp;&nbsp;  
+                    Do you want to apply it?
+                    <IconButton size="sm" variant="soft" color="success" sx={{marginLeft:'50px'}}
+                      onClick={()=>{
+                        setClasses(predictedCategory)
+                        setApplyClassesFlag(true)
+                        setShowPredicted(false)
+                      }}
+                    >
+                      <CheckIcon />
+                    </IconButton>
+                    <IconButton size="sm" variant="soft" color="warning" sx={{marginLeft:'10px'}}
+                      onClick={()=>{setShowPredicted(false)}}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+
+                  </Typography>
+
+                </Card>
+              }
 
               <FormControl >
                 <FormLabel>Select a category</FormLabel>

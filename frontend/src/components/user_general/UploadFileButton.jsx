@@ -24,9 +24,7 @@ const VisuallyHiddenInput = styled('input')`
 
 export default function UploadFileButton({ setPicture, words='Upload a file', setPredictedCategory }) {
 
-  const [classesString, setClassesString] = React.useState('')
-
-
+  
   //Use base64 format to encode the picture into string
   async function handlePicToURL (setPicture) {
     const fileToDataUrlReturn = fileToDataURL(document.getElementById('uploadPictureButton').files[0]);
@@ -45,7 +43,7 @@ export default function UploadFileButton({ setPicture, words='Upload a file', se
 
   async function predictCategory(picData){
     if (picData) {
-      console.log('working2')
+      console.log('uploading picture for prediction')
       const response = await fetch('http://127.0.0.1:5000/Items/predict/image', {
           method:'POST',
           headers:{
@@ -59,8 +57,8 @@ export default function UploadFileButton({ setPicture, words='Upload a file', se
           const data = await response.json();
           console.log('posts: ', data.success)
           if (data.success){
-            console.log(data.success)
-            setPredictedCategory((p) => ({...p, c1: data.success, c2: '', c3: ''}))
+            // console.log(data.success)
+            setPredictedCategory((p) => ({...p, c1: data.success.class1, c2:  data.success.class2, c3:  data.success.class3}))
             }
           } else{
           const data = await response.json();

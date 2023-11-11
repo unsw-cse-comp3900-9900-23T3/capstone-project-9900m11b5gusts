@@ -10,7 +10,7 @@ import Input from '@mui/joy/Input';
 export default function Pagination( { pageNum, setPageNum, maxPageNum, search } ) {
   
   const [previousPageNum, setPreviousPageNum] = React.useState(pageNum)
-  console.log('maxpagenum: ',maxPageNum)
+  // console.log('maxpagenum: ',maxPageNum)
 
 
   const handleSubmit = (event) => {
