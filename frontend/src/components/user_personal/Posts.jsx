@@ -47,8 +47,6 @@ export default function Posts({ token, profileData, manageItemID }) {
 
   async function checkPersonalItem(){
     if (token && email) {
-      console.log('email: ', email)
-      console.log('token: ', token)
       const response = await fetch('http://127.0.0.1:5000/Items/checkPersonalItem', {
           method:'POST',
           headers:{

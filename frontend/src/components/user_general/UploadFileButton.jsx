@@ -29,8 +29,39 @@ export default function UploadFileButton({ setPicture, words='Upload a file' }) 
     const fileToDataUrlReturn = fileToDataURL(document.getElementById('uploadPictureButton').files[0]);
     fileToDataUrlReturn
       .then((picData) => {
-        setPicture(picData);
+        setPicture(picData)
+        return picData
       })
+      .then((picData) => {
+        predictCategory(picData);
+      })
+  }
+
+  async function predictCategory(picData){
+    console.log('working')
+    console.log(picData)
+    if (picData) {
+      console.log('working2')
+      const response = await fetch('http://127.0.0.1:5000/Items/predict/image', {
+          method:'POST',
+          headers:{
+            'Content-type': 'application/json',
+          },
+          body:JSON.stringify({
+            'img': picData
+          })
+        });
+        if (response.status===200){
+          const data = await response.json();
+          console.log('posts: ', data.success)
+          if (data.success){
+            console.log(data.success)
+            }
+          } else{
+          const data = await response.json();
+          alert(data)
+          }
+    }
   }
 
   return (
