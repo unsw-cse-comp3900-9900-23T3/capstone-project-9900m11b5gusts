@@ -1,9 +1,9 @@
+//Wish list card is a component that is used in 'WishListPage'. It displays the list item information.
+
 import * as React from 'react';
-import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
 import IconButton from '@mui/joy/IconButton';
-import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
@@ -70,7 +70,6 @@ export default function WishListCard( {token, item} ) {
   const handleItemNameChange = (event) => {
     setItemName(event.target.value)
   }
-
 
 
   const handleDeleteButton = () => {
@@ -143,7 +142,6 @@ export default function WishListCard( {token, item} ) {
 
 
   return (
-
     <React.Fragment>
       <ListItem
         variant='outlined'
@@ -197,7 +195,6 @@ export default function WishListCard( {token, item} ) {
 
           <br />
 
-
           <FormControl >
             <FormLabel>Select a category</FormLabel>
             <Stack direction="row" spacing={1}>
@@ -217,14 +214,10 @@ export default function WishListCard( {token, item} ) {
 
           <br />
 
-
           <FormControl>
             <FormLabel>Amount of the item</FormLabel>
             <Input type="number" style={{width: '100%'}}  size="sm" value={amount} onChange={handleAmountChange}/>
           </FormControl>
-
-
-
 
           <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
             <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
@@ -235,8 +228,6 @@ export default function WishListCard( {token, item} ) {
               </Button>
             </CardActions>
           </CardOverflow>
-
-
 
         </Sheet>
       </Modal>

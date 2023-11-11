@@ -1,4 +1,7 @@
-//MyPosts page will display a listing of all the posts that user has created
+// Posts page will display a listing of all the posts that user has created
+// It reads the user eamil in the URL. 
+// For example, 'example@email.com' will be extarcted from URL 'localhost:3000/posts/#example@email.com',
+// and then is used to fetch the posts that user has created.
 
 import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
@@ -6,11 +9,8 @@ import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography"
-import Button from '@mui/joy/Button';
-import AddIcon from '@mui/icons-material/Add';
 
 import ItemCard from "../user_general/ItemCard";
-import { useLocation } from 'react-router-dom';
 import PostNewItemPage from "./PostNewItemPage";
 
 
@@ -43,8 +43,6 @@ export default function Posts({ token, profileData, manageItemID }) {
   React.useEffect(() => {
     console.log('this is posts: ', posts)
   },[posts])
-
-
 
 
   async function checkPersonalItem(){
@@ -103,13 +101,6 @@ export default function Posts({ token, profileData, manageItemID }) {
                 <Typography level="h2">Post of {window.location.hash.slice(1)}</Typography>
               }
 							
-
-
-							{/* <Button component="a" href="/myposts/postnewitem" variant="soft" size="sm" startDecorator={<AddIcon />}>
-								Post New Item
-							</Button> */}
-              
-							
 						</Stack>
 					</Stack>
         </Stack>
@@ -126,6 +117,7 @@ export default function Posts({ token, profileData, manageItemID }) {
                   item={item}
                   manageItemID={manageItemID}
                   current_user_email = {profileData.email}
+                  profileData={profileData}
                 />
                 )  
               })
@@ -134,9 +126,6 @@ export default function Posts({ token, profileData, manageItemID }) {
            
           </Stack>
         </Stack>
-
-        {/* <Pagination /> */}
-
 
       </Box>
     </CssVarsProvider>

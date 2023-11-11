@@ -1,3 +1,6 @@
+// This page displays user's profile page. 
+// It also allows editing. 
+
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"
 import Box from "@mui/joy/Box"
@@ -5,44 +8,15 @@ import Button from "@mui/joy/Button"
 import Divider from "@mui/joy/Divider"
 import FormControl from "@mui/joy/FormControl"
 import FormLabel from "@mui/joy/FormLabel"
-// import FormHelperText from "@mui/joy/FormHelperText"
 import Input from "@mui/joy/Input"
-import IconButton from "@mui/joy/IconButton"
-// import Textarea from "@mui/joy/Textarea"
 import Stack from "@mui/joy/Stack"
-// import Select from "@mui/joy/Select"
-// import Option from "@mui/joy/Option"
 import Typography from "@mui/joy/Typography"
-// import Tabs from "@mui/joy/Tabs"
-// import TabList from "@mui/joy/TabList"
-// import Tab, { tabClasses } from "@mui/joy/Tab"
-// import Breadcrumbs from "@mui/joy/Breadcrumbs"
-// import Link from "@mui/joy/Link"
 import Card from "@mui/joy/Card"
 import CardActions from "@mui/joy/CardActions"
 import CardOverflow from "@mui/joy/CardOverflow"
 
-// import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
-// import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded"
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
-// import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded"
-// import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded"
-// import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded"
-import EditRoundedIcon from "@mui/icons-material/EditRounded"
 import UploadFileButton from "../user_general/UploadFileButton"
-
-// import DropZone from "../user_general/DropZone"
-// import FileUpload from "../user_general/FileUpload"
-// import CountrySelector from "./CountrySelector"
-// import EditorToolbar from "./EditorToolbar"
-
-// Function to fetch and display the external content
-
-
-// Call the function to load the external content
-
-
-
 
 
 export default function MyProfileContent({ token, profileData }) {
@@ -109,7 +83,6 @@ export default function MyProfileContent({ token, profileData }) {
   }
 
 
-
   return (
     <Box sx={{ flex: 1, width: "100%", minWidth: '600px' }} >
       <Box
@@ -166,7 +139,6 @@ export default function MyProfileContent({ token, profileData }) {
                       alt=""
                     />
 
-
                   </AspectRatio>
 
                   <UploadFileButton setPicture={setPicture} words="New Icon"/>
@@ -176,7 +148,6 @@ export default function MyProfileContent({ token, profileData }) {
 
                   <Stack spacing={1} sx={{ flexGrow: 1 }} direction='row'>
 
-                    
                     <FormControl >
                     <FormLabel>Name</FormLabel>
                       <Input style={{width: '250px'}} size="sm" value={username} onChange={handleNameChange}/>
@@ -308,9 +279,7 @@ export default function MyProfileContent({ token, profileData }) {
             </CardOverflow>
           }
 
-          
         </Card>
-
       </Stack>
     </Box>
   )

@@ -5,28 +5,16 @@ import CardContent from "@mui/joy/CardContent"
 import CardOverflow from "@mui/joy/CardOverflow"
 import Chip from "@mui/joy/Chip"
 import IconButton from "@mui/joy/IconButton"
-import Link from "@mui/joy/Link"
 import Stack from "@mui/joy/Stack"
 import Typography from "@mui/joy/Typography"
-// import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded"
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
-// import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
-// import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
-// import Star from "@mui/icons-material/Star"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserInfoChip from "./UserInfoChip"
 import SeeItemDetail from "../user_market/SeeItemDetail"
+import EditItemPage from "../user_personal/EditItemPage"
 
 
-
-export default function ItemCard({ token, index, item, manageItemID, current_user_email, finished=false }) {
-
-  const handleEditButton = () => {
-    manageItemID(index)
-    window.location.href='/myposts/edititem'
-  }
+export default function ItemCard({ token, index, item, manageItemID, current_user_email, profileData, finished=false }) {
 
   const handleDeleteButton = () => {
     const isConfirmed = window.confirm("Are you sure you want to delete this item?");
@@ -49,7 +37,7 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
     });
     if (response.status===200){
       alert('Success')
-      window.location.href='/myposts'
+      window.location.reload()
     }else{
       const data = await response.json();
       console.log(data)
@@ -110,14 +98,9 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
               )}
               {}
 
-
-
             </Stack>
-            
-          </AspectRatio>
-          
+          </AspectRatio>   
         </CardOverflow>
-
 
         <CardContent>
           <Stack
@@ -141,17 +124,9 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
               <UserInfoChip token={token} email={item.owner_email} name={item.username}/>
               :
               <Stack direction="column">
-                <IconButton
-                  variant="plain"
-                  size="sm"
-                  color={"primary"}
-                  onClick={handleEditButton}
-                  sx={{
-                    borderRadius: "50%"
-                  }}
-                >
-                  <EditNoteIcon />Edit
-                </IconButton>
+
+                <EditItemPage token={token} profileData={profileData} item={item}/>
+
                 <IconButton
                   variant="plain"
                   size="sm"
@@ -199,7 +174,6 @@ export default function ItemCard({ token, index, item, manageItemID, current_use
                 <Typography level="body-md">Exchange for: {item.exchange_item.length > 20 ? item.exchange_item.slice(0, 20) + '...' : item.exchange_item}</Typography>
               </Typography>
             }
-
 
           </Stack>
         </CardContent>

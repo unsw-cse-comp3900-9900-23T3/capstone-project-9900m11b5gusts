@@ -1,3 +1,5 @@
+// This is where we use 'react-router-dom' to return corresponding page based on its URL 
+
 import React from 'react'
 import Box from '@mui/joy/Box';
 
@@ -84,6 +86,7 @@ export default function App() {
 	function logout() {
 		setToken(null);
 		localStorage.removeItem('token')
+		localStorage.removeItem('itemID')
 		window.location.href = '/'
 	}
 

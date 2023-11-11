@@ -2,20 +2,16 @@
 
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"
-import Box from "@mui/joy/Box"
 import Button from "@mui/joy/Button"
 import FormControl from "@mui/joy/FormControl"
 import FormLabel from "@mui/joy/FormLabel"
 import Input from "@mui/joy/Input"
 import Textarea from "@mui/joy/Textarea"
 import Stack from "@mui/joy/Stack"
-import Typography from "@mui/joy/Typography"
 import Card from "@mui/joy/Card"
 import CardActions from "@mui/joy/CardActions"
 import CardOverflow from "@mui/joy/CardOverflow"
 import CardCover from '@mui/joy/CardCover';
-
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CheckIcon from '@mui/icons-material/Check';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
@@ -110,7 +106,7 @@ export default function PostNewItemPage({ token, profileData }) {
       });
       if (response.status===200){
         alert('Success')
-        window.location.href=`/posts#${profileData.email}`
+        window.location.reload()
       }else{
         const data = await response.json();
         alert(data)
@@ -141,7 +137,7 @@ export default function PostNewItemPage({ token, profileData }) {
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position:'absolute', left:'220px'}}
     >
       
-      <Stack spacing={4} sx={{ display: "flex", width:'80%',maxWidth:'700px', mx: "auto", px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 }, height:'90%'}} >
+      <Stack spacing={4} sx={{ display: "flex",maxWidth:'700px', mx: "auto", px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 }, height:'100%', width:'80%'}} >
       
         <Card sx={{height:'100%'}}>
           <ModalClose variant="plain" sx={{ m: 1 }} />

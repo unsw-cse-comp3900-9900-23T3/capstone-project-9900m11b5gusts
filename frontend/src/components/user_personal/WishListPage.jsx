@@ -1,4 +1,4 @@
-//MyPosts page will display a listing of all the posts that user has created
+//Wish list page will display a listing of all the posts that user has created
 
 import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
@@ -13,9 +13,7 @@ import WishListCard from "./WishListCard";
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
-import IconButton from '@mui/joy/IconButton';
 import Add from '@mui/icons-material/Add';
-import Delete from '@mui/icons-material/Delete';
 import ListDivider from '@mui/joy/ListDivider';
 
 import Modal from '@mui/joy/Modal';
