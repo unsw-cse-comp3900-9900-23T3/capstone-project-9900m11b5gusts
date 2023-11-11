@@ -145,7 +145,8 @@ class GetItemCategory(Resource):
     def get(self):
         item_category = {}
         coles = {
-            'Disney cards': {'Wonder Woman': '', 'Batgirl': '', 'Robin': '', 'Cyclone': '', 'Reverse flash': '', 'The riddler': '', 'Harry': '', 'Lucius': '', 'Dumbledore': '', 'Luna': ''},
+            'Harry porter series cards': {'Harry': '', 'Lucius': '', 'Dumbledore': '', 'Luna': ''},
+            'Disney cards': {'Wonder Woman': '', 'Batgirl': '', 'Robin': '', 'Cyclone': '', 'Reverse flash': '', 'The riddler': ''},
             'Superhero cards': {'Captain America': '', 'Iron Man': '', 'Thor': '', 'Hulk': '', 'Black Widow': '', 'Hawkeye': ''},
             'Fresh Rainbow Stikeez': {'Apple': '', 'Banana': '', 'Orange': '', 'Grape': '', 'Strawberry': '', 'Blueberry': '', 'Pear': '', 'Peach': ''},
             'Memorabilia': {'Signed photographs': '', 'Signed basketballs': '', 'team flags': ''},
