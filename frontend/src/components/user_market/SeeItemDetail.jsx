@@ -1,25 +1,16 @@
 import * as React from 'react';
-import Button from '@mui/joy/Button';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Switch from '@mui/joy/Switch';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import ModalClose from '@mui/joy/ModalClose';
 import DialogTitle from '@mui/joy/DialogTitle';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import Sheet from '@mui/joy/Sheet';
 import Box from '@mui/joy/Box';
 import Link from "@mui/joy/Link"
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
-import Chip from '@mui/joy/Chip';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import UserInfoChip from '../user_general/UserInfoChip';
 import BuyNowButton from './BuyNowButton';
 
