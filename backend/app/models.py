@@ -185,7 +185,7 @@ def predict(image):
     if result[0]:
         predict_class = result[0].boxes.cls[0].cpu().numpy()
         predict_label = class_dict[int(predict_class)]
-        print(f'predict class{predict_label}')
+        print(f'predict class {predict_label}')
         return {'predict': predict_label}
     else:
         print('predict None')
