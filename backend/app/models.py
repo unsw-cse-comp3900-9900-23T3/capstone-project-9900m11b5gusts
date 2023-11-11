@@ -1419,6 +1419,17 @@ def comment_topic(email, **kwargs):
         return {'result': False, 'info': f'Failed to create the topic'}
 
 
+def show_topic_comment(topic_id):
+    try:
+        comments = Comment.query.filter_by(topic_id=topic_id).all()
+
+        return {'result': True, 'info': {'comments': comments}}
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return {'result': False, 'info': {'total_rows': 0}}
+
+
 def show_topic_detail(activity_id, page, page_size):
     offset = (page - 1) * page_size
 

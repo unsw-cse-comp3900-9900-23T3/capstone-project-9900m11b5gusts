@@ -17,7 +17,7 @@ from .models import user_register, user_login, get_profile, update_profile, inse
     create_topic, update_topic, delete_topic, comment_topic, buying_history, \
     buyer_process_request, seller_process_request, selling_history, handle_purchase_request, \
     get_item_by_id, show_topic_detail, delete_comment, get_top10_activities, get_top10_comments_topics, \
-    get_top10_comments_activities, base64_to_image, predict
+    get_top10_comments_activities, base64_to_image, predict, show_topic_comment
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
@@ -443,9 +443,9 @@ class SearchActivity(Resource):
         args = Activity.payload
         result = search_activity(page, **args)
         if result['result']:
-            return {'success': result['info']['activities'],'total_rows':result['info']['total_rows']}, 200
+            return {'success': result['info']['activities'], 'total_rows': result['info']['total_rows']}, 200
         else:
-            return {'error': result['info'],'total_rows':result['info']['total_rows']}, 400
+            return {'error': result['info'], 'total_rows': result['info']['total_rows']}, 400
 
 
 @Activity.route('/createActivity')
@@ -684,6 +684,21 @@ class TopicDetail(Resource):
             return {'error': result['info']}, 400
 
 
+@Topic.route('/topicComment/<int:topic_id>')
+class TopicComment(Resource):
+    @Topic.doc(description='show comment by topic id')
+    @Topic.doc(security='jsonWebToken')
+    @jwt_required()
+    def get(self, topic_id):
+        email = get_jwt_identity()
+
+        result = show_topic_comment(topic_id)
+        if result['result']:
+            return {'success': result['info']}, 200
+        else:
+            return {'error': result['info']}, 400
+
+
 @Topic.route('/deleteComment/<int:comment_id>')
 class CommentDelete(Resource):
     @Topic.doc(description='Can delete comment')
@@ -698,6 +713,7 @@ class CommentDelete(Resource):
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
+
 
 @Topic.route('/getTop10Activities')
 class getTop10Activities(Resource):
@@ -715,6 +731,7 @@ class getTop10Activities(Resource):
                 return {'success': result['info']}, 200
             else:
                 return {'error': result['info']}, 400
+
 
 @Topic.route('/getTop10CommentsTopics')
 class getTop10CommentsTopics(Resource):
@@ -750,18 +767,3 @@ class getTop10CommentsActivities(Resource):
                 return {'success': result['info']}, 200
             else:
                 return {'error': result['info']}, 400
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
