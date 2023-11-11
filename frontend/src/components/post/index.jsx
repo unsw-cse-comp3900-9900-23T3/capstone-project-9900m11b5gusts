@@ -27,8 +27,9 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ChatIcon from '@mui/icons-material/Chat';
 import img from '../../assets/GuiyangMoon.jpg'
 import styles from './index.module.css';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
+// import { useRoute } from '@react-navigation/native';
+import { useLocation } from 'react-router-dom';
 
 import UploadImage from './UploadImage'
 
@@ -59,10 +60,17 @@ const baseUrl = "http://127.0.0.1:5000/";
 
 const urls = {
   postTopic: baseUrl + "Topic/createTopic",
+  topicDetail: baseUrl + "Topic/topicDetail/",
+  
 }
 
 
 export default function Posts() {
+
+    let location = useLocation();
+    const { activityId } = location.state
+    
+    console.log(activityId)
 
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -75,6 +83,12 @@ export default function Posts() {
             "detail": "Happy to help with cards your missing but you will need to send a returned stamped envelope.Or lm located in Berwick.Woolworths cards heaps off and about 15 to card of the Coles",
         }
     ]);
+
+    React.useEffect(() => {
+
+        GetTopicDetailApi(activityId)
+
+    }, [])
 
     const handleClose = () => {
         setAddDetail('')
@@ -96,7 +110,6 @@ export default function Posts() {
         navigate("/comments")
     }
 
-
     const postTopicApi = async () => {
         const res = await fetch(urls.postTopic, {
             method: 'POST',
@@ -108,13 +121,23 @@ export default function Posts() {
                 {
                     "activityId": "2",
                     "detail": addDetail,
-                    'image': ''
+                    'image': JSON.stringify(imgUrlArr)
                 }
             )
         })
         const { success, total } = await res.json();
     }
 
+    const GetTopicDetailApi = async (activityId) => {
+        const res = await fetch(urls.topicDetail+`${activityId}/1/10`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+        const { success, total } = await res.json();
+    }
 
     return (
         <div className={styles.outerBox}>

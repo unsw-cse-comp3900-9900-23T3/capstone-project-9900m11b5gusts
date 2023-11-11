@@ -121,7 +121,7 @@ export default function MainPage() {
   const formatData = (data) => {
     let arr = []
     for (let k in data) {
-      arr.push(data[k])
+      arr.push({ id: k, ...data[k]})
     }
     return arr;
 
@@ -182,7 +182,7 @@ export default function MainPage() {
 
   const searchActivity = async () => {
     setPaginationObj(Object.assign(paginationObj, { currentPage: 1 }))
-    queryData['category'] = '1'
+    queryData['category'] = 'Art'
     const res = await fetch(urls.searchActivity + paginationObj.currentPage, {
       method: 'POST',
       body: JSON.stringify(queryData),
@@ -239,10 +239,10 @@ export default function MainPage() {
     );
   }
 
-  const userActivityBtn = (item) => {
+  const userActivityBtn = (item, idx) => {
     const activity_name = item.activity_name;
     // navigate("/post", { state: { activity_name} });
-    navigate("/post", { state: { activity_name: "我是标题" } });
+    navigate("/post", { state: { activity_name: "我是标题", activityId: item.id } });
   }
 
   return (
@@ -258,8 +258,8 @@ export default function MainPage() {
         <div className={styles.MediaCardBox}>
           {
             activityData.map(
-              (item) =>
-                <div className={styles.mediaCard} onClick={()=>userActivityBtn(item)}>
+              (item, idx) =>
+                <div className={styles.mediaCard} onClick={()=>userActivityBtn(item, idx)}>
                   <MediaCard activityObj={item}>
                   </MediaCard>
                 </div>
