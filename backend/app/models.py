@@ -837,7 +837,14 @@ def search_item(email, page, **kwargs):
             count = 0
             for c in category1:
                 # items = Item.query.filter_by(class1=c).all()
-                items = Item.query.filter(or_(Item.class1.like(f'%{c}'))).all()
+                items = Item.query.filter(or_(Item.class1.like(f'%{c}')))
+                recommend_items['total_rows'] = items.count()
+
+                page_size = 10
+                offset = (page - 1) * page_size
+                items = items.order_by(Item.time_stamp.desc()).offset(
+                offset).limit(page_size).all()
+                # print('-----', items)
                 for i, item in enumerate(items):
                     user = User.query.filter_by(email=item.email).first()
                     user_name = user.username
@@ -860,7 +867,7 @@ def search_item(email, page, **kwargs):
                         'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                     }
                     count += 1
-
+            # print(len(recommend_items))
             return {'result': True, 'info': recommend_items}
         else:
             # 返回所有物品
@@ -966,7 +973,6 @@ def search_item(email, page, **kwargs):
             # print(item_dict)
             return {'result': True, 'info': item_dict}
         else:
-
             return {'result': True, 'info': {}}
 
     except Exception as e:
