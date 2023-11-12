@@ -181,10 +181,10 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <IconButton variant="soft" color="primary" size="sm">
+        {/* <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">App Name</Typography>
+        </IconButton> */}
+        <Typography level="title-lg">Panda Exchange Hub</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
       {/* <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" /> */}
@@ -449,7 +449,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
 
         </List>
 
-        <List
+        {/* <List
           size="sm"
           sx={{
             mt: 'auto',
@@ -471,7 +471,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
               Settings
             </ListItemButton>
           </ListItem>
-        </List>
+        </List> */}
         
         {/* {showADFlag && 
           <Card invertedColors variant="soft" color="warning" size="sm" sx={{ boxShadow: 'none' }} >

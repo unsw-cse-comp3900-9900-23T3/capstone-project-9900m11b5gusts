@@ -19,7 +19,7 @@ export default function LoginPageHeader() {
 										aria-label="Home"
 										href="/"
 									>
-										<HomeIcon /> App Name
+										<HomeIcon /> Panda Exchange Hub
 										
 									</ListItemButton>
 								</ListItem>
