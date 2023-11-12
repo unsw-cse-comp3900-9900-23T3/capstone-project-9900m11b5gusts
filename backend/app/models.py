@@ -1514,6 +1514,7 @@ def show_topic_detail(activity_id, page, page_size):
                     activity_dict[topic.id] = {
                         'email': topic.email,
                         'user_avatar': topic_publisher.image,
+                        'username':topic_publisher.username,
                         'detail': topic.detail,
                         'image': topic.image,
                         'comments': comment_dict.get(topic.id, [])
