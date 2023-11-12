@@ -901,8 +901,6 @@ def search_item(email, page, **kwargs):
 
                 return {'result': True, 'info': {}}
 
-
-
     try:
         items = Item.query
         # 将排序条件应用到查询之前
@@ -1468,6 +1466,7 @@ def show_topic_comment(topic_id):
                     'id': comment.id,
                     'email': comment.email,
                     'avatar': comment_user.image,
+                    'username': comment_user.username,
                     'comment': comment.comment
                 }
                 comments_infor.append(inner_comment)
@@ -1503,7 +1502,7 @@ def show_topic_detail(activity_id, page, page_size):
                                 email=comment.email).first()
                             inner_comment = {
                                 'id': comment.id,
-                                'username':comment_user.username,
+                                'username': comment_user.username,
                                 'email': comment.email,
                                 'avatar': comment_user.image,
                                 'comment': comment.comment
@@ -1514,7 +1513,7 @@ def show_topic_detail(activity_id, page, page_size):
                     activity_dict[topic.id] = {
                         'email': topic.email,
                         'user_avatar': topic_publisher.image,
-                        'username':topic_publisher.username,
+                        'username': topic_publisher.username,
                         'detail': topic.detail,
                         'image': topic.image,
                         'comments': comment_dict.get(topic.id, [])
