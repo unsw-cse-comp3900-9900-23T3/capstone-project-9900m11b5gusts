@@ -30,6 +30,8 @@ import styles from './index.module.css';
 import CheckIcon from '@mui/icons-material/Check'; 
 import CloseIcon from '@mui/icons-material/Close';
 import { useLocation } from 'react-router-dom';
+import UserInfoChip from "../user_general/UserInfoChip"
+
 
 const baseUrl = "http://127.0.0.1:5000/";
 
@@ -38,6 +40,7 @@ const urls = {
     deleteComment: baseUrl + "Topic/deleteComment",
     topicComment: baseUrl + "Topic/topicComment",
 }
+
 
 
 const ExpandMore = styled((props) => {
@@ -211,10 +214,10 @@ export default function Comments({profileData}) {
                             <>
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <AccountCircle />
+                                        <UserInfoChip token={token} email={item.user} name={item.user}/>
                                     </ListItemIcon>
-                                    <Card style={{marginRight: '3rem'}}>{ item.user }</Card>
-                                    <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all'}} primary={item.name}/>
+                                    {/* <Card style={{marginRight: '3rem'}}>{ item.user }</Card> */}
+                                    <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all', paddingLeft: '15px'}} primary={item.name}/>
                                 {profileData.email === item.user ?
                                         <IconButton aria-label="show chats" >
                                             <DeleteIcon onClick={(e) => {
