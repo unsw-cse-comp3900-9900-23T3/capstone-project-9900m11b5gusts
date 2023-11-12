@@ -271,7 +271,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                     onClick={()=>{setCurrentURL('/user')}}
                     component={currentURL === '/user' ? undefined : 'a'}
                     href='/user'
-                    >User Mgr</ListItemButton>
+                    >User Manager System</ListItemButton>
                 </ListItem>
                 <ListItem>
                     <ListItemButton
@@ -352,7 +352,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                    onClick={()=>{setCurrentURL('/user')}}
                    component={currentURL === '/user' ? undefined : 'a'}
                    href='/user'
-                   >User Mgr</ListItemButton>
+                   >User Manager System</ListItemButton>
                </ListItem>
                <ListItem>
                    <ListItemButton

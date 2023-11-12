@@ -168,7 +168,7 @@ export default function UserMgr() {
     return (
         <div className={styles.mainBox}>
             <Card style={{overflowY:"scroll"}} className={styles.cardBg}>
-                <h1 className={styles.mainTitle}>User Mgr</h1>
+                <h1 className={styles.mainTitle}>User Manager System</h1>
                 <TableContainer>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
