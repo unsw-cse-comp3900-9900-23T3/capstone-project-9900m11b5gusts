@@ -1503,6 +1503,7 @@ def show_topic_detail(activity_id, page, page_size):
                                 email=comment.email).first()
                             inner_comment = {
                                 'id': comment.id,
+                                'username':comment_user.username,
                                 'email': comment.email,
                                 'avatar': comment_user.image,
                                 'comment': comment.comment
