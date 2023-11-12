@@ -1,29 +1,4 @@
 backend/app/__pycache__/
 *.pyc
-<<<<<<< HEAD
 __pycache__/
 backend/instance/sqlite3.db
-=======
-backend/app/__pycache__/__init__.cpython-39.pyc
-backend/app/__pycache__/api_models.cpython-39.pyc
-backend/app/__pycache__/extensions.cpython-39.pyc
-backend/app/__pycache__/models.cpython-39.pyc
-backend/app/__pycache__/resources.cpython-39.pyc
-.idea/capstone-project-9900m11b5gusts.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/inspectionProfiles/profiles_settings.xml
-backend/app/__pycache__/__init__.cpython-39.pyc
-backend/app/__pycache__/api_models.cpython-39.pyc
-backend/app/__pycache__/extensions.cpython-39.pyc
-backend/app/__pycache__/models.cpython-39.pyc
-backend/app/__pycache__/resources.cpython-39.pyc
-backend/instance/sqlite3.db
-backend/app/__pycache__/__init__.cpython-39.pyc
-backend/app/__pycache__/api_models.cpython-39.pyc
-backend/app/__pycache__/extensions.cpython-39.pyc
-backend/app/__pycache__/models.cpython-39.pyc
-backend/app/__pycache__/resources.cpython-39.pyc
-backend/instance/sqlite3.db
->>>>>>> 734c61f (predict partly built)
