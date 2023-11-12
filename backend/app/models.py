@@ -9,6 +9,7 @@ from PIL import Image
 from io import BytesIO
 import base64
 import os
+from ultralytics import YOLO
 
 
 class User(db.Model):
