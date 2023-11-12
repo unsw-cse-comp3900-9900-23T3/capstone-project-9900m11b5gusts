@@ -29,6 +29,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Pagination from '@mui/material/Pagination';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 import img from '../../assets/GuiyangMoon.jpg'
 import styles from './index.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -118,7 +119,8 @@ export default function Posts({ profileData }) {
 
     }
     const goComments = (item) => {
-        navigate("/comments",{state:{topicObj:item}})
+
+        navigate("/comments",{state:{topicObj:item, activityId, activity}})
     }
       const changePagination = (e, value) => {
         setPaginationObj(Object.assign(paginationObj, { currentPage: value }))
@@ -240,8 +242,8 @@ export default function Posts({ profileData }) {
 
     return (
         <div className={styles.outerBox}>
-            <div className={styles.showDetailTop} onClick={addPost}>
-                <Card sx={{ maxWidth: "30%" }} >
+            <div className={styles.showDetailTop} >
+                <Card sx={{ width: "30%" }} >
                     <CardMedia
                         component="img"
                         height="194"
@@ -249,13 +251,22 @@ export default function Posts({ profileData }) {
                         alt="Paella dish"
                     />
                 </Card>
-                <Card sx={{ maxWidth: '69%' }}>
+                <Card sx={{ width: '70%' }}>
                     <CardContent>
                         <h1>{ activity.activity_name}</h1>
                         <Typography variant="body2" color="text.secondary">
                             {activity.detail}
                         </Typography>
                     </CardContent>
+
+                    <CardActions disableSpacing style={{ flexDirection:"column", alignItems: "end", }}>
+                        
+                        <Button variant="contained" size="medium" onClick={addPost}>Add &nbsp;&nbsp;&nbsp;Post</Button>
+                        <div style={{padding:'10px'}}></div>
+                        <Button variant="contained" size="medium" onClick={()=>navigate("/user_compaigns")}>prev Page</Button>
+                       
+                    </CardActions>
+
                 </Card>
 
             </div>
@@ -275,28 +286,32 @@ export default function Posts({ profileData }) {
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing style={{ justifyContent: "center"}}>
+                            <Tooltip title="Comment">
+                       
                         <IconButton aria-label="show chats">
                             <ChatIcon style={{ color: "rgb(8 98 246 / 77%)" }} />
-                           
                             
-                        </IconButton>
+                            </IconButton>
+                           </Tooltip>
+                            
                         {profileData.identity != 'User' ?
+                             <Tooltip title="DELETE">
                             <IconButton aria-label="show chats" >
                                 <DeleteIcon onClick={(e) => {
                                     deleteTopic(item.id)
                                     e.stopPropagation()
                                     return false
                                 }} style={{ color: "red" }}></DeleteIcon>
-                            </IconButton>:""
+                            </IconButton></Tooltip>:""
                         }
                         {
-                            profileData.email === item.email?<IconButton aria-label="show chats">
+                            profileData.email === item.email?<Tooltip title="EDIT"><IconButton aria-label="show chats">
                             <EditIcon style={{ color: "rgb(8 98 246 / 77%)" }} onClick={(e) => {
                                 clickEdit(item)
                                  e.stopPropagation()
                                     return false
                             }} />
-                            </IconButton>:""
+                            </IconButton></Tooltip>:""
                         
                         }
                             

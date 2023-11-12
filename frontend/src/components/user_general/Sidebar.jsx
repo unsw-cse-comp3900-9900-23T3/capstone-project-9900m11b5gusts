@@ -22,6 +22,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import HomeIcon from '@mui/icons-material/Home';
 import AdminIcon from '@mui/icons-material/AdminPanelSettings';
 
@@ -261,16 +262,7 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                 {/* <ListItem>
                   <ListItemButton>Inventory</ListItemButton>
                 </ListItem> */}
-                <div>
-                  <ListItem>
-                    <ListItemButton
-                      selected={currentURL === '/user_compaigns'}
-                      onClick={()=>{setCurrentURL('/user_compaigns')}}
-                      component={currentURL === '/user_compaigns' ? undefined : 'a'}
-                      href='/user_compaigns'
-                      >User Compaigns</ListItemButton>
-                  </ListItem>
-                  </div>
+
                 {/* {profileData.identity == 'administrator'?
                   <div>
                       <ListItem>
@@ -374,8 +366,33 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                    </List>
                </Toggler>
           </ListItem>
-  )}
+            )}
+                                      {/* <div>
+                  <ListItem>
+                    <ListItemButton
+                      selected={currentURL === '/user_compaigns'}
+                      onClick={()=>{setCurrentURL('/user_compaigns')}}
+                      component={currentURL === '/user_compaigns' ? undefined : 'a'}
+                      href='/user_compaigns'
+                      >User Compaigns</ListItemButton>
+                  </ListItem>
+                  </div>     */}
           <ListItem>
+            <ListItemButton
+              selected={currentURL === '/user_compaigns'}
+              onClick={()=>{setCurrentURL('/user_compaigns')}}
+              component={currentURL === '/user_compaigns' ? undefined : 'a'}
+              href='/user_compaigns'
+              >
+              <ContactMailIcon />
+              <ListItemContent>
+                <Typography level="title-sm">User Compaigns</Typography>
+              </ListItemContent>
+              </ListItemButton>
+          </ListItem>
+
+          <ListItem>
+
           <ListItemButton
               selected={currentURL.includes('message')}
               role="menuitem"
