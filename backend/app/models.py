@@ -863,7 +863,45 @@ def search_item(email, page, **kwargs):
 
             return {'result': True, 'info': recommend_items}
         else:
-            return {'result': True, 'info': {}}
+            # 返回所有物品
+            query = Item.query
+            page_size = 10
+            offset = (page - 1) * page_size
+            total_rows = query.count()
+            s_items = query.order_by(Item.time_stamp.desc()).offset(
+                offset).limit(page_size).all()
+
+            if s_items:
+                item_dict = {'total_rows': total_rows}
+                for i, item in enumerate(s_items):
+                    # print(item, item.item_price)
+                    user = User.query.filter_by(email=item.email).first()
+                    user_name = user.username
+                    item_dict[i] = {
+                        'owner_email': item.email,
+                        'username': user_name,
+                        'item_id': item.id,
+                        'item_name': item.item_name,
+                        'image': item.image,
+                        'item_price': str(item.item_price),
+                        'item_num': str(item.item_num),
+                        'item_desc': item.item_desc,
+                        'trading_method': item.trading_method,
+                        'exchange_item': item.exchange_item,
+                        'change': str(item.change),
+                        'class1': item.class1,
+                        'class2': item.class2,
+                        'class3': item.class3,
+                        # 将日期时间转换为字符串格式
+                        'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                # print(item_dict)
+                return {'result': True, 'info': item_dict}
+            else:
+
+                return {'result': True, 'info': {}}
+
+
 
     try:
         items = Item.query
