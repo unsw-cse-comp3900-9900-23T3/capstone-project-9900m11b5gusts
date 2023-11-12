@@ -22,6 +22,10 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import HomeIcon from '@mui/icons-material/Home';
+import AdminIcon from '@mui/icons-material/AdminPanelSettings';
+
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
@@ -258,17 +262,8 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                 {/* <ListItem>
                   <ListItemButton>Inventory</ListItemButton>
                 </ListItem> */}
-                <div>
-                  <ListItem>
-                    <ListItemButton
-                      selected={currentURL === '/user_compaigns'}
-                      onClick={()=>{setCurrentURL('/user_compaigns')}}
-                      component={currentURL === '/user_compaigns' ? undefined : 'a'}
-                      href='/user_compaigns'
-                      >User Compaigns</ListItemButton>
-                  </ListItem>
-                  </div>
-                {profileData.identity == 'administrator'?
+
+                {/* {profileData.identity == 'administrator'?
                   <div>
                       <ListItem>
                     <ListItemButton
@@ -286,31 +281,118 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                     href='/admin'
                     >Admin</ListItemButton>
                       </ListItem>
-                    </div> : ""}
-                {profileData.identity == 'manager' ?
-                  <div>
-                    <ListItem>
-                      <ListItemButton
-                        selected={currentURL === 'compaign'}
-                        onClick={() => { setCurrentURL('compaign'); }}
-                        component={currentURL === 'compaign' ? undefined : 'a'}
-                        href='/compaign'
-                      >campaigns</ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton
-                        selected={currentURL === 'echarts'}
-                        onClick={() => { setCurrentURL('echarts'); }}
-                        component={currentURL === 'echarts' ? undefined : 'a'}
-                        href='/echarts'
-                      >Analysis</ListItemButton>
-                    </ListItem>
-                  </div>: ""}
+                    </div> : ""} */}
+           
               </List>
             </Toggler>
           </ListItem>
 
+          {profileData.identity == 'manager' &&(
+         <ListItem nested>
+            <Toggler
+              renderToggle={({ open, setOpen }) => (
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <HomeIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Manager</Typography>
+                  </ListItemContent>
+                  <KeyboardArrowDownIcon
+                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                  />
+                </ListItemButton>
+              )}
+            >
+            <List sx={{ gap: 0.5 }}>
+            {profileData.identity == 'manager' ?
+                      <div>
+                        <ListItem sx={{ gap: 0.5 }}>
+                          <ListItemButton
+                            selected={currentURL === 'compaign'}
+                            onClick={() => { setCurrentURL('compaign'); }}
+                            component={currentURL === 'compaign' ? undefined : 'a'}
+                            href='/compaign'
+                          >campaigns</ListItemButton>
+                        </ListItem>
+                        <ListItem>
+                          <ListItemButton
+                            selected={currentURL === 'echarts'}
+                            onClick={() => { setCurrentURL('echarts'); }}
+                            component={currentURL === 'echarts' ? undefined : 'a'}
+                            href='/echarts'
+                          >Analysis</ListItemButton>
+                        </ListItem>
+                      </div>: ""}
+                  </List>
+              </Toggler>
+         </ListItem>
+)}
+                {/* admin */}
+   {profileData.identity === 'administrator' && (
+          <ListItem nested>
+       
+             <Toggler
+             renderToggle={({ open, setOpen }) => (
+               <ListItemButton onClick={() => setOpen(!open)}>
+                 <AdminIcon />
+                 <ListItemContent>
+                   <Typography level="title-sm">Admin</Typography>
+                 </ListItemContent>
+                 <KeyboardArrowDownIcon
+                   sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                 />
+               </ListItemButton>
+             )}
+           >
+                 <List sx={{ gap: 0.5 }}>
+         {profileData.identity == 'administrator'?
+                 <div>
+                     <ListItem>
+                   <ListItemButton
+                   selected={currentURL === '/user'}
+                   onClick={()=>{setCurrentURL('/user')}}
+                   component={currentURL === '/user' ? undefined : 'a'}
+                   href='/user'
+                   >User Mgr</ListItemButton>
+               </ListItem>
+               <ListItem>
+                   <ListItemButton
+                   selected={currentURL === '/admin'}
+                   onClick={()=>{setCurrentURL('/admin')}}
+                   component={currentURL === '/admin' ? undefined : 'a'}
+                   href='/admin'
+                   >Admin</ListItemButton>
+                     </ListItem>
+                   </div> : ""}
+                   </List>
+               </Toggler>
+          </ListItem>
+            )}
+                                      {/* <div>
+                  <ListItem>
+                    <ListItemButton
+                      selected={currentURL === '/user_compaigns'}
+                      onClick={()=>{setCurrentURL('/user_compaigns')}}
+                      component={currentURL === '/user_compaigns' ? undefined : 'a'}
+                      href='/user_compaigns'
+                      >User Compaigns</ListItemButton>
+                  </ListItem>
+                  </div>     */}
           <ListItem>
+            <ListItemButton
+              selected={currentURL === '/user_compaigns'}
+              onClick={()=>{setCurrentURL('/user_compaigns')}}
+              component={currentURL === '/user_compaigns' ? undefined : 'a'}
+              href='/user_compaigns'
+              >
+              <ContactMailIcon />
+              <ListItemContent>
+                <Typography level="title-sm">User Compaigns</Typography>
+              </ListItemContent>
+              </ListItemButton>
+          </ListItem>
+
+          <ListItem>
+
           <ListItemButton
               selected={currentURL.includes('message')}
               role="menuitem"

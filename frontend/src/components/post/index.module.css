@@ -1,37 +1,44 @@
-.outerBox{
-    width:100%;
+.outerBox {
+    width: 100%;
 }
-.showDetailTop{
+
+.showDetailTop {
     padding: 1rem;
     display: flex;
     /* justify-content: space-between; */
 }
-.commentsBox{
+
+.commentsBox {
     margin: 1rem;
     height: calc(100% - 300px);
     width: calc(100% - 20px);
     box-sizing: border-box;
     display: flex;
 }
-.marginBtn{
+
+.marginBtn {
     margin: 1rem;
-   
-}
-.imgbox{
-display: flex;
-justify-content: center;
-}
-.imgItem{
-    position: relative;
-    padding: 10px;
 
 }
-.imgItem img{
+
+.imgbox {
+    display: flex;
+    justify-content: center;
+}
+
+.imgItem {
+    position: relative;
+    padding: 10px;
+    height: 100px;
+
+}
+
+.imgItem img {
     width: 100%;
     height: 100%;
 }
 
-.paginationBox{
+.paginationBox {
     display: flex;
     justify-content: center;
     padding-bottom: 2rem;

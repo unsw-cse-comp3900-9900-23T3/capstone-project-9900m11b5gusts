@@ -1,17 +1,28 @@
-.outerBox{
-    height:100%;
-    width:100%;
+.outerBox {
+    height: 100%;
+    width: 100%;
     background-color: aliceblue;
 }
-.showDetailTop{
+
+.showDetailTop {
     padding: 1rem;
     display: flex;
     justify-content: space-between;
 }
-.commentsBox{
+
+.commentsBox {
     margin: 1rem;
     height: calc(100% - 300px);
     width: calc(100% - 20px);
     box-sizing: border-box;
     display: flex;
+}
+
+/* .imgItem {
+    height: 200px;
+} */
+
+.imgItem img {
+    /* width: 100%; */
+    height: 200px;
 }

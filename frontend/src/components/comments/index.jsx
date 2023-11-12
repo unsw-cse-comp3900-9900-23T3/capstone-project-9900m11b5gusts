@@ -29,7 +29,9 @@ import styles from './index.module.css';
 
 import CheckIcon from '@mui/icons-material/Check'; 
 import CloseIcon from '@mui/icons-material/Close';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import UserInfoChip from "../user_general/UserInfoChip"
+
 
 const baseUrl = "http://127.0.0.1:5000/";
 
@@ -38,6 +40,7 @@ const urls = {
     deleteComment: baseUrl + "Topic/deleteComment",
     topicComment: baseUrl + "Topic/topicComment",
 }
+
 
 
 const ExpandMore = styled((props) => {
@@ -69,7 +72,7 @@ export default function Comments({profileData}) {
 
     const token = localStorage.getItem("token");
     let location = useLocation();
-    const { topicObj } = location.state
+    const { topicObj, activityId, activity } = location.state
 
     const comments = topicObj?.comments
 
@@ -82,6 +85,7 @@ export default function Comments({profileData}) {
     const [secondary, setSecondary] = React.useState(false);
     const [openModal, setOpenModal] = React.useState(false);
     const [comment, setComment] = React.useState('');
+    const navigate = useNavigate();
 
     const handleClose = () => {
         setOpenModal(false);
@@ -187,18 +191,26 @@ export default function Comments({profileData}) {
     return (
         <div className={styles.outerBox}>
             <div className={styles.showDetailTop}>
-                <Card sx={{ maxWidth: '100%' }}>
-                    <CardContent onClick={() => {
-                                    clickMore()
-                                }}>
+                <Card sx={{ width: '100%' }}>
+                    <CardContent>
                         <Typography variant="body2" color="text.secondary">
                             <div className={styles.imgbox}>
                                 {
                                     formatImg(topicData)
                                 }
-                                {topicData.detail}
+                                
                             </div>
+                            <div>{topicData.detail}</div>
+                                    
+                            <CardActions disableSpacing style={{ flexDirection:"column", alignItems: "end", }}>
+                                
+                                <Button variant="contained" size="medium" onClick={clickMore}>Add Comment</Button>
+                                <div style={{padding:'10px'}}></div>
+                                <Button variant="contained" size="medium" onClick={() => {
+                                    navigate("/post", { state: { activityId, activity } });
+                                }}>prev &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Page</Button>
                             
+                            </CardActions>
                         </Typography>
                     </CardContent>
                 </Card>
@@ -211,10 +223,10 @@ export default function Comments({profileData}) {
                             <>
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <AccountCircle />
+                                        <UserInfoChip token={token} email={item.user} name={item.user}/>
                                     </ListItemIcon>
-                                    <Card style={{marginRight: '3rem'}}>{ item.user }</Card>
-                                    <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all'}} primary={item.name}/>
+                                    {/* <Card style={{marginRight: '3rem'}}>{ item.user }</Card> */}
+                                    <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all', paddingLeft: '15px'}} primary={item.name}/>
                                 {profileData.email === item.user ?
                                         <IconButton aria-label="show chats" >
                                             <DeleteIcon onClick={(e) => {
