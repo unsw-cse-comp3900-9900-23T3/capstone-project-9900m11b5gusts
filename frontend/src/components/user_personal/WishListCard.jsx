@@ -64,13 +64,7 @@ export default function WishListCard( {token, item} ) {
   }
 
   const handleAmountChange = (event) => {
-    if (event.target.value > 0){
-      setAmount(event.target.value)
-    } else {
-      setAmount("")
-    }
-      
-    
+    setAmount(event.target.value)
   }
 
   const handleItemNameChange = (event) => {
@@ -196,7 +190,7 @@ export default function WishListCard( {token, item} ) {
             fontWeight="lg"
             mb={1}
           >
-            { item.item_num > 0 ? 'Edit Item ': 'Add New Item' }
+            Add New Item
           </Typography>
 
           <br />
