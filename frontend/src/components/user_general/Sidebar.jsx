@@ -91,14 +91,14 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
   }, [currentURL])
 
 
-  // React.useState(() => {
-  //   checkMessage()
-  //   const refreshInterval = setInterval(() =>{
-  //     checkMessage()
-  //   }, 3000)
+  React.useState(() => {
+    checkMessage()
+    const refreshInterval = setInterval(() =>{
+      checkMessage()
+    }, 4000)
 
-  //   return () => clearInterval(refreshInterval);
-  // }, [])
+    return () => clearInterval(refreshInterval);
+  }, [])
 
   async function checkMessage(){
     
