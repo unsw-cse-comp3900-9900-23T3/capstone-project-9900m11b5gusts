@@ -27,7 +27,7 @@ export default function MarketHomePage ({ token, profileData }) {
   React.useEffect(() => {
     console.log('market: ', posts)
     console.log('market: ', posts.length)
-    setMaxPageNum(Math.ceil(posts.length / 10))
+    setMaxPageNum(Math.ceil(posts[posts.length-1] / 10))
   },[posts])
 
   const handleClearCategory = () => {
