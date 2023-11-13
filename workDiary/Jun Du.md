@@ -36,7 +36,11 @@ Complete the frontend of the Campaigns page. All the accounts can browse the cam
 
 week9:
 
-Complete the frontend and backend of the campaigns page. Finish all the tasks.
+Complete the frontend and backend of the campaign page. Finish all the tasks. Praparing the final presentation with teammates.
 
+
+week 10:
+
+ Modifying and enhancing the entire webpage interface. Finishing the final report.
 
 
