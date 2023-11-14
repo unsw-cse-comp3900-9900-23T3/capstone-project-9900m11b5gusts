@@ -1188,19 +1188,21 @@ def search_activity(page, **kwargs):
 
     page_size = 10
     offset = (page - 1) * page_size
-    total_rows = activity_infor.count()
     activities = activity_infor.offset(offset).limit(page_size).all()
+    total_rows = 0
     if activities:
         r = {}
         for activity in activities:
-            r[activity.id] = {
-                'activity_name': activity.activity_name,
-                'status': activity.status,
-                'category': activity.category,
-                'overview': activity.overview,
-                'detail': activity.detail,
-                'image': activity.image
-            }
+            if activity.status == "1":
+                r[activity.id] = {
+                    'activity_name': activity.activity_name,
+                    'status': activity.status,
+                    'category': activity.category,
+                    'overview': activity.overview,
+                    'detail': activity.detail,
+                    'image': activity.image
+                }
+        total_rows = len(r)
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': ''}}
@@ -1299,15 +1301,17 @@ def show_activities_infor(page, page_size):
     if len(activities) != 0:
         r = {}
         for activity in activities:
-            r[activity.id] = {
-                'activity_name': activity.activity_name,
-                'category': activity.category,
-                'overview': activity.overview,
-                'detail': activity.detail,
-                'image': activity.image,
-                'status': activity.status,
-                'email': activity.email
-            }
+            if activity.status == '1':
+                r[activity.id] = {
+                    'activity_name': activity.activity_name,
+                    'category': activity.category,
+                    'overview': activity.overview,
+                    'detail': activity.detail,
+                    'image': activity.image,
+                    'status': activity.status,
+                    'email': activity.email
+                }
+        total_rows = len(r)
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
         return {'result': True, 'info': {'activities': '', 'total_rows': 0}}
