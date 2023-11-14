@@ -23,3 +23,6 @@ Complete the front and back end of the active editing page
 
 week 9
 Complete the activity review and data analysis interface.
+
+week 10
+Check the operation of all functions
