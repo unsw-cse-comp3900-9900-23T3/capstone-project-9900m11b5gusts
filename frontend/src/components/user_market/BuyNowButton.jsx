@@ -1,22 +1,19 @@
+// This button is called by SeeItemDetail.jsx
+// It opens a new modal that allow users to enter the amount of the item they need,
+// and then confirm sending the trade request
+
 import * as React from 'react';
 import Button from '@mui/joy/Button';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Switch from '@mui/joy/Switch';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import ModalClose from '@mui/joy/ModalClose';
 import DialogTitle from '@mui/joy/DialogTitle';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import Sheet from '@mui/joy/Sheet';
 import Box from '@mui/joy/Box';
 import Input from '@mui/joy/Input';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Alert } from '@mui/joy';
 
 
 export default function BuyNowButton({ token, item, current_user_email }) {
@@ -168,7 +165,6 @@ export default function BuyNowButton({ token, item, current_user_email }) {
 						</Button>
 
           </Box>
-
 
         </ModalDialog>
       </Modal>

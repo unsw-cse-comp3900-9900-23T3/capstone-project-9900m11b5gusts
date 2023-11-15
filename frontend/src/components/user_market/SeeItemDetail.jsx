@@ -1,3 +1,6 @@
+// This is a modal that is called in ItemCard.jsx
+// Will display details of the collectibles when ItemCard is clicked 
+
 import * as React from 'react';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
@@ -17,7 +20,6 @@ import BuyNowButton from './BuyNowButton';
 
 export default function SeeItemDetail({ token, item, current_user_email }) {
   const [layout, setLayout] = React.useState(undefined);
-
 
   return (
     <React.Fragment>
@@ -115,8 +117,6 @@ export default function SeeItemDetail({ token, item, current_user_email }) {
             </CardOverflow>
           
           }
-
-
 
         </ModalDialog>
       </Modal>

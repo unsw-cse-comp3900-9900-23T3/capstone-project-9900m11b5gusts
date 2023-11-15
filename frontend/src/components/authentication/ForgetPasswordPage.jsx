@@ -1,22 +1,21 @@
+// This is where users can reset there password by the verification code sent to their email
+
+
 import React, { useState, useEffect } from 'react';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Checkbox from '@mui/joy/Checkbox';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel, { formLabelClasses } from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-
 
 
 function ColorSchemeToggle({ onClick, ...props }) {
@@ -70,9 +69,6 @@ export default function ForgetPasswordPage() {
 		const handleCodeChange = (event) => {
 			setCode(event.target.value)
 		}
-
-
-
 
 
 		function handleEmail(e){
@@ -169,18 +165,7 @@ export default function ForgetPasswordPage() {
               justifyContent: 'space-between',
             }}
           >
-            <Box
-              sx={{
-                gap: 2,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {/* <IconButton variant="soft" color="primary" size="sm">
-                <BadgeRoundedIcon />
-              </IconButton>
-              <Typography level="title-lg">Company logo</Typography> */}
-            </Box>
+
             <ColorSchemeToggle />
           </Box>
           <Box
@@ -231,7 +216,7 @@ export default function ForgetPasswordPage() {
     onSubmit={(event) => {
       event.preventDefault();
       if (state === 0) {
-				sendEmail(); // 在表单提交时触发登录函数
+				sendEmail(); 
 			} else if (state === 1) {
 				sendCode();
 			}
@@ -289,12 +274,6 @@ export default function ForgetPasswordPage() {
 			</>
 
 		}
-
-			
-
-
-
-
   </form>
 
 </Stack>

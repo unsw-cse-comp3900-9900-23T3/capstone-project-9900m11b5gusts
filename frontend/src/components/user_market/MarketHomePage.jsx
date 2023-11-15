@@ -1,11 +1,9 @@
+// This is the home page of market
+// It calls SelectCategoryButton, SearchBar, and ItemCard
+
 import React from 'react';
 import Box from "@mui/joy/Box"
-import Input from '@mui/joy/Input';
-import Button from '@mui/joy/Button';
 import Stack from '@mui/joy/Stack';
-
-import SearchIcon from '@mui/icons-material/Search';
-
 import SearchBar from './SearchBar';
 import SelectCategoryButton from '../user_general/SelectCategoryButton';
 import Pagination from "../user_general/Pagination";

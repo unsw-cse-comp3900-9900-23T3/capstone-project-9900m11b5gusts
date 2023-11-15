@@ -1,3 +1,5 @@
+// This card shows the detail information of the posted items.
+
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"
 import Card from "@mui/joy/Card"
@@ -14,7 +16,7 @@ import SeeItemDetail from "../user_market/SeeItemDetail"
 import EditItemPage from "../user_personal/EditItemPage"
 
 
-export default function ItemCard({ token, index, item, manageItemID, current_user_email, profileData, finished=false }) {
+export default function ItemCard({ token, item, current_user_email, profileData, finished=false }) {
 
   const handleDeleteButton = () => {
     const isConfirmed = window.confirm("Are you sure you want to delete this item?");

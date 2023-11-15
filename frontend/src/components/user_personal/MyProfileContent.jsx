@@ -1,4 +1,4 @@
-// This page displays user's profile page. 
+// This page displays user's profile content. 
 // It also allows editing. 
 
 import * as React from "react"

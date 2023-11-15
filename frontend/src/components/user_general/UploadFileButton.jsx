@@ -4,9 +4,7 @@ import * as React from 'react';
 import Button from '@mui/joy/Button';
 import SvgIcon from '@mui/joy/SvgIcon';
 import { styled } from '@mui/joy';
-
 import { fileToDataURL } from '../user_general/FileToURL.js';
-
 
 
 //The following tow sections of code make an upload button

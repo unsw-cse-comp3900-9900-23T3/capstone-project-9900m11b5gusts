@@ -1,19 +1,16 @@
+// This is where seller check the trade request from buyer
+
 import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography"
-import Button from '@mui/joy/Button';
-import AddIcon from '@mui/icons-material/Add';
-
-import ItemCard from "../user_general/ItemCard";
-import { useLocation } from 'react-router-dom';
 import MessageCard from "./MessageCard";
 
 
 
-export default function MessagePage ({ token, profileData, posts, setPosts }) {
+export default function MessagePage ({ token, posts, setPosts }) {
 
   React.useEffect(()=>{
     checkMessage()
@@ -79,7 +76,6 @@ export default function MessagePage ({ token, profileData, posts, setPosts }) {
                 )  
               })
             }
-            
           
           </Stack>
         </Stack>

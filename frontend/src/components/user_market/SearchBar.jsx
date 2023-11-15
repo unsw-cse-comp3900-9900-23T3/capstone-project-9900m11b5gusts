@@ -1,23 +1,20 @@
+// This is a search bar. It is called by MarketHomePage.jsx
+
+
 import * as React from 'react';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import FormHelperText from '@mui/joy/FormHelperText';
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/joy/IconButton';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import Chip from '@mui/joy/Chip';
 import ChipDelete from '@mui/joy/ChipDelete';
 
 
 export default function SearchBar({ 
-  token, 
   classes, 
-  setClasses, 
   handleClearCategory, 
   applyClassesFlag, 
-  setApplyClassesFlag, 
   search, 
   searchWords, 
   setSearchWords }) {
@@ -25,7 +22,7 @@ export default function SearchBar({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-		console.log('submiting...')
+		// console.log('submiting...')
     search(1)
   };
 

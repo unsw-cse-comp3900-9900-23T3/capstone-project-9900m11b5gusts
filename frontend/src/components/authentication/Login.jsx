@@ -1,3 +1,8 @@
+// Login page. 
+// Takes in an 'onSuccess' function.
+// This function will store the token into local storage, so that it can be kept after the page switched.
+
+
 import React, { useState, useEffect } from 'react';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
@@ -15,7 +20,6 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 
 
 
@@ -24,11 +28,11 @@ function ColorSchemeToggle({ onClick, ...props }) {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
+      setMounted(true);
     }, []);
 
     if (!mounted) {
-        return <IconButton size="sm" variant="outlined" color="neutral" disabled/>;
+      return <IconButton size="sm" variant="outlined" color="neutral" disabled/>;
     }
     return (
     <IconButton
@@ -54,39 +58,39 @@ function ColorSchemeToggle({ onClick, ...props }) {
 
 
 export default function Login({ onSuccess }) {
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
-    const [errorMessage, setErrorMessage] = React.useState('')
-      function handleEmail(e){
-            setEmail(e.target.value);
-            setErrorMessage('');
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [errorMessage, setErrorMessage] = React.useState('')
+    function handleEmail(e){
+      setEmail(e.target.value);
+      setErrorMessage('');
+    }
+    function handlePassword(e){
+      setPassword(e.target.value);
+    }
+    async function login(){
+      console.log('SignIn:', email, password);
+      const response = await fetch('http://127.0.0.1:5000/Authors/login', {
+        method:'POST',
+        headers:{
+              'content-type':'application/json',
+        },
+        body:JSON.stringify({
+              'user_email': email,
+              'password': password
+        })
+      });
+      if (response.status===200){
+        const data = await response.json();
+        onSuccess(data.token)
+        // console.log(data);
+        window.location.href = '/market'
+            
+      }else{
+        setErrorMessage('Wrong email or password,please try again.')
       }
-      function handlePassword(e){
-            setPassword(e.target.value);
-      }
-      async function login(){
-            console.log('SignIn:', email, password);
-            const response = await fetch('http://127.0.0.1:5000/Authors/login', {
-                  method:'POST',
-                  headers:{
-                        'content-type':'application/json',
-                  },
-                  body:JSON.stringify({
-                        'user_email': email,
-                        'password': password
-                  })
-            });
-            if (response.status===200){
-                  const data = await response.json();
-                  onSuccess(data.token)
-                  // console.log(data);
-                  window.location.href = '/market'
-                  
-            }else{
-                  setErrorMessage('Wrong email or password,please try again.')
-            }
 
-      }
+    }
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -144,10 +148,6 @@ export default function Login({ onSuccess }) {
                 alignItems: 'center',
               }}
             >
-              {/* <IconButton variant="soft" color="primary" size="sm">
-                <BadgeRoundedIcon />
-              </IconButton>
-              <Typography level="title-lg">Company logo</Typography> */}
             </Box>
             <ColorSchemeToggle />
           </Box>
@@ -204,7 +204,7 @@ export default function Login({ onSuccess }) {
   <form
     onSubmit={(event) => {
       event.preventDefault();
-      login(); // 在表单提交时触发登录函数
+      login(); 
     }}
   >
     <FormControl required>

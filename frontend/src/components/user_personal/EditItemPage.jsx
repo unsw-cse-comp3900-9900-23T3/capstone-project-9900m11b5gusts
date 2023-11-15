@@ -1,4 +1,4 @@
-//This is where user can post a new item
+//This is where user posts a new item
 
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"

@@ -1,3 +1,5 @@
+// A header. Only visible when your window is narrow. 
+
 import React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import IconButton from '@mui/joy/IconButton';
