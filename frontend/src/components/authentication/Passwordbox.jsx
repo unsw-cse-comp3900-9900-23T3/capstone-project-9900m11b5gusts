@@ -1,3 +1,6 @@
+// A text area for password
+// Judges the strength of the password simply based on its length.
+
 import * as React from 'react';
 import Stack from '@mui/joy/Stack';
 import Input from '@mui/joy/Input';
@@ -9,10 +12,7 @@ export default function PasswordMeterInput({onChange}) {
   const [value, setValue] = React.useState('');
   function handleValue(e){
 
-    // 更新内部状态
     setValue(e.target.value);
-
-    // 调用外部传递的 onChange 处理函数
     if (onChange) {
       onChange(e);
     }

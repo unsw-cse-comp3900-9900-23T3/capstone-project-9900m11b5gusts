@@ -1,3 +1,6 @@
+// This is called by MessagePage.jsx
+// Can display the content of a message.
+
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"
 import Card from "@mui/joy/Card"
@@ -5,29 +8,17 @@ import CardContent from "@mui/joy/CardContent"
 import CardOverflow from "@mui/joy/CardOverflow"
 import Chip from "@mui/joy/Chip"
 import Button from "@mui/joy/Button"
-import Link from "@mui/joy/Link"
 import Stack from "@mui/joy/Stack"
 import Typography from "@mui/joy/Typography"
-// import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded"
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
-// import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
-// import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
-// import Star from "@mui/icons-material/Star"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
-import DeleteIcon from '@mui/icons-material/Delete';
 import UserInfoChip from "../user_general/UserInfoChip"
 import SeeItemDetail from "../user_market/SeeItemDetail"
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 
 
-export default function MessageCard({ token, index, item, finished=false }) {
-
-	console.log(index, item)
-  // console.log(item.item_detail)
-
-  console.log(item.item_detail[item.item_id])
+export default function MessageCard({ token, item, finished=false }) {
 
   const handleAcceptButton = () => {
     answerRequest(true)
@@ -36,8 +27,6 @@ export default function MessageCard({ token, index, item, finished=false }) {
   const handleRejectButton = () => {
     answerRequest(false)
   }
-
-
 
   async function answerRequest( answer ){
     console.log('answering')
@@ -77,7 +66,7 @@ export default function MessageCard({ token, index, item, finished=false }) {
           }
         }}
       >
-                <CardOverflow
+        <CardOverflow
           sx={{
             mr: { xs: "var(--CardOverflow-offset)", sm: 0 },
             mb: { xs: 0, sm: "var(--CardOverflow-offset)" },
@@ -113,9 +102,6 @@ export default function MessageCard({ token, index, item, finished=false }) {
                   Finished
                 </Chip>
               )}
-              {}
-
-
 
             </Stack>
             

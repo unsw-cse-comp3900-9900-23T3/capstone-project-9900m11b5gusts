@@ -1,25 +1,26 @@
+// This is the sidebar. It is on the left side of the window as long as you have logged in.
+// If your screen is narrow, it will hide automatically and can be called by the button on header.
+// It has many ListItemButton that navigates you to different sections of our platform.
+// It also has a time interval that will fetch every 4 seconds. 
+// This is because we don't have the time to built a real messaging system using things like socket.
+// Instead, we fetch periodically to see if there's new message.
+// I know this is a bad idea if we are facing a large number of users.
+// Due to the limit of time, this is the best we can do.
+// It works fine when there's only a few users, though.
+
 import React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
 import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
-import Input from '@mui/joy/Input';
-import LinearProgress from '@mui/joy/LinearProgress';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
@@ -27,18 +28,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import AdminIcon from '@mui/icons-material/AdminPanelSettings';
 
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import HistoryIcon from '@mui/icons-material/History';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FeedbackIcon from '@mui/icons-material/Feedback';
-
 import ColorSchemeToggle from '../blocks/ColorSchemeToggle';
-import { CssVarsProvider } from '@mui/joy/styles';
 
 
 
@@ -181,13 +175,10 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        {/* <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton> */}
         <Typography level="title-lg">Panda Exchange Hub</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      {/* <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" /> */}
+
       <Box
         sx={{
           minHeight: 0,
@@ -259,29 +250,6 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                     Wish List
                   </ListItemButton>
                 </ListItem>
-                {/* <ListItem>
-                  <ListItemButton>Inventory</ListItemButton>
-                </ListItem> */}
-
-                {/* {profileData.identity == 'administrator'?
-                  <div>
-                      <ListItem>
-                    <ListItemButton
-                    selected={currentURL === '/user'}
-                    onClick={()=>{setCurrentURL('/user')}}
-                    component={currentURL === '/user' ? undefined : 'a'}
-                    href='/user'
-                    >User Manager System</ListItemButton>
-                </ListItem>
-                <ListItem>
-                    <ListItemButton
-                    selected={currentURL === '/admin'}
-                    onClick={()=>{setCurrentURL('/admin')}}
-                    component={currentURL === '/admin' ? undefined : 'a'}
-                    href='/admin'
-                    >Admin</ListItemButton>
-                      </ListItem>
-                    </div> : ""} */}
            
               </List>
             </Toggler>

@@ -1,3 +1,8 @@
+// Register page.
+// User email should be unique.
+// An additional authorization code is needed if the user
+// trys to register a manager or administrator account
+
 import React, { useState, useEffect } from 'react';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';

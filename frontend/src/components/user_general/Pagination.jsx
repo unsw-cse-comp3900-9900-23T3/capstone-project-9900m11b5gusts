@@ -1,3 +1,11 @@
+// This is called by MarketHomePage.
+// Pagination is ... is what it is.
+// User can go to different page by entering a number or clicking the previous or next button.
+// About how it determine the maximum page num.
+// The backend will return the total number of items alongside with item details when search() is called.
+// Also, the backend returns 10 items at maximum at a time.
+// So the ceiling of [(total number of items) / 10] is the maximum page num
+
 import * as React from "react"
 import Box from "@mui/joy/Box"
 import Button from "@mui/joy/Button"
@@ -8,10 +16,6 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 import Input from '@mui/joy/Input';
 
 export default function Pagination( { pageNum, setPageNum, maxPageNum, search } ) {
-  
-  const [previousPageNum, setPreviousPageNum] = React.useState(pageNum)
-  // console.log('maxpagenum: ',maxPageNum)
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,7 +31,6 @@ export default function Pagination( { pageNum, setPageNum, maxPageNum, search } 
     
   };
   
-
 
   return (
     <form onSubmit={handleSubmit}>

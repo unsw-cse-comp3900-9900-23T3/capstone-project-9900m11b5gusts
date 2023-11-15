@@ -1,4 +1,6 @@
-//Wish list page will display a listing of all the posts that user has created
+// Wish list page will display a listing of all the posts that user has created
+// It will extract the email address in the URL from window.location, 
+// and then fetch the information of the email owner
 
 import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";

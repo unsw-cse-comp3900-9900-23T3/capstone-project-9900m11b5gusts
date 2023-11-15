@@ -1,23 +1,17 @@
+// This is where user check exchange history
+// It will extract the email address in the URL from window.location, 
+// and then fetch the information of the email owner
+
 import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography"
-import Button from '@mui/joy/Button';
-import AddIcon from '@mui/icons-material/Add';
-
-import ItemCard from "../user_general/ItemCard";
-import { useLocation } from 'react-router-dom';
-import MessageCard from "./MessageCard";
-import Avatar from '@mui/joy/Avatar';
 import List from '@mui/joy/List';
 import ListDivider from '@mui/joy/ListDivider';
-import ListItem from '@mui/joy/ListItem';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListItemButton from '@mui/joy/ListItemButton';
 import HistoryCard from "./HistoryCard";
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 
 export default function ExchangeHistoryPage ({ token, profileData }) {

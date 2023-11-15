@@ -1,21 +1,15 @@
+// This is called by ExchangeHistoryPage.jsx
+// Displays a history record 
+
 import * as React from "react"
 import AspectRatio from "@mui/joy/AspectRatio"
 import Card from "@mui/joy/Card"
 import CardContent from "@mui/joy/CardContent"
 import CardOverflow from "@mui/joy/CardOverflow"
 import Chip from "@mui/joy/Chip"
-import Button from "@mui/joy/Button"
-import Link from "@mui/joy/Link"
 import Stack from "@mui/joy/Stack"
 import Typography from "@mui/joy/Typography"
-// import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded"
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded"
-// import KingBedRoundedIcon from "@mui/icons-material/KingBedRounded"
-// import WifiRoundedIcon from "@mui/icons-material/WifiRounded"
-// import Star from "@mui/icons-material/Star"
 import VerifiedIcon from '@mui/icons-material/VerifiedTwoTone';
-import DeleteIcon from '@mui/icons-material/Delete';
 import UserInfoChip from "../user_general/UserInfoChip"
 import SeeItemDetail from "./SeeItemDetail"
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';

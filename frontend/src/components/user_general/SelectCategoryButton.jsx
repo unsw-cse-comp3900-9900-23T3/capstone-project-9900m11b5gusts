@@ -1,12 +1,14 @@
+// This is a button. A modal will be opened if clicked.
+// User can select a category they want on the modal, apply it or cancel it. 
+// The information about category is fetched from server every time it is clicked.
+// So the category user can choose is always up-to-date, as long as the backend has the latest category.
+
+
 import * as React from 'react';
 import Button from '@mui/joy/Button';
 import SegmentIcon from '@mui/icons-material/Segment';
 
 import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Switch from '@mui/joy/Switch';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import ModalClose from '@mui/joy/ModalClose';
@@ -24,13 +26,10 @@ export default function SelectCategoryButton({ token, classes, setClasses, handl
   const [layout, setLayout] = React.useState(undefined);
   const [category, setCategory] = React.useState(null)
 
-
   const handleButtonClick = () => {
     updateCategory()
     setLayout('center')
   }
-
-
 
   React.useEffect(()=>{
     console.log('classes: ', classes)

@@ -1,21 +1,28 @@
+// This chip is used to dispaly user name in environments like market
+// Takes in a string 'name' and shows it on the chip
+// Takes in a string 'email' and uses it to fetch more infomation about the user
+// There are 3 buttons on this chip that leads you to user's posts, wish list, and exchange history
+
+// After fetching the email, avartar picture of the user can be seen on the chip
+// The avatar will not be loaded until the chip is clicked.
+// I know it is not the perfect solution, but due to the limit of developing time and the lack of consideration,
+// we decide to do so to accelerate the page loading.
+// Avatars are pictures and they are massive in size. 
+
+
 import * as React from 'react';
 import Avatar from '@mui/joy/Avatar';
-import AvatarGroup from '@mui/joy/AvatarGroup';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
-import CardActions from '@mui/joy/CardActions';
-import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Sheet from '@mui/joy/Sheet';
 import Chip from '@mui/joy/Chip';
 import Grid from '@mui/joy/Grid';
 import ListDivider from '@mui/joy/ListDivider';
-import Stack from '@mui/joy/Stack';
 
 
 
@@ -28,10 +35,6 @@ export default function UserInfoChip({ token, email, name }) {
 		fetchUserInfoByEmail()
 		setOpen(true)
 	}
-
-	// React.useEffect(() => {
-	// 	fetchUserInfoByEmail()
-	// },[])
 
 
 	function handleSeePosts() {
@@ -73,15 +76,15 @@ export default function UserInfoChip({ token, email, name }) {
 
   return (
     <React.Fragment>
-					<Chip
-						variant="outlined"
-						color="neutral"
-						size="lg"
-						startDecorator={<Avatar size="sm" src={userInfo ? userInfo.image: ''} />}
-						onClick={handleChipClick}
-					>
-						{name}
-					</Chip>
+			<Chip
+				variant="outlined"
+				color="neutral"
+				size="lg"
+				startDecorator={<Avatar size="sm" src={userInfo ? userInfo.image: ''} />}
+				onClick={handleChipClick}
+			>
+				{name}
+			</Chip>
 			{userInfo &&
 				<>
 					<Modal
@@ -174,8 +177,6 @@ export default function UserInfoChip({ token, email, name }) {
 											View his/her exchange history
 										</Button>
 										
-
-
 								</CardContent>
 
 							</Card>
