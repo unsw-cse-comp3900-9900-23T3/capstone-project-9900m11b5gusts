@@ -105,6 +105,7 @@ export default function Comments({profileData}) {
                 name: e.comment,
                 open: false,
                 user: e.email,
+                username: e.username,
                 avatar: e.avatar,
                 children: []
             }
@@ -194,7 +195,9 @@ export default function Comments({profileData}) {
                 <Card sx={{ width: '100%' }}>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary">
-                            <div className={styles.imgbox}>
+                            <div><b>user: { topicData.username }</b></div>
+                            <div><b>email: { topicData.email }</b></div>
+                            <div className={styles.imgbox} style={{marginTop: '2rem'}}>
                                 {
                                     formatImg(topicData)
                                 }
@@ -220,10 +223,10 @@ export default function Comments({profileData}) {
                 <Card sx={{ width: "99%" }} style={{overflowY: 'scroll'}}>
                     <List dense={dense}>
                         {listData.map(item => (
-                            <>
+                            <Card style={{ margin: '1rem' }}>
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <UserInfoChip token={token} email={item.user} name={item.user}/>
+                                        <UserInfoChip token={token} email={item.user} name={item.username}/>
                                     </ListItemIcon>
                                     {/* <Card style={{marginRight: '3rem'}}>{ item.user }</Card> */}
                                     <ListItemText style={{whiteSpace: 'pre-line',  wordBreak: 'break-all', paddingLeft: '15px'}} primary={item.name}/>
@@ -257,7 +260,7 @@ export default function Comments({profileData}) {
                                 </Collapse>
                                 
 
-                            </>))}
+                            </Card>))}
                     </List>
                 </Card>
             </div>

@@ -29,6 +29,7 @@ const urls = {
   searchActivity: baseUrl + "Activity/searchActivity/",
   showActivity: baseUrl + "Activity/showActivity/",
   editActivity: baseUrl + "Activity/editActivity",
+  archiveActivity: baseUrl + "Activity/archiveActivity",
 }
 
 export default function MainPage() {
@@ -221,9 +222,24 @@ export default function MainPage() {
       }).then(() => {
         showActivity()
       })
-
-
     }
+
+    const handleBtnArchiveClick = (activityObj) => {
+      const body = {
+        "activity_name": activityObj.activity_name,
+      }
+      fetch(urls.archiveActivity, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then(() => {
+        showActivity()
+      })
+    }
+  
     return (
       <Card sx={{ width: 345 }}>
         <CardMedia
@@ -247,7 +263,7 @@ export default function MainPage() {
         <CardActions>
           <div className={styles.buttonRight}>
             <Button size="small" variant="outlined" onClick={() => handleBtnDelClick(activityObj)}>Delete</Button>
-
+            <Button size="small" variant="outlined" onClick={() => handleBtnArchiveClick(activityObj)}>Archive</Button>
             <Button size="small" variant="outlined" onClick={() => handleBtnClick(activityObj)}>Edit</Button>
           </div>
         </CardActions>
@@ -279,10 +295,6 @@ export default function MainPage() {
         <div className={styles.paginationBox}>
           {/* defaultPage={paginationObj.pageSize} */}
           <Pagination count={paginationObj.count} page={paginationObj.currentPage} variant="outlined" color="primary" onChange={changePagination} />
-          count: {
-            paginationObj.count
-          }
-          page:{paginationObj.currentPage}
           <Select
             labelId="demo-simple-select-standard-label"
             className={styles.select}
