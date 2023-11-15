@@ -203,6 +203,10 @@ update_activity_model = api.model('update_activity', {
         'image': fields.String(example='a new image')
 })
 
+archive_activity_model = api.model('archive_activity', {
+        'activity_name': fields.String(example='name')
+})
+
 update_activity_permission_model = api.model('update_activity_permission_model', {
         'email': fields.String(example='syukay00789@gmail.com'),
         'identity': fields.String(example='manager')
