@@ -281,6 +281,14 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                             href='/compaign'
                           >campaigns</ListItemButton>
                         </ListItem>
+                        <ListItem sx={{ gap: 0.5 }}>
+                          <ListItemButton
+                            selected={currentURL === 'compaign'}
+                            onClick={() => { setCurrentURL('compaign'); }}
+                            component={currentURL === 'compaign' ? undefined : 'a'}
+                            href='/compaign'
+                          >archive campaigns</ListItemButton>
+                        </ListItem>
                         <ListItem>
                           <ListItemButton
                             selected={currentURL === 'echarts'}
@@ -360,7 +368,6 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
           </ListItem>
 
           <ListItem>
-
           <ListItemButton
               selected={currentURL.includes('message')}
               role="menuitem"
