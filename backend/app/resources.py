@@ -17,7 +17,8 @@ from .models import user_register, user_login, get_profile, update_profile, inse
     create_topic, update_topic, delete_topic, comment_topic, buying_history, \
     buyer_process_request, seller_process_request, selling_history, handle_purchase_request, \
     get_item_by_id, show_topic_detail, delete_comment, get_top10_activities, get_top10_comments_topics, \
-    get_top10_comments_activities, base64_to_image, predict, show_topic_comment, archive_activity
+    get_top10_comments_activities, base64_to_image, predict, show_topic_comment, archive_activity, \
+    show_archived_activities_infor
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
@@ -526,6 +527,16 @@ class ShowActivityInfor(Resource):
     @Activity.doc(description='Show all the activities')
     def post(self, page, pagesize):
         result = show_activities_infor(page, pagesize)
+        if result['result']:
+            return {'success': result['info']['activities'], 'total': result['info']['total_rows'], 'pageSize': pagesize, 'page': page}, 200
+        else:
+            return {'error': result['info']}, 400
+
+@Activity.route('/showArchivedActivity/<int:page>/<int:pagesize>')
+class ShowArchivedActivityInfor(Resource):
+    @Activity.doc(description='Show all the archived activities')
+    def post(self, page, pagesize):
+        result = show_archived_activities_infor(page, pagesize)
         if result['result']:
             return {'success': result['info']['activities'], 'total': result['info']['total_rows'], 'pageSize': pagesize, 'page': page}, 200
         else:

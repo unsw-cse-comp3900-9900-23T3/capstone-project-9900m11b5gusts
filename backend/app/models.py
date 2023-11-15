@@ -1333,6 +1333,29 @@ def show_activities_infor(page, page_size):
     else:
         return {'result': True, 'info': {'activities': '', 'total_rows': 0}}
 
+def show_archived_activities_infor(page, page_size):
+    activity_infor = Activity.query.filter()
+    # page_size = 10
+    offset = (page - 1) * page_size
+    total_rows = activity_infor.count()
+    activities = activity_infor.offset(offset).limit(page_size).all()
+    if len(activities) != 0:
+        r = {}
+        for activity in activities:
+            if activity.status == '2':
+                r[activity.id] = {
+                    'activity_name': activity.activity_name,
+                    'category': activity.category,
+                    'overview': activity.overview,
+                    'detail': activity.detail,
+                    'image': activity.image,
+                    'status': activity.status,
+                    'email': activity.email
+                }
+        total_rows = len(r)
+        return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
+    else:
+        return {'result': True, 'info': {'activities': '', 'total_rows': 0}}
 
 def show_user_identity(page, page_size):
     user_infor = User.query.filter()
