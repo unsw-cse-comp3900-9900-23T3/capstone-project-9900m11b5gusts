@@ -1291,6 +1291,23 @@ def update_activity(email, **kwargs):
     except Exception as e:
         return {'result': False, 'info': f'Failed to update activity'}
 
+def archive_activity(email, **kwargs):
+    activity_name = kwargs['activity_name']
+    try:
+        activity = Activity.query.filter_by(
+            activity_name=activity_name).first()
+        if activity.email != email:
+            return {'result': False, 'info': f'You don\'t have permission to archive activities which are not created by you!'}
+        if activity:
+            if activity.status == '0':
+                return {'result': False, 'info': f'Administrator has not approved the activity, you can not proceed !'}
+            activity.status = 2
+            db.session.commit()
+            return {'result': True, 'info': f'Archive the activity successfully'}
+    except Exception as e:
+        return {'result': False, 'info': f'Failed to archive activity'}
+
+
 
 def show_activities_infor(page, page_size):
     activity_infor = Activity.query.filter()
