@@ -74,3 +74,5 @@ Get Selling and Buying history for all users
 all the item getting method is return item by time_stamp desc 
 YOLOv8:add an API can predict image class(Luna, Harry, Lucius, Dumbledore),the model is training by custom dataset
 The training detail see in 'https://colab.research.google.com/drive/1HG50UD_VzIx8RAixuehCxzCZ6nIqkriC#scrollTo=0NuacHYRQFov'
+### week10
+write report's database part  
