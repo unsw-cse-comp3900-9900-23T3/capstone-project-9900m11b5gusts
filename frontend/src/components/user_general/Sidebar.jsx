@@ -270,36 +270,36 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                 </ListItemButton>
               )}
             >
-            <List sx={{ gap: 0.5 }}>
-            {profileData.identity == 'manager' ?
-                      <div>
-                        <ListItem sx={{ gap: 0.5 }}>
-                          <ListItemButton
-                            selected={currentURL === 'compaign'}
-                            onClick={() => { setCurrentURL('compaign'); }}
-                            component={currentURL === 'compaign' ? undefined : 'a'}
-                            href='/compaign'
-                          >campaigns</ListItemButton>
-                        </ListItem>
-                        <ListItem sx={{ gap: 0.5 }}>
-                          <ListItemButton
-                            selected={currentURL === 'archive_compaign'}
-                            onClick={() => { setCurrentURL('archive_compaign'); }}
-                            component={currentURL === 'archive_compaign' ? undefined : 'a'}
-                            href='/archive_compaign'
-                          >archive campaigns</ListItemButton>
-                        </ListItem>
-                        <ListItem>
-                          <ListItemButton
-                            selected={currentURL === 'echarts'}
-                            onClick={() => { setCurrentURL('echarts'); }}
-                            component={currentURL === 'echarts' ? undefined : 'a'}
-                            href='/echarts'
-                          >Analysis</ListItemButton>
-                        </ListItem>
-                      </div>: ""}
-                  </List>
-              </Toggler>
+              <List sx={{ gap: 0.5 }}>
+                {profileData.identity == 'manager' ?
+                  <div>
+                    <ListItem sx={{ gap: 0.5 }}>
+                      <ListItemButton
+                        selected={currentURL === 'compaign'}
+                        onClick={() => { setCurrentURL('compaign'); }}
+                        component={currentURL === 'compaign' ? undefined : 'a'}
+                        href='/compaign'
+                      >campaigns</ListItemButton>
+                    </ListItem>
+                    <ListItem sx={{ gap: 0.5 }}>
+                      <ListItemButton
+                        selected={currentURL === 'archive_compaign'}
+                        onClick={() => { setCurrentURL('archive_compaign'); }}
+                        component={currentURL === 'archive_compaign' ? undefined : 'a'}
+                        href='/archive_compaign'
+                      >archive campaigns</ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton
+                        selected={currentURL === 'echarts'}
+                        onClick={() => { setCurrentURL('echarts'); }}
+                        component={currentURL === 'echarts' ? undefined : 'a'}
+                        href='/echarts'
+                      >Analysis</ListItemButton>
+                    </ListItem>
+                  </div>: ""}
+              </List>
+            </Toggler>
          </ListItem>
 )}
                 {/* admin */}

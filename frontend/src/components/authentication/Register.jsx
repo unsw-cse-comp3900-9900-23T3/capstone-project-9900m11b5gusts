@@ -245,7 +245,7 @@ export default function Register({ onSuccess }) {
     </FormControl>
       <FormControl required>
       <FormLabel>Identity</FormLabel>
-      <RadioButtonsGroup value={identity} onChange={handleIdentity}/><br />
+      <RadioButtonsGroup value={identity==='User'?'User':'Manager'} onChange={handleIdentity}/><br />
     </FormControl>
     {identity !== 'User' && 
       <FormControl required>
