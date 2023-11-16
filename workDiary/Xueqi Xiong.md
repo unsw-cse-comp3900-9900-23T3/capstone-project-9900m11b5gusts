@@ -67,3 +67,10 @@
 4. API(/Topic/getTop10CommentsTopics): User can get top 10 topics in which have the most people comment.
 5. API(/Topic/topicDetail/{activity_id}/{page}/{pagesize}): User can get the detail of the topic.
 6. Prepare for the final demo presentation.
+
+
+
+### Week 10
+
+1. Write the Project Report Assessment
+2. Write the README.txt
