@@ -128,10 +128,22 @@ export default function HistoryCard({ token, item, finished=false, selectedTab }
             alignItems="flex-start"
             sx={{width: '400px'}}
           >
-            <Typography level="title-md">
-              {selectedTab === 'Bought'? 'Seller: ' : 'Buyer: ' }  
-            </Typography>
-            <UserInfoChip token={token} email={item.buyer_email} name={item.buyer_name}/>
+            {selectedTab === 'Bought'? 
+            <>
+              <Typography level="title-md">
+                Seller: 
+              </Typography>
+              <UserInfoChip token={token} email={item.seller_email} name={item.seller_name}/>
+            </>
+            :
+            <>
+              <Typography level="title-md">
+                Buyer: 
+              </Typography>
+              <UserInfoChip token={token} email={item.buyer_email} name={item.buyer_name}/>
+            </>
+              }  
+
 
 
           </Stack>
