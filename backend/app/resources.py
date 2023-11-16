@@ -525,8 +525,12 @@ class archiveActivity(Resource):
 @Activity.route('/showActivity/<int:page>/<int:pagesize>')
 class ShowActivityInfor(Resource):
     @Activity.doc(description='Show all the activities')
+    @Activity.doc(security='jsonWebToken')
+    @jwt_required()
     def post(self, page, pagesize):
-        result = show_activities_infor(page, pagesize)
+        email = get_jwt_identity()
+        identity = get_user_identity(email)
+        result = show_activities_infor(identity,email,page, pagesize)
         if result['result']:
             return {'success': result['info']['activities'], 'total': result['info']['total_rows'], 'pageSize': pagesize, 'page': page}, 200
         else:

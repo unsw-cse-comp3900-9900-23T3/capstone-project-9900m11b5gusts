@@ -1309,7 +1309,7 @@ def archive_activity(email, **kwargs):
 
 
 
-def show_activities_infor(page, page_size):
+def show_activities_infor(identity,email,page, page_size):
     activity_infor = Activity.query.filter()
     # page_size = 10
     offset = (page - 1) * page_size
@@ -1317,17 +1317,43 @@ def show_activities_infor(page, page_size):
     activities = activity_infor.offset(offset).limit(page_size).all()
     if len(activities) != 0:
         r = {}
-        for activity in activities:
-            if activity.status == '1':
-                r[activity.id] = {
-                    'activity_name': activity.activity_name,
-                    'category': activity.category,
-                    'overview': activity.overview,
-                    'detail': activity.detail,
-                    'image': activity.image,
-                    'status': activity.status,
-                    'email': activity.email
-                }
+        if identity == "user":
+            for activity in activities:
+                if activity.status == '1':
+                    r[activity.id] = {
+                        'activity_name': activity.activity_name,
+                        'category': activity.category,
+                        'overview': activity.overview,
+                        'detail': activity.detail,
+                        'image': activity.image,
+                        'status': activity.status,
+                        'email': activity.email
+                    }
+        if identity == "administrator":
+            for activity in activities:
+                if activity.status == '0' or activity.status == '1' or activity.status == '2':
+                    r[activity.id] = {
+                        'activity_name': activity.activity_name,
+                        'category': activity.category,
+                        'overview': activity.overview,
+                        'detail': activity.detail,
+                        'image': activity.image,
+                        'status': activity.status,
+                        'email': activity.email
+                    }
+        if identity == "manager":
+            for activity in activities:
+                if activity.email == email:
+                    if activity.status == '1' or activity.status == '0':
+                        r[activity.id] = {
+                            'activity_name': activity.activity_name,
+                            'category': activity.category,
+                            'overview': activity.overview,
+                            'detail': activity.detail,
+                            'image': activity.image,
+                            'status': activity.status,
+                            'email': activity.email
+                        }
         total_rows = len(r)
         return {'result': True, 'info': {'total_rows': total_rows, 'activities': r}}
     else:
