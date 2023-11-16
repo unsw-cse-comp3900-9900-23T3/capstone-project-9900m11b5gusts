@@ -98,7 +98,7 @@ class Profile(Resource):
     @Author.doc(description='Get user profile information')
     @Author.doc(security='jsonWebToken')
     def get(self):
-        # 获取用户个人信息
+        # get email by token
         email = get_jwt_identity()
         user_profile = get_profile(email)
         return user_profile, 200
@@ -243,9 +243,6 @@ class SearchItem(Resource):
         email = get_jwt_identity()
         result = search_item(email, page, **args)
         if result['result']:
-            # print(result['info'])
-            # print('-------------')
-            # print({'success': result['info']})
             return {'success': result['info']}, 200
         else:
             return {'error': result['info']}, 400
@@ -291,11 +288,8 @@ class GetItemById(Resource):
 @Item.route('/getSellingHistory')
 class GetSellingHistory(Resource):
     @Item.doc(description='Get Personal Selling History')
-    # @Item.doc(security='jsonWebToken')
-    # @jwt_required()
     @Item.expect(get_selling_history_model)
     def post(self):
-        # email = get_jwt_identity()
         email = Item.payload['email']
         result = selling_history(email)
         return {'success': result['info']}, 200
@@ -304,11 +298,8 @@ class GetSellingHistory(Resource):
 @Item.route('/getBuyingHistory')
 class GetBuyingHistory(Resource):
     @Item.doc('Get Personal Buying history')
-    # @Item.doc(security="jsonWebToken")
-    # @jwt_required()
     @Item.expect(get_buying_history_model)
     def post(self):
-        # email = get_jwt_identity()
         email = Item.payload['email']
         result = buying_history(email)
         return {'success': result['info']}, 200

@@ -72,8 +72,8 @@ class Item(db.Model):
     item_name = db.Column(db.String(30))
     item_desc = db.Column(db.String(1000))
     item_price = db.Column(db.Float)
-    item_num = db.Column(db.Integer)  # item_last_num 剩余物品数量
-    item_sold_num = db.Column(db.Integer, default=0)  # 卖出的物品数量
+    item_num = db.Column(db.Integer)  # item_last_num   the item left amount 
+    item_sold_num = db.Column(db.Integer, default=0)  # item have been sold amount
     class1 = db.Column(db.String(30))
     class2 = db.Column(db.String(30))
     class3 = db.Column(db.String(30))
@@ -164,7 +164,7 @@ def time_test(fn):
 
 
 def base64_to_image(base64_string):
-    # 从Base64字符串解码为图像
+    # from Base64 string encode to image
     base64_data = base64_string.split(",")[1]
     image_data = base64.b64decode(base64_data)
     image = Image.open(BytesIO(image_data))
@@ -175,7 +175,7 @@ def base64_to_image(base64_string):
 def predict(image):
     app_root = os.path.dirname(os.path.abspath(__file__))
 
-    # 构建 'best.pt' 文件的相对路径
+    # 'best.pt' relative dir
     model_path = os.path.join(app_root, 'best.pt')
     model = YOLO(model_path)
 
@@ -216,7 +216,7 @@ def user_register(**kwargs):
     input_username = kwargs['username']
     input_password = kwargs['password']
     input_identity = kwargs['identity']
-    # 输入数据格式校验
+    # if identity is manager or admin, need code.once used remove code
     if input_identity != 'User':
         manager_code = ['zxcvb', 'asdfg', 'qwert']
         admin_code = ['poiuy', 'lkjhg', 'mnbvc']
@@ -230,7 +230,6 @@ def user_register(**kwargs):
                 db.session.add(event)
                 db.session.commit()
 
-                print('-----', input_register_email)
                 print(f'LOG: {input_register_email} register success!')
                 manager_code.remove(temp_code)
                 return {'result': True,
@@ -276,9 +275,7 @@ def user_register(**kwargs):
 def user_login(**kwargs):
     input_user_email = kwargs['user_email']
     input_password = kwargs['password']
-    # 输入数据格式校验
-
-    # 数据库查表
+    # email exist? or email ?= password
     login_user = User.query.filter_by(email=input_user_email).first()
     if login_user:
         if login_user.password == input_password:
@@ -300,6 +297,7 @@ def forget_pass(email):
     user = User.query.filter_by(email=email).first()
     if user:
         try:
+            # 6 digital random number
             code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
             reset_code = PasswordReset(
                 email=email, code=code, create_at=datetime.datetime.now())
@@ -324,9 +322,10 @@ def reset_password(**kwargs):
 
     if user_:
         try:
+            # have to fill right code in 2 minutes, else send forget password again
             exceed_time(user_.create_at)
             if user_.code == code:
-                # 修改密码
+                # reset password
                 user = User.query.filter_by(email=email).first()
                 user.password = new_password
                 db.session.commit()
@@ -439,15 +438,13 @@ def get_personal_item(email):
                 'trading_method': item.trading_method,
                 'exchange_item': item.exchange_item,
                 'change': item.change,
-                # 将日期时间转换为字符串格式
+            
                 'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
             }
 
         return {'result': True, 'info': temp_dict}
     else:
         return {'result': True, 'info': 'no item'}
-
-# 修改的数量是哪一个？是剩余数量，还是卖出的数量，还是剩余数量+卖出的数量？
 
 
 def update_personal_item(email, **kwargs):
@@ -506,7 +503,7 @@ def purchase_request(email, **kwargs):
     item_id = int(kwargs['item_id'])
     purchase_amount = int(kwargs['purchase_amount'])
     wanted_item = Item.query.filter_by(id=item_id).first()
-    # 如果有物品则继续，没有物品则提示
+    # if have item, continue, else return no item info
     if wanted_item:
         seller_email = wanted_item.email
         item_name = wanted_item.item_name
@@ -520,28 +517,6 @@ def purchase_request(email, **kwargs):
     else:
         return {'result': False, 'info': 'this item is selling out'}
 
-    # if wanted_item:
-    #     if wanted_item.item_num - purchase_amount >= 0:
-    #         # 查看是否有未完成的购买请求
-    #         history = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).first()
-    #         if not history or (history and history.finished):
-    #             # 在Purchase表中进行记录
-    #             seller_email = wanted_item.email
-    #             item_name = wanted_item.item_name
-    #             purchase_history = Purchase(buyer_email=email, seller_email=seller_email, item_id=item_id,
-    #                                         purchase_amount=purchase_amount, item_name=item_name, time_stamp=datetime.datetime.now())
-    #             db.session.add(purchase_history)
-    #             db.session.commit()
-    #             return {'result': True,
-    #                     'info': 'the purchase request is sending to seller, please wait for the seller response'}
-    #         elif not history.finished:
-    #             return {'result': False, 'info': 'you already have one purchase request, please waiting for previous request'}
-    #
-    #     else:
-    #         # 物品数量不够
-    #         return {'result': False, 'info': 'not enough item amount'}
-    # else:
-    #     return {'result': False, 'info': 'this item is selling out'}
 
 
 def get_item_by_id(item_id):
@@ -565,7 +540,6 @@ def get_item_by_id(item_id):
             'class1': item.class1,
             'class2': item.class2,
             'class3': item.class3,
-            # 将日期时间转换为字符串格式
             'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
         }
         return {'result': True, 'info': item_dict}
@@ -594,7 +568,6 @@ def get_item(item_id):
             'class1': item.class1,
             'class2': item.class2,
             'class3': item.class3,
-            # 将日期时间转换为字符串格式
             'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
         }
         return item_dict
@@ -657,10 +630,6 @@ def buying_history(email):
     else:
         return {'result': True, 'info': {}}
 
-# TODO
-# 对于购买者，交易状态为processing的请求(历史记录)
-# 对于卖家，交易状态为processing的请求（历史记录）
-
 
 def buyer_process_request(email):
     buyer_process_histories = Purchase.query.filter_by(
@@ -719,35 +688,9 @@ def seller_process_request(email):
     else:
         return {'result': True, 'info': {}}
 
-# def check_trading_status(email):
-#     buyer_request = Purchase.query.filter_by(buyer_email=email).order_by(Purchase.time_stamp.desc()).first()
-#     seller_request = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).first()
-#     if buyer_request and not buyer_request.finished:
-#         if buyer_request.status == 'processing':
-#             return {'result': False, 'info': 'In processing'}
-#         elif buyer_request.status == 'reject':
-#             buyer_request.finished = True
-#             buyer_request.time_stamp = datetime.datetime.now()
-#             db.session.commit()
-#             return {'result': True, 'info': 'Seller reject your purchasing'}
-#         elif buyer_request.status == 'approve':
-#             buyer_request.finished = True
-#             buyer_request.time_stamp = datetime.datetime.now()
-#             db.session.commit()
-#             return {'result': True, 'info': 'Seller approve your purchasing'}
-#     elif seller_request and not seller_request.finished:
-#         if seller_request.status == 'processing':
-#             seller_email = seller_request.seller_email
-#             item_name = seller_request.item_name
-#             purchase_amount = seller_request.purchase_amount
-#             return {'result': True, 'info': f'{seller_email} want to buy {purchase_amount} {item_name}'}
-#         else:
-#             return {'result': False, 'info': ''}
-#     else:
-#         return {'result': False, 'info': 'No new message'}
-
 
 def handle_purchase_request(email, **kwargs):
+    # when have item processing history, reject or approve purchase request
     history_id = int(kwargs['history_id'])
     action = kwargs['action']
 
@@ -757,13 +700,12 @@ def handle_purchase_request(email, **kwargs):
     if item_request:
         item_id = int(item_request.item_id)
         if action:
-            # 同意购买物品
+            # approve purchase request
             item_request.finished = True
             item_request.status = 'approved'
             item_request.time_stamp = datetime.datetime.now()
             selling_amount = item_request.purchase_amount
             db.session.commit()
-            # 更新Item表数据
             item = Item.query.filter_by(id=item_id).first()
             item.item_num -= selling_amount
             item.item_sold_num += selling_amount
@@ -771,7 +713,7 @@ def handle_purchase_request(email, **kwargs):
                 db.session.delete(item)
             db.session.commit()
         else:
-            # 不同意购买物品
+            # reject purchase request
             item_request.status = 'reject'
             item_request.finished = True
             item_request.time_stamp = datetime.datetime.now()
@@ -779,37 +721,6 @@ def handle_purchase_request(email, **kwargs):
         return {'result': True, 'info': 'you have handle the selling request'}
     else:
         return {'result': False, 'info': 'no this item'}
-
-# def selling_request(email, action):
-#     seller_request = Purchase.query.filter_by(seller_email=email).order_by(Purchase.time_stamp.desc()).first()
-#     if seller_request and not seller_request.finished:
-#         if action:
-#             seller_request.status = 'approve'
-#             # update the Item table, update the item amount
-#             item_id = seller_request.item_id
-#             item_name = seller_request.item_name
-#             selling_amount = seller_request.purchase_amount
-#             item = Item.query.filter_by(id=item_id).first()
-#             new_item_amount = item.item_num - selling_amount
-#             if new_item_amount:
-#                 item.item_num = item.item_num - selling_amount
-#                 item.time_stamp = datetime.datetime.now()
-#                 db.session.commit()
-#                 db.session.commit()
-#                 return {'result': True, 'info': f'you sold {selling_amount} {item_name}'}
-#             else:
-#                 db.session.delete(item)
-#                 db.session.commit()
-#                 db.session.commit()
-#                 return {'result': True, 'info': f'you sold {selling_amount} {item_name}, and this item is out'}
-#         else:
-#             seller_request.status = 'reject'
-#             seller_request.time_stamp = datetime.datetime.now()
-#             db.session.commit()
-#             return {'result': True, 'info': f'you reject the purchase request'}
-#
-#     else:
-#         return {'result': False, 'info': ''}
 
 
 @time_test
@@ -826,7 +737,7 @@ def search_item(email, page, **kwargs):
         'asc': Item.item_price.asc(),
         'desc': Item.item_price.desc()
     }
-    # 如果类别和keyword全为空，则按照wishlist的标签返回物品
+    # if class and keyword are all empty, return wishlist category items(as recommendation items)
     if not cls1 and not cls2 and not cls3 and not keyword:
         wish_item = WishItem.query.filter_by(
             email=email).order_by(WishItem.time_stamp.desc()).all()
@@ -836,7 +747,6 @@ def search_item(email, page, **kwargs):
             category1 = [item.class1 for item in wish_item]
             count = 0
             for c in category1:
-                # items = Item.query.filter_by(class1=c).all()
                 items = Item.query.filter(or_(Item.class1.like(f'%{c}')))
                 recommend_items['total_rows'] = items.count()
 
@@ -844,7 +754,7 @@ def search_item(email, page, **kwargs):
                 offset = (page - 1) * page_size
                 items = items.order_by(Item.time_stamp.desc()).offset(
                 offset).limit(page_size).all()
-                # print('-----', items)
+                
                 for i, item in enumerate(items):
                     user = User.query.filter_by(email=item.email).first()
                     user_name = user.username
@@ -863,14 +773,14 @@ def search_item(email, page, **kwargs):
                         'class1': item.class1,
                         'class2': item.class2,
                         'class3': item.class3,
-                        # 将日期时间转换为字符串格式
+                        
                         'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                     }
                     count += 1
-            # print(len(recommend_items))
+          
             return {'result': True, 'info': recommend_items}
         else:
-            # 返回所有物品
+            # return all items
             query = Item.query
             page_size = 10
             offset = (page - 1) * page_size
@@ -881,7 +791,7 @@ def search_item(email, page, **kwargs):
             if s_items:
                 item_dict = {'total_rows': total_rows}
                 for i, item in enumerate(s_items):
-                    # print(item, item.item_price)
+                    
                     user = User.query.filter_by(email=item.email).first()
                     user_name = user.username
                     item_dict[i] = {
@@ -899,10 +809,10 @@ def search_item(email, page, **kwargs):
                         'class1': item.class1,
                         'class2': item.class2,
                         'class3': item.class3,
-                        # 将日期时间转换为字符串格式
+                        
                         'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                     }
-                # print(item_dict)
+                
                 return {'result': True, 'info': item_dict}
             else:
 
@@ -910,11 +820,11 @@ def search_item(email, page, **kwargs):
 
     try:
         items = Item.query
-        # 将排序条件应用到查询之前
+        # sorted condition
         if price_sorted in p_dict:
             sort_condition = p_dict[price_sorted]
         else:
-            # 默认排序条件
+            # default sorting
             sort_condition = None
         if cls1:
             items = items.filter(Item.class1 == cls1)
@@ -934,9 +844,6 @@ def search_item(email, page, **kwargs):
         )
         if trading_method != 'default':
             query = query.filter(Item.trading_method == trading_method)
-        # sort_condition = p_dict[price_sorted]
-        # query = query.order_by(sort_condition)
-        print(query.all())
         query = query.filter(Item.change == change)
         page_size = 10
         offset = (page - 1) * page_size
@@ -947,7 +854,7 @@ def search_item(email, page, **kwargs):
         if s_items:
             item_dict = {'total_rows': total_rows}
             for i, item in enumerate(s_items):
-                # print(item, item.item_price)
+                
                 user = User.query.filter_by(email=item.email).first()
                 user_name = user.username
                 item_dict[i] = {
@@ -965,10 +872,10 @@ def search_item(email, page, **kwargs):
                     'class1': item.class1,
                     'class2': item.class2,
                     'class3': item.class3,
-                    # 将日期时间转换为字符串格式
+                    
                     'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                 }
-            # print(item_dict)
+            
             return {'result': True, 'info': item_dict}
         else:
             return {'result': True, 'info': {}}
@@ -1011,7 +918,7 @@ def search_item_by_category(page, **kwargs):
                 'class1': item.class1,
                 'class2': item.class2,
                 'class3': item.class3,
-                # 将日期时间转换为字符串格式
+                
                 'time_stamp': item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
             }
         return {'result': True, 'info': {'total_rows': total_rows, 'items': r}}
@@ -1130,7 +1037,7 @@ def check_wish_item(email):
                     'class1': wish_item.class1,
                     'class2': wish_item.class2,
                     'class3': wish_item.class3,
-                    # 将日期时间转换为字符串格式
+                    
                     'time_stamp': wish_item.time_stamp.strftime('%Y-%m-%d %H:%M:%S')
                 }
             return {'result': True, 'info': item_dict}
