@@ -283,10 +283,10 @@ export default function Sidebar({ logout, profileData, token, posts, setPosts}) 
                         </ListItem>
                         <ListItem sx={{ gap: 0.5 }}>
                           <ListItemButton
-                            selected={currentURL === 'compaign'}
-                            onClick={() => { setCurrentURL('compaign'); }}
-                            component={currentURL === 'compaign' ? undefined : 'a'}
-                            href='/compaign'
+                            selected={currentURL === 'archive_compaign'}
+                            onClick={() => { setCurrentURL('archive_compaign'); }}
+                            component={currentURL === 'archive_compaign' ? undefined : 'a'}
+                            href='/archive_compaign'
                           >archive campaigns</ListItemButton>
                         </ListItem>
                         <ListItem>

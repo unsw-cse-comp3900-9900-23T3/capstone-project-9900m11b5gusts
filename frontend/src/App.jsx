@@ -12,6 +12,7 @@ import ForgetPasswordPage from './components/authentication/ForgetPasswordPage';
 
 import ActivityMainPag from './components/compaigns/MainPage';
 import UserCompaignMainPage from './components/user_compaigns/MainPage';
+import UserArchiveCompaignMainPage from './components/archive_compaigns/MainPage';
 import Comments from './components/comments'
 import MyEcharts from './components/echart'
 
@@ -164,6 +165,7 @@ export default function App() {
 										<Route path="/exchangehistory*" element={<ExchangeHistoryPage token={token} profileData={profileData}/>} />
 										
 										<Route path="/compaign" element={<ActivityMainPag />} token={token} />
+										<Route path="/archive_compaign" element={<UserArchiveCompaignMainPage />} token={token} />
 										<Route path="/comments" element={<Comments profileData={profileData} />} />
 										<Route path="/echarts" element={<MyEcharts />} />
 					
