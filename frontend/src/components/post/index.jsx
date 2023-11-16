@@ -1,3 +1,4 @@
+// This component is the maintenance of posts, can add posts, delete posts, display post list
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';

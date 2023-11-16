@@ -1,10 +1,7 @@
+// This component is used to demonstrate mothballed activities
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
-// other components
-// import UploadImage from './jjUploadImage';
 
 // mui
 import Card from '@mui/material/Card';

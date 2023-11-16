@@ -1,3 +1,7 @@
+/***
+ * This component is used to display the image when uploaded
+ * 
+ */
 import React from 'react';
 import {
     useState, useEffect, useRef

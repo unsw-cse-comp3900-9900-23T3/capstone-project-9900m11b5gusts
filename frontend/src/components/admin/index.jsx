@@ -1,3 +1,4 @@
+// This component is the display and maintenance of active pages
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +11,6 @@ import Card from '@mui/material/Card';
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';

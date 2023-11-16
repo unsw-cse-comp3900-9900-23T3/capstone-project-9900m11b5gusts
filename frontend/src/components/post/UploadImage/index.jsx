@@ -1,4 +1,4 @@
-// recat
+// The component user displays the picture
 import React from 'react';
 import {
     useState, useEffect, useRef
