@@ -32,7 +32,7 @@ export default function Comments() {
             }
         })
         const { success } = await res.json();
-        echartFun(myDom1,success,'getTop10Activities')
+        echartFun(myDom1,success,'Top 10 activities with topics posted')
 
     }
 
@@ -46,7 +46,7 @@ export default function Comments() {
             }
         })
         const { success } = await res.json();
-        echartFun(myDom2,success,'getTop10CommentsActivities')
+        echartFun(myDom2,success,'Top 10 activities with comments posted')
     }
     const getTop10CommentsTopics = async () => {
         const res = await fetch(urls.getTop10CommentsTopics, {
@@ -58,7 +58,7 @@ export default function Comments() {
             }
         })
         const { success } = await res.json();
-        echartFun(myDom3,success,'getTop10CommentsTopics')
+        echartFun(myDom3,success,'Top 10 topics with comments posted')
     }
     const getCategory = async () => {
         const res = await fetch(urls.getCategory, {
