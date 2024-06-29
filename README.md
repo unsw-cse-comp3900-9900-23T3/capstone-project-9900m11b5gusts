@@ -38,7 +38,7 @@ Our user stories on Jira effectively articulate the project's objectives, outlin
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/b039af24-4168-4368-bf35-b0e70de174b8)
 
 ### System Structure
-![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/b3ebfa56-a0ac-4061-a404-6218655d625c)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/0d2c482f-c148-45a2-b4a2-06ac756be99a)
 
 The system employs a web application architecture featuring HTML and CSS for front-end presentation, React for dynamic user interfaces, and Flask as the back-end framework for server-side logic. Data storage is managed using SQLite3. Reactcomponents communicate with the Flask server via API calls, enabling data retrieval and manipulation. This architecture ensures aresponsive user experience, with React handling client-side interactivity, while Flask manages server-side operations andcommunicates with the SQLite3 database for data storage and retrieval, resulting in a versatile and efficient web application.
 
