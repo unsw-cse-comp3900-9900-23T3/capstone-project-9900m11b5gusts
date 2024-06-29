@@ -78,51 +78,51 @@ We also check the test datasets which are different from the training & validati
 
 ### User Manual
 #### Common User
-- Introduction Page
+#### Introduction Page
 Visit http://localhost:3000 to start.By clicking the button or the link on the page, you can switch between the register page,login page, and forget password page.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/36f48852-1ec4-4eb6-9b72-f940c0ac34ff)
 
-- Registration/Login
+#### Registration/Login
 Please provide all the information required to register a new account.We identify different users by their email, so your email must be unique.If you are going to register a manager account or administrator account, an additionalauthorization code is needed.Authorization codes(listed three for each but only needs one):For manager: [zxcvb, asdfg, qwert]For administrator: [poiuy, lkjhg, mnbvc]
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/644d79e4-6656-42d5-8fa3-e11d61398055)
 
-- Profile
+#### Profile
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/bd64a463-2f48-4441-89d6-472377a6a7f5)
 
-- Market picture 1
+#### Market picture 1
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/949adc52-b16d-4a8d-960e-ee7249468499)
 
-- Market picture 2
+#### Market picture 2
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/85696f12-3354-4d69-bfa8-9fe027a94a7e)
 
-- Market picture 3
+#### Market picture 3
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/6eb6215d-f5ec-46a1-9fdb-177482667fe4)
 
-- Market picture 4
+#### Market picture 4
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/436d4acd-f837-4514-ad17-a1fe530f7bd5)
 
-- Market picture 5
+#### Market picture 5
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/ca524043-36b6-4f9f-8cb2-7cd6ff8f4f7b)
 
-- Market picture 6
+#### Market picture 6
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/a6dc79d8-5195-4304-9528-c3f4d60ec144)
 
-- Market picture 7
+#### Market picture 7
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/2f600410-da47-434d-b345-e1f74b42dae1)
 
-- My Collectibles 1
+#### My Collectibles 1
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb4086c7-a925-425e-bfd7-396b7ab98b9d)
 
-- My Collectibles 2
+#### My Collectibles 2
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/11065bad-8871-4a36-a215-e7d92a2bb829)
 
-- My Collectibles 3
+#### My Collectibles 3
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/785d102b-70b1-40fc-8be5-db1d8cfd29e6)
 
-- My Collectibles 4
+#### My Collectibles 4
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb0bab59-2d9e-4fe3-8a2c-095e24e4aff3)
 
-- Administrator
+#### Administrator
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/388704c7-67bf-485d-bdee-ac37bddaaf2c)
 
 
