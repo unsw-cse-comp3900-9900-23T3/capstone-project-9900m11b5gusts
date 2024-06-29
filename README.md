@@ -38,7 +38,7 @@ Our user stories on Jira effectively articulate the project's objectives, outlin
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/b039af24-4168-4368-bf35-b0e70de174b8)
 
 ### System Structure
-![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/4f23d3f3-ca5d-4e9b-a72b-76e5478c0978)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/b3ebfa56-a0ac-4061-a404-6218655d625c)
 
 The system employs a web application architecture featuring HTML and CSS for front-end presentation, React for dynamic user interfaces, and Flask as the back-end framework for server-side logic. Data storage is managed using SQLite3. Reactcomponents communicate with the Flask server via API calls, enabling data retrieval and manipulation. This architecture ensures aresponsive user experience, with React handling client-side interactivity, while Flask manages server-side operations andcommunicates with the SQLite3 database for data storage and retrieval, resulting in a versatile and efficient web application.
 
@@ -73,6 +73,7 @@ We also check the test datasets which are different from the training & validati
 
 #### test image results
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/a804d63c-9708-4532-9d78-ef69f89b0fac)
+
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/7f01f580-984f-4097-8fa5-773fd7e50a1b)
 
 ### User Manual
@@ -88,19 +89,37 @@ Please provide all the information required to register a new account.We identif
 - Profile
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/bd64a463-2f48-4441-89d6-472377a6a7f5)
 
-- Market
+- Market picture 1
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/949adc52-b16d-4a8d-960e-ee7249468499)
+
+- Market picture 2
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/85696f12-3354-4d69-bfa8-9fe027a94a7e)
+
+- Market picture 3
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/6eb6215d-f5ec-46a1-9fdb-177482667fe4)
+
+- Market picture 4
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/436d4acd-f837-4514-ad17-a1fe530f7bd5)
+
+- Market picture 5
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/ca524043-36b6-4f9f-8cb2-7cd6ff8f4f7b)
+
+- Market picture 6
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/a6dc79d8-5195-4304-9528-c3f4d60ec144)
+
+- Market picture 7
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/2f600410-da47-434d-b345-e1f74b42dae1)
 
-- My Collectibles
+- My Collectibles 1
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb4086c7-a925-425e-bfd7-396b7ab98b9d)
+
+- My Collectibles 2
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/11065bad-8871-4a36-a215-e7d92a2bb829)
+
+- My Collectibles 3
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/785d102b-70b1-40fc-8be5-db1d8cfd29e6)
+
+- My Collectibles 4
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb0bab59-2d9e-4fe3-8a2c-095e24e4aff3)
 
 - Administrator
