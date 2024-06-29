@@ -93,52 +93,63 @@ Please provide all the information required to register a new account.We identif
 Once you have signed in, the window will switch to the market page.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/949adc52-b16d-4a8d-960e-ee7249468499)
 
+<br/><br/>
 #### Market picture 2
 You can type in the search bar on top of the page, and then click search to search for thecollectibles you want. The system will return all of the items that contain your search phrasein their title or description.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/85696f12-3354-4d69-bfa8-9fe027a94a7e)
 
+<br/><br/>
 #### Market picture 3
 You can also set the category filter to help you find what you need. Click the‘Category’button and then choose the category in the modal prompted.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/6eb6215d-f5ec-46a1-9fdb-177482667fe4)
 
+<br/><br/>
 #### Market picture 4
 On the market page, you can browse the collectibles posted by others. Click them to open amodal that displays all of the details of the collectible. You can use the pagination navigatorat the bottom of the page to switch between pages.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/436d4acd-f837-4514-ad17-a1fe530f7bd5)
 
+<br/><br/>
 #### Market picture 5
 You can find a name tag of the owner of the post. Click it to view his/her profile. Furthermore,you can view others’ posts, wish lists, and exchange history.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/ca524043-36b6-4f9f-8cb2-7cd6ff8f4f7b)
 
+<br/><br/>
 #### Market picture 6
 Click the‘I want it’ button to start a trade request. You can adjust the amount you need.Once you click‘confirm’, the trade request will be sent to the seller. This transaction will be atstatus‘pending’ before the seller accepts or rejects your request.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/a6dc79d8-5195-4304-9528-c3f4d60ec144)
 
+<br/><br/>
 #### Market picture 7
 This is the account of the seller. The trade request Wendy just initiated has been shown onthe message page. For demonstration, Zerek will accept this request.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/2f600410-da47-434d-b345-e1f74b42dae1)
 
+<br/><br/>
 #### My Collectibles 1
 Let’s switch back to Wendy’s account. From the‘exchange history’ page, Wendy can seethat the trade she just initiated is there and is marked‘Completed’. If Zerek rejects therequest, it will be marked‘Failed’ instead.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb4086c7-a925-425e-bfd7-396b7ab98b9d)
 
+<br/><br/>
 #### My Collectibles 2
 Let’s switch back to Wendy’s account. From the‘exchange history’ page, Wendy can seethat the trade she just initiated is there and is marked‘Completed’. If Zerek rejects therequest, it will be marked‘Failed’ instead.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/11065bad-8871-4a36-a215-e7d92a2bb829)
 
+<br/><br/>
 #### My Collectibles 3
 On the‘Posts’, you can create a new post by clicking the button top-right. You can upload apicture of your collectible. Our system will automatically identify what your collectible isbased on your picture, and ask you if you want to apply the predicted result. This will takeabout 3 seconds after the picture is uploaded.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/785d102b-70b1-40fc-8be5-db1d8cfd29e6)
 
+<br/><br/>
 #### My Collectibles 4
 Add a new item to the wish list by clicking the‘+ New Item’ button. Click the excited item tomodify it. Click the trash bin icon to delete it. The market page will push the items related toyour wish list to you.
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb0bab59-2d9e-4fe3-8a2c-095e24e4aff3)
 
+<br/><br/>
 #### Administrator
 Administrators can manage all the users’ privileges
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/388704c7-67bf-485d-bdee-ac37bddaaf2c)
 
 
-
+<br/><br/>
 ### Technical Stack
 
 ● Frontend: React
