@@ -37,10 +37,76 @@ Our user stories on Jira effectively articulate the project's objectives, outlin
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/80c25bd6-e7c6-4948-ada3-242e63962ac5)
 ![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/b039af24-4168-4368-bf35-b0e70de174b8)
 
-### Software Structure
-![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/bff22f90-c8df-4181-8ce8-a63ac1172b77)
+### System Structure
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/4f23d3f3-ca5d-4e9b-a72b-76e5478c0978)
 
 The system employs a web application architecture featuring HTML and CSS for front-end presentation, React for dynamic user interfaces, and Flask as the back-end framework for server-side logic. Data storage is managed using SQLite3. Reactcomponents communicate with the Flask server via API calls, enabling data retrieval and manipulation. This architecture ensures aresponsive user experience, with React handling client-side interactivity, while Flask manages server-side operations andcommunicates with the SQLite3 database for data storage and retrieval, resulting in a versatile and efficient web application.
+
+### Challenge Implementation
+
+We use yolov8 to train our customer datasets. We select Disney Card category item image datasets(Harry cards, Dumbledore cards, Lucius cards, and Luna cards) 4 classes to test our image category prediction function. We used 15 of each class, a total of 60 images we took with our phones, and manually marked the category and bounding box of the photos. We also did dataset preprocessing to increase the generalization ability of the model and make the model have better performance. Here is our operational information such as hyperparameters and data augmentation.
+
+● augment: True
+● learning_rate: 0.0001
+● momentum: 0.95
+● rotate: (0, 360)
+● mosaic: 1.0
+● mixup: 0.0,
+● multi_scale: True
+● translate: (0.1, 0.1)
+● rect: False
+
+In balancing the model effect and time cost, we found that images with 100 epochs and 1024 dimensions gave better results. Here are the results of the model.
+
+#### Confusion matrix
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/e9571724-a33a-45d1-bd5a-5c598a3724d9)
+
+#### Results
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/e5687c46-05cb-4854-a6fc-3e122993768f)
+
+And check the specific results predicted by the model in the training, basically, all categoriesare predicted correctly, and the prediction results of the bounding box are not hugelydifferent.
+
+#### validate image test results
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/9db617bb-98b8-4819-8ae1-d72867b028a6)
+
+We also check the test datasets which are different from the training & validation datasets.We conclude that the model has higher prediction accuracy for photos with fewerbackground items and photos with obvious separation of cards from the background.Although the forecast and the actual photo IOU may be quite different, only the category ofthe photo needs to be predicted and returned to the system.
+
+#### test image results
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/a804d63c-9708-4532-9d78-ef69f89b0fac)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/7f01f580-984f-4097-8fa5-773fd7e50a1b)
+
+### User Manual
+#### Common User
+- Introduction Page
+Visit http://localhost:3000 to start.By clicking the button or the link on the page, you can switch between the register page,login page, and forget password page.
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/36f48852-1ec4-4eb6-9b72-f940c0ac34ff)
+
+- Registration/Login
+Please provide all the information required to register a new account.We identify different users by their email, so your email must be unique.If you are going to register a manager account or administrator account, an additionalauthorization code is needed.Authorization codes(listed three for each but only needs one):For manager: [zxcvb, asdfg, qwert]For administrator: [poiuy, lkjhg, mnbvc]
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/644d79e4-6656-42d5-8fa3-e11d61398055)
+
+- Profile
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/bd64a463-2f48-4441-89d6-472377a6a7f5)
+
+- Market
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/949adc52-b16d-4a8d-960e-ee7249468499)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/85696f12-3354-4d69-bfa8-9fe027a94a7e)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/6eb6215d-f5ec-46a1-9fdb-177482667fe4)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/436d4acd-f837-4514-ad17-a1fe530f7bd5)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/ca524043-36b6-4f9f-8cb2-7cd6ff8f4f7b)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/a6dc79d8-5195-4304-9528-c3f4d60ec144)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/2f600410-da47-434d-b345-e1f74b42dae1)
+
+- My Collectibles
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb4086c7-a925-425e-bfd7-396b7ab98b9d)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/11065bad-8871-4a36-a215-e7d92a2bb829)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/785d102b-70b1-40fc-8be5-db1d8cfd29e6)
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/eb0bab59-2d9e-4fe3-8a2c-095e24e4aff3)
+
+- Administrator
+![image](https://github.com/unsw-cse-comp3900-9900-23T3/capstone-project-9900m11b5gusts/assets/135929686/388704c7-67bf-485d-bdee-ac37bddaaf2c)
+
+
 
 ### Technical Stack
 
@@ -55,7 +121,8 @@ The system employs a web application architecture featuring HTML and CSS for fro
 
 ![img](https://lh7-us.googleusercontent.com/s3xKtaNU-zDeKGqsW8fd3ea4r_SSrScgSrh_xaM7eo4PXu8np046l56JgDkyQdfVIFnanrRCgc8QGymo3WUbZhwc-2RkWS5lMvOWEcb0D7yajYyEW0H5i_6BZ9OrU5BpOSImypMZ_L-2t9OoR3OO5K8)
 
-### Backend Setup
+### Installation and Manual
+#### Backend Setup
 
 - cd to the backend directory
 
